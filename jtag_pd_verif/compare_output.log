@@ -1,0 +1,230 @@
+spike : /home/qamar/Documents/rtl/rv32imf/jtag_pd_verif/riscv-dv/out_2025-07-03/spike.csv
+core : /home/qamar/Documents/rtl/rv32imf/jtag_pd_verif/riscv-dv/out_2025-07-03/core.csv
+
+⚠️  Float mismatch in fmul.s  fa1, ft9, fa0 (fa1):
+    spike fa1 = 0.00000000 (0x00000001)
+    core fa1 = 629254595972617276342927360.00000000 (6c022076)
+    abs_diff = 6.29254596e+26, rel_error = 100.000000%, tolerance_used = 0.001000%
+Mismatch[1]:
+spike[153] : pc[80000298] fmul.s  fa1, ft9, fa0: fa1:0x00000001 
+core[153] : pc[80000298] fmul.s	f11,f29,f10: fa1:6c022076 
+
+
+🔍[LSB rounding error 1]:
+ pc[800007e0] fmul.s  fs2, fa0, ft1 (fs2):
+    spike fs2 = 0.00000000 (0x169eb0f3)
+    core fs2 = 0.00000000 (169eb0f2)
+    abs_diff = 2.46519033e-32, rel_error = 0.000010%, tolerance_used = 0.001000%
+Mismatch[2]:
+spike[469] : pc[800007e0] fmul.s  fs2, fa0, ft1: fs2:0x169eb0f3 
+core[469] : pc[800007e0] fmul.s	f18,f10,f1: fs2:169eb0f2 
+
+
+❗️[NaN or inf mismatch 1]: fmul.s
+spike: pc[800010c8] fs3=0xff7fffff
+core: pc[800010c8] fs3=0xff800000
+
+🔍[LSB rounding error 2]:
+ pc[80001160] fmul.s  fa7, fs6, ft2 (fa7):
+    spike fa7 = 0.00000000 (306d09e5)
+    core fa7 = 0.00000000 (306d09e6)
+    abs_diff = 5.55111512e-17, rel_error = 0.000006%, tolerance_used = 0.001000%
+Mismatch[3]:
+spike[1043] : pc[80001160] fmul.s  fa7, fs6, ft2: fa7:306d09e5 
+core[1043] : pc[80001160] fmul.s	f17,f22,f2: fa7:306d09e6 
+
+
+🔍[LSB rounding error (int) 3]:
+ pc[80001184] fclass.s a2, fs3 (a2):
+    spike a2 = 00000002
+    core a2 = 00000001
+Mismatch[4]:
+spike[1052] : pc[80001184] fclass.s a2, fs3: a2:00000002 
+core[1052] : pc[80001184] fclass.s	x12,f19: a2:00000001 
+
+
+❗️[NaN or inf mismatch 2]: fmul.s
+spike: pc[8000143c] fa7=0xff7fffff
+core: pc[8000143c] fa7=0xff800000
+
+🔍[LSB rounding error 4]:
+ pc[800014c8] fmul.s  ft7, ft7, ft5 (ft7):
+    spike ft7 = -0.00000000 (b04032c2)
+    core ft7 = -0.00000000 (b04032c3)
+    abs_diff = 5.55111512e-17, rel_error = 0.000008%, tolerance_used = 0.001000%
+Mismatch[5]:
+spike[1250] : pc[800014c8] fmul.s  ft7, ft7, ft5: ft7:b04032c2 
+core[1250] : pc[800014c8] fmul.s	f7,f7,f5: ft7:b04032c3 
+
+
+🔍[LSB rounding error 5]:
+ pc[800015e4] fmin.s  fs1, ft7, fs8 (fs1):
+    spike fs1 = -0.00000000 (b04032c2)
+    core fs1 = -0.00000000 (b04032c3)
+    abs_diff = 5.55111512e-17, rel_error = 0.000008%, tolerance_used = 0.001000%
+
+❗️[NaN or inf mismatch 3]: fmul.s
+spike: pc[80001758] ft7=0xff7fffff
+core: pc[80001758] ft7=0xff800000
+
+🔍[LSB rounding error 6]:
+ pc[80004488] fmul.s  ft2, fa2, fa0 (ft2):
+    spike ft2 = 0.00000000 (0x00000001)
+    core ft2 = 0.00000000 (00000000)
+    abs_diff = 1.40129846e-45, rel_error = 0.000000%, tolerance_used = 0.001000%
+
+🔍[LSB rounding error 7]:
+ pc[800044e4] fmul.s  ft9, ft8, ft3 (ft9):
+    spike ft9 = 0.00000063 (0x352a6d02)
+    core ft9 = 0.00000063 (352a6d03)
+    abs_diff = 5.68434189e-14, rel_error = 0.000009%, tolerance_used = 0.001000%
+
+🔍[LSB rounding error 8]:
+ pc[800048e0] fmul.s  ft9, ft6, fs0 (ft9):
+    spike ft9 = -0.00000000 (0x80000000)
+    core ft9 = -0.00000000 (80000001)
+    abs_diff = 1.40129846e-45, rel_error = 0.000000%, tolerance_used = 0.001000%
+
+🔍[LSB rounding error 9]:
+ pc[80005604] fmul.s  fa2, fs7, fs7 (fa2):
+    spike fa2 = 0.00000000 (0x00000001)
+    core fa2 = 0.00000000 (00000000)
+    abs_diff = 1.40129846e-45, rel_error = 0.000000%, tolerance_used = 0.001000%
+
+🔍[LSB rounding error 10]:
+ pc[80005690] fsgnjn.s ft5, fa2, fs1 (ft5):
+    spike ft5 = 0.00000000 (00000001)
+    core ft5 = 0.00000000 (00000000)
+    abs_diff = 1.40129846e-45, rel_error = 0.000000%, tolerance_used = 0.001000%
+
+🔍[LSB rounding error (int) 11]:
+ pc[800058c0] feq.s   sp, ft9, fa2 (sp):
+    spike sp = 00000000
+    core sp = 00000001
+
+🔍[LSB rounding error 12]:
+ pc[80005a30] fmul.s  fa1, fa2, fs2 (fa1):
+    spike fa1 = 0.00000000 (1392268e)
+    core fa1 = 0.00000000 (1392268f)
+    abs_diff = 3.85185989e-34, rel_error = 0.000010%, tolerance_used = 0.001000%
+
+🔍[LSB rounding error 13]:
+ pc[80006364] fmul.s  ft8, fs11, fs5 (ft8):
+    spike ft8 = 0.00000000 (0x00000001)
+    core ft8 = 0.00000000 (00000000)
+    abs_diff = 1.40129846e-45, rel_error = 0.000000%, tolerance_used = 0.001000%
+
+🔍[LSB rounding error (int) 14]:
+ pc[800063b4] fle.s   s6, ft8, fs4 (s6):
+    spike s6 = 00000000
+    core s6 = 00000001
+
+🔍[LSB rounding error 15]:
+ pc[8000646c] fmax.s  fs5, ft8, fa4 (fs5):
+    spike fs5 = 0.00000000 (00000001)
+    core fs5 = 0.00000000 (00000000)
+    abs_diff = 1.40129846e-45, rel_error = 0.000000%, tolerance_used = 0.001000%
+
+🔍[LSB rounding error 16]:
+ pc[800067b8] fmul.s  fs6, ft0, ft7 (fs6):
+    spike fs6 = 0.00000000 (0x00000001)
+    core fs6 = 0.00000000 (00000000)
+    abs_diff = 1.40129846e-45, rel_error = 0.000000%, tolerance_used = 0.001000%
+
+🔍[LSB rounding error 17]:
+ pc[80006808] fmin.s  fs11, ft8, ft7 (fs11):
+    spike fs11 = 0.00000000 (00000001)
+    core fs11 = 0.00000000 (00000000)
+    abs_diff = 1.40129846e-45, rel_error = 0.000000%, tolerance_used = 0.001000%
+
+🔍[LSB rounding error 18]:
+ pc[8000681c] fmul.s  ft0, ft11, fs5 (ft0):
+    spike ft0 = -0.00000000 (b04032c2)
+    core ft0 = -0.00000000 (b04032c3)
+    abs_diff = 5.55111512e-17, rel_error = 0.000008%, tolerance_used = 0.001000%
+
+🔍[LSB rounding error 19]:
+ pc[800068b0] fmax.s  fs0, fs6, fs6 (fs0):
+    spike fs0 = 0.00000000 (00000001)
+    core fs0 = 0.00000000 (00000000)
+    abs_diff = 1.40129846e-45, rel_error = 0.000000%, tolerance_used = 0.001000%
+
+🔍[LSB rounding error (int) 20]:
+ pc[800068e0] fmv.x.w a3, fs0 (a3):
+    spike a3 = 00000001
+    core a3 = 00000000
+
+🔍[LSB rounding error 21]:
+ pc[8000693c] fmv.w.x fa7, a3 (fa7):
+    spike fa7 = 0.00000000 (00000001)
+    core fa7 = 0.00000000 (00000000)
+    abs_diff = 1.40129846e-45, rel_error = 0.000000%, tolerance_used = 0.001000%
+
+🔍[LSB rounding error 22]:
+ pc[8000695c] fsgnjn.s fa3, fa7, fa1 (fa3):
+    spike fa3 = 0.00000000 (00000001)
+    core fa3 = 0.00000000 (00000000)
+    abs_diff = 1.40129846e-45, rel_error = 0.000000%, tolerance_used = 0.001000%
+
+🔍[LSB rounding error 23]:
+ pc[80006ae4] fsgnj.s fs6, fs0, fa4 (fs6):
+    spike fs6 = -0.00000000 (80000001)
+    core fs6 = -0.00000000 (80000000)
+    abs_diff = 1.40129846e-45, rel_error = 0.000000%, tolerance_used = 0.001000%
+
+🔍[LSB rounding error 24]:
+ pc[80006b84] fsgnjn.s ft4, fs0, fa7 (ft4):
+    spike ft4 = 0.00000000 (00000001)
+    core ft4 = 0.00000000 (00000000)
+    abs_diff = 1.40129846e-45, rel_error = 0.000000%, tolerance_used = 0.001000%
+
+🔍[LSB rounding error (int) 25]:
+ pc[80006ce4] feq.s   sp, ft0, ft11 (sp):
+    spike sp = 00000000
+    core sp = 00000001
+
+🔍[LSB rounding error (int) 26]:
+ pc[80006cf4] xori    a0, sp, -1828 (a0):
+    spike a0 = fffff8dc
+    core a0 = fffff8dd
+
+🔍[LSB rounding error (int) 27]:
+ pc[80006e7c] fle.s   a0, fa5, fs6 (a0):
+    spike a0 = 00000000
+    core a0 = 00000001
+
+🔍[LSB rounding error 28]:
+ pc[80006e98] fsgnjx.s fs10, fs6, ft11 (fs10):
+    spike fs10 = 0.00000000 (00000001)
+    core fs10 = 0.00000000 (00000000)
+    abs_diff = 1.40129846e-45, rel_error = 0.000000%, tolerance_used = 0.001000%
+
+🔍[LSB rounding error 29]:
+ pc[8000948c] fmul.s  fs7, ft7, ft11 (fs7):
+    spike fs7 = 0.00000000 (0x00000001)
+    core fs7 = 0.00000000 (00000000)
+    abs_diff = 1.40129846e-45, rel_error = 0.000000%, tolerance_used = 0.001000%
+
+🔍[LSB rounding error (int) 30]:
+ pc[80009510] fmv.x.w sp, fs7 (sp):
+    spike sp = 00000001
+    core sp = 00000000
+
+🔍[LSB rounding error 31]:
+ pc[800095a4] fsgnj.s ft5, fs7, ft11 (ft5):
+    spike ft5 = 0.00000000 (00000001)
+    core ft5 = 0.00000000 (00000000)
+    abs_diff = 1.40129846e-45, rel_error = 0.000000%, tolerance_used = 0.001000%
+
+🔍[LSB rounding error 32]:
+ pc[80009770] fmul.s  fs6, ft9, fs2 (fs6):
+    spike fs6 = 0.00000000 (0x00000000)
+    core fs6 = 0.00000000 (00000001)
+    abs_diff = 1.40129846e-45, rel_error = 0.000000%, tolerance_used = 0.001000%
+
+🔍[LSB rounding error 33]:
+ pc[80009e74] fmul.s  ft2, ft5, ft8 (ft2):
+    spike ft2 = -0.00000009 (0xb3c86850)
+    core ft2 = -0.00000009 (b3c86851)
+    abs_diff = 7.10542736e-15, rel_error = 0.000008%, tolerance_used = 0.001000%
+[FAILED]: 8080 matched, 39 mismatch, 3 NaN mismatch, rm_error 33 -- float tolerance used: 0.001000%

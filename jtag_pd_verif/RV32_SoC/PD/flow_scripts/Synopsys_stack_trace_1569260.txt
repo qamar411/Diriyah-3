@@ -1,0 +1,122 @@
+GNU gdb (GDB) Red Hat Enterprise Linux 8.2-20.el8
+Copyright (C) 2018 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-redhat-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word".
+Attaching to process 1569260
+[New LWP 1569465]
+[New LWP 1570668]
+[New LWP 1570675]
+[New LWP 1570676]
+[New LWP 1570677]
+[New LWP 1570678]
+[New LWP 1570679]
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib64/libthread_db.so.1".
+0x00007f9f577e1e42 in waitpid () from /lib64/libc.so.6
+Missing separate debuginfos, use: yum debuginfo-install bzip2-libs-1.0.6-28.el8_10.x86_64 cyrus-sasl-lib-2.1.27-6.el8_5.x86_64 dbus-libs-1.12.8-26.el8.x86_64 expat-2.2.5-16.el8_10.x86_64 flac-libs-1.3.2-9.el8_8.1.x86_64 glib2-2.56.4-165.el8_10.x86_64 glibc-2.28-251.el8_10.13.x86_64 gmp-6.1.2-11.el8.x86_64 gnutls-3.6.16-8.el8_9.3.x86_64 graphite2-1.3.10-10.el8.x86_64 krb5-libs-1.18.2-30.el8_10.x86_64 libICE-1.0.9-15.el8.x86_64 libSM-1.2.3-1.el8.x86_64 libX11-1.6.8-9.el8_10.x86_64 libXau-1.0.9-3.el8.x86_64 libXcomposite-0.4.4-14.el8.x86_64 libXext-1.3.4-1.el8.x86_64 libXft-2.3.3-1.el8.x86_64 libXrender-0.9.10-7.el8.x86_64 libXtst-1.2.3-7.el8.x86_64 libasyncns-0.8-14.el8.x86_64 libblkid-2.32.1-46.el8.x86_64 libcom_err-1.45.6-5.el8.x86_64 libgcrypt-1.8.5-7.el8_6.x86_64 libgpg-error-1.31-1.el8.x86_64 libmount-2.32.1-46.el8.x86_64 libogg-1.3.2-10.el8.x86_64 libselinux-2.9-9.el8_10.x86_64 libsndfile-1.0.28-16.el8_10.x86_64 libtasn1-4.13-4.el8_7.x86_64 libunistring-0.9.9-3.el8.x86_64 libuuid-2.32.1-46.el8.x86_64 libvorbis-1.3.6-2.el8.x86_64 libxcrypt-4.1.1-6.el8.x86_64 lz4-libs-1.8.3-3.el8_4.x86_64 nettle-3.4.1-7.el8.x86_64 pcre-8.42-6.el8.x86_64 pcre2-10.32-3.el8_6.x86_64 pulseaudio-libs-14.0-4.el8.x86_64 pulseaudio-libs-glib2-14.0-4.el8.x86_64 sqlite-libs-3.26.0-19.el8_9.x86_64
+(gdb) (gdb) 
+Thread 8 (Thread 0x7f9f3a377000 (LWP 1570679)):
+#0  0x00007f9f577e2098 in nanosleep () from /lib64/libc.so.6
+#1  0x00007f9f577e1f9e in sleep () from /lib64/libc.so.6
+#2  0x000000004f8e80aa in SNPSee_736c226cc0f9d19c9f03a5b629cc1ac67c55aabab371cb493cbe3cfa24e022212a2bcadfa6af024e0b25b9779f0423a5d122967b11fd1c59 ()
+#3  0x00007f9f8bccf480 in std::execute_native_thread_routine (__p=0x7010be60) at ../../../../../src/gcc-9.2.0/libstdc++-v3/src/c++11/thread.cc:80
+#4  0x000000004fa7033d in SNPSee_d9c72da67e7a1f57e9891545cd875e2719332304182309de ()
+#5  0x00007f9f92a4c1ca in start_thread () from /lib64/libpthread.so.0
+#6  0x00007f9f577138d3 in clone () from /lib64/libc.so.6
+
+Thread 7 (Thread 0x7f9f38b74000 (LWP 1570678)):
+#0  0x00007f9f5771341d in syscall () from /lib64/libc.so.6
+#1  0x00007f9f7bc5fd6c in tbb::detail::r1::futex_wait (comparand=2, futex=0x7f9f4930f5ac) at /remote/dept5188g/pfurnanz/p4/dgcom_t_dev2/third_party_sw/tbb/oneTBB-2021.5.0/src/tbb/semaphore.h:290
+#2  tbb::detail::r1::binary_semaphore::P (this=0x7f9f4930f5ac) at /remote/dept5188g/pfurnanz/p4/dgcom_t_dev2/third_party_sw/tbb/oneTBB-2021.5.0/src/tbb/semaphore.h:290
+#3  0x00007f9f7bc59a48 in tbb::detail::r1::rml::internal::thread_monitor::commit_wait (c=..., this=0x7f9f4930f5a0) at /remote/dept5188g/pfurnanz/p4/dgcom_t_dev2/third_party_sw/tbb/oneTBB-2021.5.0/src/tbb/rml_thread_monitor.h:243
+#4  tbb::detail::r1::rml::private_worker::run (this=0x7f9f4930f580) at /remote/dept5188g/pfurnanz/p4/dgcom_t_dev2/third_party_sw/tbb/oneTBB-2021.5.0/src/tbb/private_server.cpp:274
+#5  tbb::detail::r1::rml::private_worker::thread_routine (arg=0x7f9f4930f580) at /remote/dept5188g/pfurnanz/p4/dgcom_t_dev2/third_party_sw/tbb/oneTBB-2021.5.0/src/tbb/private_server.cpp:221
+#6  0x000000004fa7033d in SNPSee_d9c72da67e7a1f57e9891545cd875e2719332304182309de ()
+#7  0x00007f9f92a4c1ca in start_thread () from /lib64/libpthread.so.0
+#8  0x00007f9f577138d3 in clone () from /lib64/libc.so.6
+
+Thread 6 (Thread 0x7f9f39b76000 (LWP 1570677)):
+#0  0x00007f9f5771341d in syscall () from /lib64/libc.so.6
+#1  0x00007f9f7bc5fd6c in tbb::detail::r1::futex_wait (comparand=2, futex=0x7f9f4930f52c) at /remote/dept5188g/pfurnanz/p4/dgcom_t_dev2/third_party_sw/tbb/oneTBB-2021.5.0/src/tbb/semaphore.h:290
+#2  tbb::detail::r1::binary_semaphore::P (this=0x7f9f4930f52c) at /remote/dept5188g/pfurnanz/p4/dgcom_t_dev2/third_party_sw/tbb/oneTBB-2021.5.0/src/tbb/semaphore.h:290
+#3  0x00007f9f7bc59a48 in tbb::detail::r1::rml::internal::thread_monitor::commit_wait (c=..., this=0x7f9f4930f520) at /remote/dept5188g/pfurnanz/p4/dgcom_t_dev2/third_party_sw/tbb/oneTBB-2021.5.0/src/tbb/rml_thread_monitor.h:243
+#4  tbb::detail::r1::rml::private_worker::run (this=0x7f9f4930f500) at /remote/dept5188g/pfurnanz/p4/dgcom_t_dev2/third_party_sw/tbb/oneTBB-2021.5.0/src/tbb/private_server.cpp:274
+#5  tbb::detail::r1::rml::private_worker::thread_routine (arg=0x7f9f4930f500) at /remote/dept5188g/pfurnanz/p4/dgcom_t_dev2/third_party_sw/tbb/oneTBB-2021.5.0/src/tbb/private_server.cpp:221
+#6  0x000000004fa7033d in SNPSee_d9c72da67e7a1f57e9891545cd875e2719332304182309de ()
+#7  0x00007f9f92a4c1ca in start_thread () from /lib64/libpthread.so.0
+#8  0x00007f9f577138d3 in clone () from /lib64/libc.so.6
+
+Thread 5 (Thread 0x7f9f3b379000 (LWP 1570676)):
+#0  0x00007f9f5771341d in syscall () from /lib64/libc.so.6
+#1  0x00007f9f7bc5fd6c in tbb::detail::r1::futex_wait (comparand=2, futex=0x7f9f4930f6ac) at /remote/dept5188g/pfurnanz/p4/dgcom_t_dev2/third_party_sw/tbb/oneTBB-2021.5.0/src/tbb/semaphore.h:290
+#2  tbb::detail::r1::binary_semaphore::P (this=0x7f9f4930f6ac) at /remote/dept5188g/pfurnanz/p4/dgcom_t_dev2/third_party_sw/tbb/oneTBB-2021.5.0/src/tbb/semaphore.h:290
+#3  0x00007f9f7bc59a48 in tbb::detail::r1::rml::internal::thread_monitor::commit_wait (c=..., this=0x7f9f4930f6a0) at /remote/dept5188g/pfurnanz/p4/dgcom_t_dev2/third_party_sw/tbb/oneTBB-2021.5.0/src/tbb/rml_thread_monitor.h:243
+#4  tbb::detail::r1::rml::private_worker::run (this=0x7f9f4930f680) at /remote/dept5188g/pfurnanz/p4/dgcom_t_dev2/third_party_sw/tbb/oneTBB-2021.5.0/src/tbb/private_server.cpp:274
+#5  tbb::detail::r1::rml::private_worker::thread_routine (arg=0x7f9f4930f680) at /remote/dept5188g/pfurnanz/p4/dgcom_t_dev2/third_party_sw/tbb/oneTBB-2021.5.0/src/tbb/private_server.cpp:221
+#6  0x000000004fa7033d in SNPSee_d9c72da67e7a1f57e9891545cd875e2719332304182309de ()
+#7  0x00007f9f92a4c1ca in start_thread () from /lib64/libpthread.so.0
+#8  0x00007f9f577138d3 in clone () from /lib64/libc.so.6
+
+Thread 4 (Thread 0x7f9f3ab78000 (LWP 1570675)):
+#0  0x00007f9f5771341d in syscall () from /lib64/libc.so.6
+#1  0x00007f9f7bc5fd6c in tbb::detail::r1::futex_wait (comparand=2, futex=0x7f9f4930f62c) at /remote/dept5188g/pfurnanz/p4/dgcom_t_dev2/third_party_sw/tbb/oneTBB-2021.5.0/src/tbb/semaphore.h:290
+#2  tbb::detail::r1::binary_semaphore::P (this=0x7f9f4930f62c) at /remote/dept5188g/pfurnanz/p4/dgcom_t_dev2/third_party_sw/tbb/oneTBB-2021.5.0/src/tbb/semaphore.h:290
+#3  0x00007f9f7bc59a48 in tbb::detail::r1::rml::internal::thread_monitor::commit_wait (c=..., this=0x7f9f4930f620) at /remote/dept5188g/pfurnanz/p4/dgcom_t_dev2/third_party_sw/tbb/oneTBB-2021.5.0/src/tbb/rml_thread_monitor.h:243
+#4  tbb::detail::r1::rml::private_worker::run (this=0x7f9f4930f600) at /remote/dept5188g/pfurnanz/p4/dgcom_t_dev2/third_party_sw/tbb/oneTBB-2021.5.0/src/tbb/private_server.cpp:274
+#5  tbb::detail::r1::rml::private_worker::thread_routine (arg=0x7f9f4930f600) at /remote/dept5188g/pfurnanz/p4/dgcom_t_dev2/third_party_sw/tbb/oneTBB-2021.5.0/src/tbb/private_server.cpp:221
+#6  0x000000004fa7033d in SNPSee_d9c72da67e7a1f57e9891545cd875e2719332304182309de ()
+#7  0x00007f9f92a4c1ca in start_thread () from /lib64/libpthread.so.0
+#8  0x00007f9f577138d3 in clone () from /lib64/libc.so.6
+
+Thread 3 (Thread 0x7f9f3c02d000 (LWP 1570668)):
+#0  0x00007f9f5780f1ff in select () from /lib64/libc.so.6
+#1  0x000000004ef31d6e in SNPSee_554ec7c90557bab679d871cd58526530 ()
+#2  0x000000004fa7033d in SNPSee_d9c72da67e7a1f57e9891545cd875e2719332304182309de ()
+#3  0x00007f9f92a4c1ca in start_thread () from /lib64/libpthread.so.0
+#4  0x00007f9f577138d3 in clone () from /lib64/libc.so.6
+
+Thread 2 (Thread 0x7f9f4a1ff000 (LWP 1569465)):
+#0  0x00007f9f92a52371 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x00007f9f5dea0ea5 in background_thread_sleep (tsdn=<optimized out>, interval=<optimized out>, info=<optimized out>) at src/background_thread.c:232
+#2  background_work_sleep_once (ind=0, info=<optimized out>, tsdn=<optimized out>) at src/background_thread.c:307
+#3  background_thread0_work (tsd=<optimized out>) at src/background_thread.c:452
+#4  background_work (ind=<optimized out>, tsd=<optimized out>) at src/background_thread.c:490
+#5  background_thread_entry (ind_arg=<optimized out>) at src/background_thread.c:522
+#6  0x000000004fa7033d in SNPSee_d9c72da67e7a1f57e9891545cd875e2719332304182309de ()
+#7  0x00007f9f92a4c1ca in start_thread () from /lib64/libpthread.so.0
+#8  0x00007f9f577138d3 in clone () from /lib64/libc.so.6
+
+Thread 1 (Thread 0x7f9f4abc0000 (LWP 1569260)):
+#0  0x00007f9f577e1e42 in waitpid () from /lib64/libc.so.6
+#1  0x00007f9f57735747 in do_system () from /lib64/libc.so.6
+#2  0x000000004fa77fe1 in SNPSee_216f3c2f4c55dbceb170dcb7639b9c2cdd496024a8e266b98132685c735317487fd2aa296d8a7317 ()
+#3  0x000000004fa79b49 in SNPSee_216f3c2f4c55dbceb170dcb7639b9c2cdd496024a8e266b98132685c735317484a021951c8b3b34314fe2ade355c4696 ()
+#4  0x000000004f673f69 in SNPSee_9ea8dbbd5e74784445edf9ed12a0bc4777b489dcaefdb88f6c0991497dfc16a1f1ee4f39216b1e41 ()
+#5  0x000000004f6770a5 in SNPSee_9ea8dbbd5e74784484d3cce2fced02c05a3783bc3b9f8fad49ba3bacacc1ac73ecf347a38534d06f ()
+#6  0x000000004ca8e117 in SNPSee_11b97cddff68b62dc89843a99710a483 ()
+#7  <signal handler called>
+#8  0x000000005412af4a in SNPSee_23a871427c2f73e4 ()
+#9  0x000000004ca850e8 in SNPSee_5d373cd896410e630e5be4cb01b4f045 ()
+#10 0x0000000053d439fe in SNPSee_84819e9227b2e0aa9cae34dc8be3b8a5cd8f264d30f37d0c6a8e358e8cb885004984e24a8c4868b7af29ce1919d3f9852683413c29440db55976ece412914bf7aae086d558d8e56cf6aad19cb919f4191408ebcf3080fe7b ()
+#11 0x00000000250b09ce in SNPSee_3ed686e8d4a659b5b71ddd12e447f33917cbb8a33ac076760fc4c1bbbacc2de678ec65c28e5937c601c2ef47280b3679 ()
+#12 0x00000000250aca0d in SNPSee_e52978fb95288b35702010462a2fb7521b19e6c7de02e749f68bb351c5fdf77d77dcb6d7ca3d86dfab86a645dee82a58b2bd32436fe9252678dfa79a3e0c83bf ()
+#13 0x0000000024d12637 in SNPSee_b81f4656f0d7d3ca1b0bca755b60caea2cb50375ef5e9df280c2a7ba1e2ca19f7750e3d580600edd04a01dc4363d697fcd6b18c4d0ab558c ()
+#14 0x000000004f1018d5 in SNPSee_b3a63ca9beb66366a2beecdfa325f5f850e37c16b964335ba934f8a7afefeaf1 ()
+#15 0x000000001395178f in SNPSee_6188b3f9a7e769c7eb2dc22ab181ff5c0260e7bf3c6e6c5b6dd310362dd3e58b19a33122e2a80c1014bca5a076370ba0686492d474ef148ca36ababef5945158a888f7e536545dec88d039942c447aad829ec3c9a13ccf1352c7f068f1dc0d713b949058f841385ce96831542394be36f2ec7e463409336ff9646fa385cc5a553529ff78d8277054cb68eca1e74b2650bc52a0a187546145fe12efa21abc06a8 ()
+#16 0x0000000013954236 in SNPSee_5a24f30b88271223 ()
+#17 0x00007f9f577147e5 in __libc_start_main () from /lib64/libc.so.6
+#18 0x0000000013941029 in SNPSee_d06eed713327be76 ()
+(gdb) Detaching from program: /mnt/NVME2/synopsys/fusioncompiler/W-2024.09-SP2/linux64/nwtn/bin/dgcom_exec, process 1569260
+[Inferior 1 (process 1569260) detached]
+(gdb) 

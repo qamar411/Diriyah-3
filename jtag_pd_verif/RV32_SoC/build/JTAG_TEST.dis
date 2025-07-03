@@ -1,0 +1,55 @@
+
+build/JTAG_TEST.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+10000000 <back_to_fmv-0x38>:
+10000000:	fffff8b7          	lui	a7,0xfffff
+10000004:	3f8002b7          	lui	t0,0x3f800
+10000008:	40000337          	lui	t1,0x40000
+1000000c:	404003b7          	lui	t2,0x40400
+10000010:	00000e13          	li	t3,0
+10000014:	7f800eb7          	lui	t4,0x7f800
+10000018:	ff800f37          	lui	t5,0xff800
+1000001c:	7fc00fb7          	lui	t6,0x7fc00
+10000020:	0180006f          	j	10000038 <back_to_fmv>
+10000024:	000456b7          	lui	a3,0x45
+10000028:	00168693          	addi	a3,a3,1 # 45001 <back_to_fmv-0xffbb037>
+1000002c:	00d686b3          	add	a3,a3,a3
+10000030:	02d6c5b3          	div	a1,a3,a3
+10000034:	00d68633          	add	a2,a3,a3
+
+10000038 <back_to_fmv>:
+10000038:	f00280d3          	fmv.w.x	ft1,t0
+1000003c:	f0030153          	fmv.w.x	ft2,t1
+10000040:	f00381d3          	fmv.w.x	ft3,t2
+10000044:	f00e0253          	fmv.w.x	ft4,t3
+10000048:	f00e82d3          	fmv.w.x	ft5,t4
+1000004c:	f00f0353          	fmv.w.x	ft6,t5
+10000050:	f00f83d3          	fmv.w.x	ft7,t6
+10000054:	5800f553          	fsqrt.s	fa0,ft1
+10000058:	580175d3          	fsqrt.s	fa1,ft2
+1000005c:	fd128ee3          	beq	t0,a7,10000038 <back_to_fmv>
+10000060:	5801f653          	fsqrt.s	fa2,ft3
+10000064:	580276d3          	fsqrt.s	fa3,ft4
+10000068:	5802f753          	fsqrt.s	fa4,ft5
+1000006c:	580377d3          	fsqrt.s	fa5,ft6
+10000070:	5803f853          	fsqrt.s	fa6,ft7
+10000074:	e0000353          	fmv.x.w	t1,ft0
+10000078:	e00583d3          	fmv.x.w	t2,fa1
+1000007c:	e0060e53          	fmv.x.w	t3,fa2
+10000080:	e0068ed3          	fmv.x.w	t4,fa3
+10000084:	e0070f53          	fmv.x.w	t5,fa4
+10000088:	e0078fd3          	fmv.x.w	t6,fa5
+1000008c:	1820fa53          	fdiv.s	fs4,ft1,ft2
+10000090:	18117ad3          	fdiv.s	fs5,ft2,ft1
+10000094:	1821fb53          	fdiv.s	fs6,ft3,ft2
+10000098:	1840fbd3          	fdiv.s	fs7,ft1,ft4
+1000009c:	18127c53          	fdiv.s	fs8,ft4,ft1
+100000a0:	1812fcd3          	fdiv.s	fs9,ft5,ft1
+100000a4:	1850fd53          	fdiv.s	fs10,ft1,ft5
+100000a8:	18237dd3          	fdiv.s	fs11,ft6,ft2
+100000ac:	18617e53          	fdiv.s	ft8,ft2,ft6
+100000b0:	1870fed3          	fdiv.s	ft9,ft1,ft7
+100000b4:	1813ff53          	fdiv.s	ft10,ft7,ft1

@@ -1,0 +1,2 @@
+NOTEs for Physical Design (PD) Team:
+You can do what ever you want in this "PD/work/" directory since it's ignored by git. So you can run fc_shell here safely

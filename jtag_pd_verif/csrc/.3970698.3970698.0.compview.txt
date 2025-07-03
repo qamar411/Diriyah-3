@@ -1,0 +1,9 @@
+{"vcs1":{"timestamp_begin":1751542360.129418009, "rt":106.98, "ut":105.72, "st":0.80}}
+{"vcselab":{"timestamp_begin":1751542467.197221828, "rt":0.29, "ut":0.18, "st":0.10}}
+{"link":{"timestamp_begin":1751542467.546674974, "rt":0.48, "ut":0.21, "st":0.27}}
+{"SNPS_VCS_INTERNAL_ROOT_START_TIME": 1751542359.781611608}
+{"VCS_COMP_START_TIME": 1751542359.781611608}
+{"VCS_COMP_END_TIME": 1751542468.097622381}
+{"VCS_USER_OPTIONS": "-full32 -sverilog -f filelist.f -o simv +lint=TFIPC-L +lint=PCWM -top tracer_rv32i_soc_tb"}
+{"vcs1": {"peak_mem": 951248}}
+{"vcselab": {"peak_mem": 150396}}
