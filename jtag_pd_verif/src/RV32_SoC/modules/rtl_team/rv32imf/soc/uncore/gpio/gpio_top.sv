@@ -64,8 +64,8 @@ logic [1:0] unsed_sel;
 n_bit_dec #(
   .n(3)
 ) gpio_reg_sel_decoder (
-  .in_(wb_adr_i[4:2]),
-  .out_({ unsed_sel,
+  .in (wb_adr_i[4:2]),
+  .out({ unsed_sel,
           rgpio_is_sel,
           rgpio_ie_sel,
           io_sel_sel,

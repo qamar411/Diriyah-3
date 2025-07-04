@@ -72,17 +72,12 @@
 
 +define+VCS_SIM
 +define+tracer
-+define+TRACER_ENABLE
++define+USE_RS3
 +define+debug
 
 # ============================
 # Tracer Files & Packages
 # ============================
-+incdir+RV32_SoC/modules/rtl_team/rv32imf/soc/rom
-+incdir+RV32_SoC/modules/rtl_team/rv32imf/soc/sram
-+incdir+RV32_SoC/modules/rtl_team/rv32imf/pads/tpz018nv_270a
-+incdir+RV32_SoC/modules/tracer_modules/Tracer/
-//+incdir+RV32_SoC/testbench  // simJTAG
 
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/lib.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/glbl.v
@@ -95,7 +90,6 @@ RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/debug/debug_pkg.sv
 # ============================
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/core_dbg_fsm.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/linearization.sv
-RV32_SoC/modules/tracer_modules/rvfi_tracker_delay.sv
 
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/alignment_units.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/alu_control.sv
@@ -155,7 +149,6 @@ RV32_SoC/modules/rtl_team/rv32imf/soc/core/green_team/raw_waw_units/value_captur
 # ============================
 # Debug Files
 # ============================
-RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/debug/bscan_tap.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/debug/debug_top.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/debug/dm.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/debug/dtm.sv
@@ -164,10 +157,6 @@ RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/debug/dtm.sv
 # I2C Files
 # ============================
 RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/i2c/rtl/i2c_master_defines.v
-RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/i2c/bench/verilog/spi_slave_model.v
-RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/i2c/bench/verilog/i2c_slave_model.v
-//RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/i2c/bench/verilog/tst_bench_top.v
-//RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/i2c/bench/verilog/wb_master_model.v
 RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/i2c/rtl/i2c_master_bit_ctrl.v
 RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/i2c/rtl/i2c_master_byte_ctrl.v
 RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/i2c/rtl/i2c_master_top.v
@@ -182,7 +171,7 @@ RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/ptc/ptc_top.v
 # SPI & SPI-Flash Files
 # ============================
 RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/spi/fifo4.v
-RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/spi/simple_spi_top.v
+RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/spi/simple_spi.sv
 
 # ============================
 # UART Files
@@ -232,16 +221,12 @@ RV32_SoC/modules/rtl_team/rv32imf/soc/rv32i_soc.sv
 # ============================
 # I/O Pads & FPGA Files
 # ============================
-// RV32_SoC/modules/rtl_team/rv32imf/pads.sv
-// RV32_SoC/modules/rtl_team/rv32imf/soc/rv32i_soc_fpga_top.sv
+RV32_SoC/modules/rtl_team/rv32imf/pads/top_rv32i_soc.sv
 
 # ============================
 # Testbench Files
 # ============================
-RV32_SoC/modules/tracer_modules/Tracer/pkg.sv
-RV32_SoC/modules/tracer_modules/Tracer/tracer_pkg.sv
-RV32_SoC/modules/tracer_modules/Tracer/tracer.sv
-RV32_SoC/testbench/tracer_rv32i_soc_tb.sv
+RV32_SoC/testbench/rv32i_soc_tb.sv
 
 
 

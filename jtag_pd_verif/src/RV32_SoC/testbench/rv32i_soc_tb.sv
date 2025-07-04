@@ -168,8 +168,8 @@
             logic [4:0]  rvfi_rs2_addr;
             logic [4:0]  rvfi_rs3_addr;
             logic [31:0] rvfi_rs1_rdata;
-            logic [4:0]  rvfi_rs2_addr;
-            logic [4:0]  rvfi_rs3_addr;
+            logic [31:0] rvfi_rs2_rdata;
+            logic [31:0] rvfi_rs3_rdata;
             logic [4:0]  rvfi_rd_addr;
             logic [31:0] rvfi_rd_wdata;
             logic [31:0] rvfi_pc_rdata;
@@ -204,6 +204,9 @@
                 .branch_hazard_mem(`DATA_PATH.branch_hazard),
                 .pc_plus_4_mem    (`DATA_PATH.pc_plus_4_mem),
                 .stalled          (~(`DATA_PATH.pc_reg_en | `DATA_PATH.if_id_reg_en | `DATA_PATH.id_exe_reg_en)),
+                .alu_ctrl_id      (`DATA_PATH.alu_ctrl_id),
+                .reset_n          (RESET_N_PAD),
+                .clk              (CLK_PAD),
                 .*  // outputs
             );
 
@@ -234,10 +237,8 @@
             .rvfi_mem_wdata  (rvfi_mem_wdata),
             .rvfi_mem_rdata  (rvfi_mem_rdata),
             .rvfi_valid      (rvfi_valid),
-            .rvfi_rs3_addr_t (),
-            .rvfi_rs3_rdata_t(),
             .rvfi_mem_rmask  (),
-            .rvfi_mem_wmask  (),
+            .rvfi_mem_wmask  ()
             );
         `endif
 
@@ -286,21 +287,21 @@
 
     initial begin 
         `ifdef tracer  
-            fork   
-                begin
+            // fork   
+            // //     begin
 		    	
-        	`ifdef POST_SYNTH
-                wait(`DUT_PATH.rv32i_core_inst.data_path_inst.exe_mem_bus_o_ecall_)
+        	// // `ifdef POST_SYNTH
+            // //     wait(`DATA_PATH.sys_inst)
                    
-        	`else 
-		        wait(`DUT_PATH.rv32i_core_inst.data_path_inst.ecall_mem)
-	    	`endif 
-                    @(posedge CLK_PAD);
-                end
+        	// // `else 
+            // //     wait(`DATA_PATH.sys_inst)
+	    	// // `endif 
+            // //         repeat (30) @(posedge CLK_PAD);
+            // //     end
                 begin 
                     repeat(500000) @(posedge CLK_PAD);                
                 end
-            join_any
+            // join_any
         `elsif VIVADO_SIM
             repeat(100) @(posedge CLK_PAD);  
         `else 

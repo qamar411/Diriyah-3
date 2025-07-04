@@ -1,1 +1,7 @@
-*/*.vcd
+**/*.vcd
+**/csrc/
+**/simv
+**/simv.daidir/
+**/trace_core_00000001.log
+**/ucli.key
+**/riscv-dv/out*

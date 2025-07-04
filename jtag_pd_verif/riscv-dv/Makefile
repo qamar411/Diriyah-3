@@ -5,14 +5,17 @@ SIM_DIR         := ../src
 OUT_DIR         := $(DV_DIR)/out_$(DATE)
 
 # For normal runs, TEST_LIST drives everything.
-TEST_LIST       := riscv_arithmetic_basic_test
-TEST_LIST       := riscv_arithmetic_basic_test riscv_rand_jump_test riscv_jump_stress_test riscv_mmu_stress_test riscv_amo_test riscv_loop_test
+#riscv_floating_point_arithmetic_test
+#riscv_floating_point_rand_test
+#riscv_floating_point_mmu_stress_test
+TEST_LIST       := riscv_floating_point_arithmetic_test
+# TEST_LIST       := riscv_arithmetic_basic_test riscv_rand_jump_test riscv_jump_stress_test riscv_mmu_stress_test  riscv_loop_test
 ITER            := 1
 SEED            := 564205861
 POST_SYNTH      := 0
 POST_ROUTE      := 0
 LINKER_SCRIPT   := $(DV_DIR)/scripts/link.ld
-TARGET          := rv32im
+TARGET          := rv32imf
 INTERRUPT_TEST  := 0
 CUSTOM          ?= 0
 
@@ -125,8 +128,8 @@ sim: build_simv
 	      $(OUT_DIR)/data.hex; \
 		$(CONVERT_HEX) $(OUT_DIR)/inst.hex      $(OUT_DIR)/inst_conv.hex; \
 	    $(CONVERT_HEX) $(OUT_DIR)/data.hex      $(OUT_DIR)/data_conv.hex; \
-	    cp $(OUT_DIR)/inst_conv.hex $(SIM_DIR)/tb/inst_formatted.hex; \
-	    cp $(OUT_DIR)/data_conv.hex $(SIM_DIR)/tb/data_formatted.hex; \
+	    cp $(OUT_DIR)/inst_conv.hex $(SIM_DIR)/RV32_SoC/testbench/inst_formatted.hex; \
+	    cp $(OUT_DIR)/data_conv.hex $(SIM_DIR)/RV32_SoC/testbench/data_formatted.hex; \
 	    cd $(SIM_DIR) && ./simv > /dev/null; \
 	    cp $(TRACE_LOG_BASE) $(OUT_DIR)/$$test/core_trace_$$i.log; \
 	  done \
@@ -169,8 +172,6 @@ compare: format_csvs
 	@echo "\n🔍 Comparing traces…"
 	@for test in $(TEST_LIST); do \
 	  for i in `seq 0 $$(($(ITER)-1))`; do \
-	    sed -i '2d' $(OUT_DIR)/$$test/spike_trace_$$i.csv \
-	    sed -i '2d' $(OUT_DIR)/$$test/core_trace_$$i.csv \
 		$(COMPARE) \
 	      --csv_file_1 $(OUT_DIR)/$$test/spike_trace_$$i.csv \
 	      --csv_file_2 $(OUT_DIR)/$$test/core_trace_$$i.csv \
@@ -184,8 +185,6 @@ only_compare:
 	@echo "\n🔍 Comparing traces…"
 	@for test in $(TEST_LIST); do \
 	  for i in `seq 0 $$(($(ITER)-1))`; do \
-	    sed -i '2d' $(OUT_DIR)/$$test/spike_trace_$$i.csv \
-	    sed -i '2d' $(OUT_DIR)/$$test/core_trace_$$i.csv \
 		$(COMPARE) \
 	      --csv_file_1 $(OUT_DIR)/$$test/spike_trace_$$i.csv \
 	      --csv_file_2 $(OUT_DIR)/$$test/core_trace_$$i.csv \
