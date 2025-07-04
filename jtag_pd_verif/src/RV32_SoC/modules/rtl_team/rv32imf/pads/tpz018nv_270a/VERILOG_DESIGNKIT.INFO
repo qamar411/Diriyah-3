@@ -1,0 +1,54 @@
+DESIGN KIT INFORMATION
+======================
+
+1) Design Kit Information
+
+   Design Kit Name:		tpz018nv_270a_vlg
+   Applicable EDA Tool:		NC-Verilog
+   Library Name:		tpz018nv
+   Library Version:		270a
+   Library Type:		io
+   Cell Number:			129
+
+2) Tools used for generation of this design-kit
+
+   Tool name		Version
+   ---------		-------
+   NC-Verilog     	v5.4
+   	
+
+3) Design Kit Contents
+
+   File/Directory		Description
+   ---------------		-----------
+
+4) Special Notes
+
+   ---------------------------------------------------------------------------
+   -- These notes are written for verilog model for TSMC core library
+   ---------------------------------------------------------------------------
+
+
+   1. In this version , the negative time check that supported by the previous
+      version has been removed. The reasons is that , although supporting  
+      negative time check can describe the circuits more detail and realistic,
+      however it maybe raise the difficulty and complexity of timing verification.  
+
+   2. For that the SDF(v2.1) annotation didn't support removal time check, the 
+      removal is replaced by using hold. 
+
+   3. For the SDF annotation, this version has removed the negative timing check,
+      these verilog models can support the older version verilog simulators and
+      no more limited the simulatior must support the negative time check (Verilog-XL
+      after v2.7 or NC-Verilog v2.1).
+
+   4. Revising the conditions of timing check provides more concise constraints to
+      improve the error coverage ,but these conditions may cause some unexpected 
+      errors that never happen in the real case.
+
+
+
+5) Known Problems and Limitations
+
+
+----------------------------------------------------

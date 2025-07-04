@@ -1,1 +1,0 @@
-Put your tsmc SRAM designs in this directory!

@@ -1,5 +1,0 @@
-{"vcs1":{"timestamp_begin":1751539051.720757499, "rt":0.15, "ut":0.04, "st":0.07}}
-{"SNPS_VCS_INTERNAL_ROOT_START_TIME": 1751539051.383116767}
-{"VCS_COMP_START_TIME": 1751539051.383116767}
-{"VCS_COMP_END_TIME": 1751539051.909725017}
-{"VCS_USER_OPTIONS": "-full32 -sverilog -f filelist.f -o simv +lint=TFIPC-L +lint=PCWM -top tracer_rv32i_soc_tb"}

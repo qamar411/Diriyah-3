@@ -100,7 +100,7 @@ privileged_reg_t implemented_csr[] = {
 `else
 const privileged_reg_t implemented_csr[] = {
 `endif
-    // Machine mode mode CSR
+    // // Machine mode mode CSR
     // MVENDORID,  // Vendor ID
     // MARCHID,    // Architecture ID
     // MIMPID,     // Implementation ID
@@ -130,9 +130,9 @@ interrupt_cause_t implemented_interrupt[] = {
 `else
 const interrupt_cause_t implemented_interrupt[] = {
 `endif
-    M_SOFTWARE_INTR,
-    M_TIMER_INTR,
-    M_EXTERNAL_INTR
+    // M_SOFTWARE_INTR,
+    // M_TIMER_INTR,
+    // M_EXTERNAL_INTR
 };
 
 `ifdef DSIM
@@ -140,11 +140,11 @@ exception_cause_t implemented_exception[] = {
 `else
 const exception_cause_t implemented_exception[] = {
 `endif
-    // INSTRUCTION_ADDRESS_MISALIGNED,
-    // INSTRUCTION_ACCESS_FAULT,
-    // ILLEGAL_INSTRUCTION,
-    // BREAKPOINT,
-    // LOAD_ADDRESS_MISALIGNED,
-    // LOAD_ACCESS_FAULT,
-    // ECALL_MMODE
+    INSTRUCTION_ADDRESS_MISALIGNED,
+    INSTRUCTION_ACCESS_FAULT,
+    ILLEGAL_INSTRUCTION,
+    BREAKPOINT,
+    LOAD_ADDRESS_MISALIGNED,
+    LOAD_ACCESS_FAULT,
+    ECALL_MMODE
 };

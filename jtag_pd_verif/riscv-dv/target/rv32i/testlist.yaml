@@ -42,3 +42,13 @@
     +num_of_sub_program=8
     +enable_misaligned_instr=1
   rtl_test: core_base_test
+
+
+  # Please enable this test for your RTL simulation
+- test: riscv_csr_test
+  description: >
+    Test all CSR instructions on all implemented CSR registers
+  iterations: 0
+  no_iss: 10
+  rtl_test: core_csr_test
+  no_post_compare: 1

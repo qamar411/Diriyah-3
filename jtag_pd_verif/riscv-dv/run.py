@@ -521,7 +521,7 @@ def run_assembly(asm_test, iss_yaml, isa, mabi, gcc_opts, iss_opts, output_dir,
         run_cmd("mkdir -p {}/{}_sim".format(output_dir, iss))
         log = ("{}/{}_sim/{}.log".format(output_dir, iss, asm))
         log_list.append(log)
-        base_cmd = parse_iss_yaml(iss, iss_yaml, isa, setting_dir, debug_cmd)
+        base_cmd = parse_iss_yaml(iss, iss_yaml, isa, 'm', setting_dir, debug_cmd)
         logging.info("[{}] Running ISS simulation: {}".format(iss, elf))
         cmd = get_iss_cmd(base_cmd, elf, log)
         run_cmd(cmd, 10, debug_cmd=debug_cmd)
@@ -952,6 +952,15 @@ def load_config(args, cwd):
         if args.target == "rv32imc":
             args.mabi = "ilp32"
             args.isa = "rv32imc_zicsr_zifencei"
+        elif args.target == "rv32imac":
+            args.mabi = "ilp32"
+            args.isa = "rv32imac_zicsr_zifencei"
+        elif args.target == "rv32imac_zkne_zknd_zknh_zbkb_zbkc_zbkx_zbb":
+            args.mabi = "ilp32"
+            args.isa = "rv32imac_zkne_zknd_zknh_zbkb_zbkc_zbkx_zbb_zicsr_zifencei"
+        elif args.target == "rv32if":
+            args.mabi = "ilp32"
+            args.isa = "rv32if_zicsr_zifencei"
         elif args.target == "rv32imafdc":
             args.mabi = "ilp32"
             args.isa = "rv32imafdc_zicsr_zifencei"
@@ -967,18 +976,15 @@ def load_config(args, cwd):
         elif args.target == "rv32i":
             args.mabi = "ilp32"
             args.isa = "rv32i_zicsr_zifencei"
-        elif args.target == "rv32if":
+        elif args.target == "rv32im":
             args.mabi = "ilp32"
-            args.isa = "rv32if_zicsr_zifencei"
-        elif args.target == "rv32im":  # (new)
-            args.mabi = "ilp32"
-            args.isa = "rv32im_zicsr_zifencei"  # (new)
-        elif args.target == "rv32imf":  # (new)
-            args.mabi = "ilp32"
-            args.isa = "rv32imf_zicsr_zifencei"  # (new)
+            args.isa = "rv32im_zicsr_zifencei"
         elif args.target == "rv32ic":
             args.mabi = "ilp32"
             args.isa = "rv32ic_zicsr_zifencei"
+        elif args.target == "rv32ia":
+            args.mabi = "ilp32"
+            args.isa = "rv32ia_zicsr_zifencei"
         elif args.target == "rv32iac":
             args.mabi = "ilp32"
             args.isa = "rv32iac_zicsr_zifencei"

@@ -1,1 +1,0 @@
-Put your desired TCMS standard-cells for I/O pads in this directory!

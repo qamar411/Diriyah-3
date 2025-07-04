@@ -66,6 +66,7 @@ class riscv_instr extends uvm_object;
   bit                        has_rs2 = 1'b1;
   bit                        has_rd = 1'b1;
   bit                        has_imm = 1'b1;
+  bit                        genearte_mul = 1'b0;
 
   constraint imm_c {
     if (instr_name inside {SLLIW, SRLIW, SRAIW}) {

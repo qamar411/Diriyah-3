@@ -26,73 +26,12 @@ parameter satp_mode_t SATP_MODE = BARE;
 // Supported Privileged mode
 privileged_mode_t supported_privileged_mode[] = {MACHINE_MODE};
 
-// // Unsupported instructions
-riscv_instr_name_t unsupported_instr[$] = {
-    // completely passed ...
-    // FLW, FSW,  // to see it on .log file, you have to change function "decode_fload_insn" in "tracer.sv" file
-    // FMIN_S, FMAX_S,
-    // FEQ_S, FLT_S, FLE_S,
-    // FMV_X_W, FMV_W_X,
-    // FSGNJ_S, FSGNJN_S, FSGNJX_S,
-    // FCLASS_S,
-
-    // passed but not accurate ...
-    FADD_S,
-    FSUB_S,
-    // FMUL_S,  // we're using "FP_final_multiplier.sv" (Nehal version) -> delete the 2nd one (FP_final_Multiplier.sv)
-    FMADD_S, FMSUB_S, FNMSUB_S, FNMADD_S,
-    
-    // passed but there are some special cases with small numbers (subnormal) ...
-    FCVT_W_S, FCVT_WU_S, FCVT_S_W, FCVT_S_WU,
-    FSQRT_S,
-    
-    // failed ...
-    FDIV_S,
-
-    // ===========================================
-    // instructions details ...
-    // FLW,     // Load Word to FP register
-    // FSW,     // Store Word from FP register
-    // C_FLW,   // Compressed FLW
-    // C_FSW,   // Compressed FSW
-    // C_FLWSP, // Compressed FLW from SP
-    // C_FSWSP, // Compressed FSW to SP
-    // FADD_S,
-    // FSUB_S,
-    // FMUL_S,
-    // FDIV_S,
-    // FSQRT_S,
-    // FSGNJ_S,
-    // FSGNJN_S,
-    // FSGNJX_S,
-    // FMIN_S,
-    // FMAX_S,
-    // FCVT_W_S,     // Convert FP to signed int
-    // FCVT_WU_S,    // Convert FP to unsigned int
-    // FCVT_S_W,     // Convert signed int to FP
-    // FCVT_S_WU,    // Convert unsigned int to FP
-    // FMV_X_W,      // Move from FP to int
-    // FMV_W_X,      // Move from int to FP
-    // FCLASS_S,     // Classify FP value
-    // FEQ_S,
-    // FLT_S,
-    // FLE_S,
-    // FMADD_S,
-    // FMSUB_S,
-    // FNMSUB_S,
-    // FNMADD_S,
-
-    // ==========================================
-    // unsupported in our system ...
-    CSRRW, CSRRS, CSRRC, CSRRWI, CSRRSI, CSRRCI, 
-    // CSRW, CSRR,  // not working because it's not decalred
-    C_FLW, C_FSW, C_FLWSP, C_FSWSP
-};
-
-
+// Unsupported instructions
+riscv_instr_name_t unsupported_instr[];
 
 // ISA supported by the processor
-riscv_instr_group_t supported_isa[$] = { RV32I, RV32F};
+riscv_instr_group_t supported_isa[$] = {RV32I, RV32F};
+
 // Interrupt mode support
 mtvec_mode_t supported_interrupt_mode[$] = {DIRECT, VECTORED};
 
