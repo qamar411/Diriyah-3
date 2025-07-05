@@ -1,0 +1,82 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  --include "../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/i2c/software/include" --include "../../../../../src/RV32_SoC/testbench" -d "VIVADO_SIM=" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/spi/fifo4.v" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/i2c/rtl/i2c_master_bit_ctrl.v" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/i2c/rtl/i2c_master_byte_ctrl.v" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/i2c/rtl/i2c_master_top.v" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/ptc/ptc_top.v" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/uart/raminfr.v" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/uart/uart_receiver.v" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/uart/uart_regs.v" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/uart/uart_rfifo.v" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/uart/uart_sync_flops.v" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/uart/uart_tfifo.v" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/uart/uart_top.v" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/uart/uart_transmitter.v" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/uart/uart_wb.v" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/WishboneInterconnect/wb_intercon_1.2.2-r1/wb_mux.v" \
+
+sv xil_defaultlib  --include "../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/i2c/software/include" --include "../../../../../src/RV32_SoC/testbench" -d "VIVADO_SIM=" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/lib.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/green_team/fadd_sub_modules/FP_add_sub_top.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/green_team/raw_waw_units/FP_busy_registers.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/green_team/fpu_units/fcvt/FP_converter.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/FP_units/FP_final_multiplier.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/priority_units/P_Decoder.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/FP_units/R4_unit.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/green_team/block_sqrt/Register.sv" \
+"../../../../../src/RV32_SoC/testbench/SimJTAG.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/green_team/fadd_sub_modules/add_sub_FP.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/alignment_units.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/alu.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/alu_control.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/branch_controller.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/green_team/raw_waw_units/busy_registers.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/green_team/raw_waw_units/clear_units_decoder.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/control_unit.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/core_dbg_fsm.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/data_mem.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/data_path.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/debug/debug_pkg.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/debug/debug_top.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/debug/dm.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/debug/dtm.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/green_team/fadd_sub_modules/extract_align_FP.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/FP_units/fdiv.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/green_team/fpu_units/fcvt/float2int.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/green_team/fpu_units/fcvt/float2ints.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/forwarding_unit.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/green_team/block_sqrt/fp_sqrt_Multicycle.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/green_team/fpu_units/fpu.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/gpio/gpio_top.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/hazard_controller.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/imm_gen.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/green_team/fpu_units/fcvt/int2float.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/green_team/fpu_units/fcvt/int2floats.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/int_units/int_div_rem.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/int_units/int_mul.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/io_mux.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/linearization.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/main_control.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/green_team/raw_waw_units/n_bit_delayer.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/green_team/fadd_sub_modules/normalize_FP.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/pipeline_controller.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/priority_units/priority_controller.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/priority_units/priority_mux.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/program_counter.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/reg_file.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/rom/rom.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/green_team/fadd_sub_modules/round_FP.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/rv32i_soc.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/rv32i_top.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/spi/simple_spi.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/green_team/raw_waw_units/value_capture.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/WishboneInterconnect/wb_intercon.sv" \
+"../../../../../src/RV32_SoC/modules/rtl_team/rv32imf/soc/WishboneInterconnect/wishbone_controller.sv" \
+"../../../../../src/RV32_SoC/testbench/rv32i_soc_tb.sv" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

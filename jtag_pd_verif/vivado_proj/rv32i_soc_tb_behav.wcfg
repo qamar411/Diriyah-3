@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="rv32i_soc_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="\$unit_lib_sv " />
+            <top_module name="common_pkg" />
+            <top_module name="debug_pkg" />
+            <top_module name="glbl" />
+            <top_module name="riscv_types" />
+            <top_module name="rv32i_soc_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="870166666fs"></ZoomStartTime>
+      <ZoomEndTime time="1019966667fs"></ZoomEndTime>
+      <Cursor1Time time="995000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="226"></NameColumnWidth>
+      <ValueColumnWidth column_width="112"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="14" />
+   <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/inst">
+      <obj_property name="ElementShortName">inst[31:0]</obj_property>
+      <obj_property name="ObjectShortName">inst[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/dbg_ret">
+      <obj_property name="ElementShortName">dbg_ret</obj_property>
+      <obj_property name="ObjectShortName">dbg_ret</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/next_pc_if1">
+      <obj_property name="ElementShortName">next_pc_if1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">next_pc_if1[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/current_pc_if">
+      <obj_property name="ElementShortName">current_pc_if[31:0]</obj_property>
+      <obj_property name="ObjectShortName">current_pc_if[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/current_pc_if1">
+      <obj_property name="ElementShortName">current_pc_if1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">current_pc_if1[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/current_pc_id">
+      <obj_property name="ElementShortName">current_pc_id[31:0]</obj_property>
+      <obj_property name="ObjectShortName">current_pc_id[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/current_pc_exe">
+      <obj_property name="ElementShortName">current_pc_exe[31:0]</obj_property>
+      <obj_property name="ObjectShortName">current_pc_exe[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/current_pc_mem">
+      <obj_property name="ElementShortName">current_pc_mem[31:0]</obj_property>
+      <obj_property name="ObjectShortName">current_pc_mem[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/current_pc_if2">
+      <obj_property name="ElementShortName">current_pc_if2[31:0]</obj_property>
+      <obj_property name="ObjectShortName">current_pc_if2[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/inst_id">
+      <obj_property name="ElementShortName">inst_id[31:0]</obj_property>
+      <obj_property name="ObjectShortName">inst_id[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/reg_file_inst/reg_file">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">reg_file[31:0][31:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_file[31:0][31:0]</obj_property>
+      <obj_property name="label">Integer RF</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_reg_file_inst/reg_file">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">reg_file[31:0][31:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_file[31:0][31:0]</obj_property>
+      <obj_property name="label">Floating Point RF</obj_property>
+   </wvobject>
+   <wvobject type="group" fp_name="group2493">
+      <obj_property name="label">FP MUL</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/clk">
+         <obj_property name="ElementShortName">clk</obj_property>
+         <obj_property name="ObjectShortName">clk</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/rst_n">
+         <obj_property name="ElementShortName">rst_n</obj_property>
+         <obj_property name="ObjectShortName">rst_n</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/en">
+         <obj_property name="ElementShortName">en</obj_property>
+         <obj_property name="ObjectShortName">en</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/clear">
+         <obj_property name="ElementShortName">clear[1:0]</obj_property>
+         <obj_property name="ObjectShortName">clear[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/a">
+         <obj_property name="ElementShortName">a[31:0]</obj_property>
+         <obj_property name="ObjectShortName">a[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/b">
+         <obj_property name="ElementShortName">b[31:0]</obj_property>
+         <obj_property name="ObjectShortName">b[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/rm">
+         <obj_property name="ElementShortName">rm[2:0]</obj_property>
+         <obj_property name="ObjectShortName">rm[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/P_signal">
+         <obj_property name="ElementShortName">P_signal</obj_property>
+         <obj_property name="ObjectShortName">P_signal</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/fmul_pipeline_signals_i">
+         <obj_property name="ElementShortName">fmul_pipeline_signals_i</obj_property>
+         <obj_property name="ObjectShortName">fmul_pipeline_signals_i</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/fmul_pipeline_signals_o">
+         <obj_property name="ElementShortName">fmul_pipeline_signals_o</obj_property>
+         <obj_property name="ObjectShortName">fmul_pipeline_signals_o</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/P_O_signal">
+         <obj_property name="ElementShortName">P_O_signal</obj_property>
+         <obj_property name="ObjectShortName">P_O_signal</obj_property>
+      </wvobject>
+      <wvobject fp_name="divider2612" type="divider">
+         <obj_property name="label">EXPONENTS</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/exp_a_pi">
+         <obj_property name="ElementShortName">exp_a_pi[7:0]</obj_property>
+         <obj_property name="ObjectShortName">exp_a_pi[7:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/exp_b_pi">
+         <obj_property name="ElementShortName">exp_b_pi[7:0]</obj_property>
+         <obj_property name="ObjectShortName">exp_b_pi[7:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/exp_a_norm">
+         <obj_property name="ElementShortName">exp_a_norm[9:0]</obj_property>
+         <obj_property name="ObjectShortName">exp_a_norm[9:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/exp_b_norm">
+         <obj_property name="ElementShortName">exp_b_norm[9:0]</obj_property>
+         <obj_property name="ObjectShortName">exp_b_norm[9:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/exp_a">
+         <obj_property name="ElementShortName">exp_a[7:0]</obj_property>
+         <obj_property name="ObjectShortName">exp_a[7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/exp_b">
+         <obj_property name="ElementShortName">exp_b[7:0]</obj_property>
+         <obj_property name="ObjectShortName">exp_b[7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/exp_round">
+         <obj_property name="ElementShortName">exp_round[9:0]</obj_property>
+         <obj_property name="ObjectShortName">exp_round[9:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/final_exp">
+         <obj_property name="ElementShortName">final_exp[7:0]</obj_property>
+         <obj_property name="ObjectShortName">final_exp[7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/exp_res">
+         <obj_property name="ElementShortName">exp_res[7:0]</obj_property>
+         <obj_property name="ObjectShortName">exp_res[7:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="divider2612" type="divider">
+         <obj_property name="label">MANTISSA</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/mant_a_pi2">
+         <obj_property name="ElementShortName">mant_a_pi2[23:0]</obj_property>
+         <obj_property name="ObjectShortName">mant_a_pi2[23:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/mant_b_pi2">
+         <obj_property name="ElementShortName">mant_b_pi2[23:0]</obj_property>
+         <obj_property name="ObjectShortName">mant_b_pi2[23:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/mant_round_pi">
+         <obj_property name="ElementShortName">mant_round_pi[47:0]</obj_property>
+         <obj_property name="ObjectShortName">mant_round_pi[47:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/mant_round">
+         <obj_property name="ElementShortName">mant_round[47:0]</obj_property>
+         <obj_property name="ObjectShortName">mant_round[47:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/final_mant">
+         <obj_property name="ElementShortName">final_mant[22:0]</obj_property>
+         <obj_property name="ObjectShortName">final_mant[22:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/mant_res">
+         <obj_property name="ElementShortName">mant_res[22:0]</obj_property>
+         <obj_property name="ObjectShortName">mant_res[22:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="divider2612" type="divider">
+         <obj_property name="label">RESULT</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/P_O_signal">
+         <obj_property name="ElementShortName">P_O_signal</obj_property>
+         <obj_property name="ObjectShortName">P_O_signal</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/is_zero_a">
+         <obj_property name="ElementShortName">is_zero_a</obj_property>
+         <obj_property name="ObjectShortName">is_zero_a</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/is_zero_b">
+         <obj_property name="ElementShortName">is_zero_b</obj_property>
+         <obj_property name="ObjectShortName">is_zero_b</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/result">
+         <obj_property name="ElementShortName">result[31:0]</obj_property>
+         <obj_property name="ObjectShortName">result[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/uu_rd">
+         <obj_property name="ElementShortName">uu_rd[0:1][4:0]</obj_property>
+         <obj_property name="ObjectShortName">uu_rd[0:1][4:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/uu_reg_write">
+         <obj_property name="ElementShortName">uu_reg_write[1:0]</obj_property>
+         <obj_property name="ObjectShortName">uu_reg_write[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/uu_FP_reg_write">
+         <obj_property name="ElementShortName">uu_FP_reg_write[1:0]</obj_property>
+         <obj_property name="ObjectShortName">uu_FP_reg_write[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/rm_pi">
+         <obj_property name="ElementShortName">rm_pi[2:0]</obj_property>
+         <obj_property name="ObjectShortName">rm_pi[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/sign_res_pi">
+         <obj_property name="ElementShortName">sign_res_pi</obj_property>
+         <obj_property name="ObjectShortName">sign_res_pi</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/sign_res">
+         <obj_property name="ElementShortName">sign_res</obj_property>
+         <obj_property name="ObjectShortName">sign_res</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/G">
+         <obj_property name="ElementShortName">G</obj_property>
+         <obj_property name="ObjectShortName">G</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/R">
+         <obj_property name="ElementShortName">R</obj_property>
+         <obj_property name="ObjectShortName">R</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/S">
+         <obj_property name="ElementShortName">S</obj_property>
+         <obj_property name="ObjectShortName">S</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/exp_a_unbiased">
+         <obj_property name="ElementShortName">exp_a_unbiased[9:0]</obj_property>
+         <obj_property name="ObjectShortName">exp_a_unbiased[9:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/exp_b_unbiased">
+         <obj_property name="ElementShortName">exp_b_unbiased[9:0]</obj_property>
+         <obj_property name="ObjectShortName">exp_b_unbiased[9:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/lz">
+         <obj_property name="ElementShortName">lz[5:0]</obj_property>
+         <obj_property name="ObjectShortName">lz[5:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/lz_a">
+         <obj_property name="ElementShortName">lz_a[5:0]</obj_property>
+         <obj_property name="ObjectShortName">lz_a[5:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/lz_b">
+         <obj_property name="ElementShortName">lz_b[5:0]</obj_property>
+         <obj_property name="ObjectShortName">lz_b[5:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/norm_exp_s">
+         <obj_property name="ElementShortName">norm_exp_s[9:0]</obj_property>
+         <obj_property name="ObjectShortName">norm_exp_s[9:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/mant_res_shifted">
+         <obj_property name="ElementShortName">mant_res_shifted[47:0]</obj_property>
+         <obj_property name="ObjectShortName">mant_res_shifted[47:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/a_pi2">
+         <obj_property name="ElementShortName">a_pi2[31:0]</obj_property>
+         <obj_property name="ObjectShortName">a_pi2[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/b_pi2">
+         <obj_property name="ElementShortName">b_pi2[31:0]</obj_property>
+         <obj_property name="ObjectShortName">b_pi2[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/sign_a_pi">
+         <obj_property name="ElementShortName">sign_a_pi</obj_property>
+         <obj_property name="ObjectShortName">sign_a_pi</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/sign_b_pi">
+         <obj_property name="ElementShortName">sign_b_pi</obj_property>
+         <obj_property name="ObjectShortName">sign_b_pi</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/P_signal_pi">
+         <obj_property name="ElementShortName">P_signal_pi</obj_property>
+         <obj_property name="ObjectShortName">P_signal_pi</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/exp_a_pi2">
+         <obj_property name="ElementShortName">exp_a_pi2[7:0]</obj_property>
+         <obj_property name="ObjectShortName">exp_a_pi2[7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/exp_b_pi2">
+         <obj_property name="ElementShortName">exp_b_pi2[7:0]</obj_property>
+         <obj_property name="ObjectShortName">exp_b_pi2[7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/rm_pi2">
+         <obj_property name="ElementShortName">rm_pi2[2:0]</obj_property>
+         <obj_property name="ObjectShortName">rm_pi2[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/pipelined_signals_pi">
+         <obj_property name="ElementShortName">pipelined_signals_pi</obj_property>
+         <obj_property name="ObjectShortName">pipelined_signals_pi</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/shift_amt">
+         <obj_property name="ElementShortName">shift_amt[5:0]</obj_property>
+         <obj_property name="ObjectShortName">shift_amt[5:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/is_nan_a">
+         <obj_property name="ElementShortName">is_nan_a</obj_property>
+         <obj_property name="ObjectShortName">is_nan_a</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/is_nan_b">
+         <obj_property name="ElementShortName">is_nan_b</obj_property>
+         <obj_property name="ObjectShortName">is_nan_b</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/is_inf_a">
+         <obj_property name="ElementShortName">is_inf_a</obj_property>
+         <obj_property name="ObjectShortName">is_inf_a</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/is_inf_b">
+         <obj_property name="ElementShortName">is_inf_b</obj_property>
+         <obj_property name="ObjectShortName">is_inf_b</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/is_zero_a">
+         <obj_property name="ElementShortName">is_zero_a</obj_property>
+         <obj_property name="ObjectShortName">is_zero_a</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/is_zero_b">
+         <obj_property name="ElementShortName">is_zero_b</obj_property>
+         <obj_property name="ObjectShortName">is_zero_b</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/mant_a_norm">
+         <obj_property name="ElementShortName">mant_a_norm[23:0]</obj_property>
+         <obj_property name="ObjectShortName">mant_a_norm[23:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/mant_b_norm">
+         <obj_property name="ElementShortName">mant_b_norm[23:0]</obj_property>
+         <obj_property name="ObjectShortName">mant_b_norm[23:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/exp_a_norm">
+         <obj_property name="ElementShortName">exp_a_norm[9:0]</obj_property>
+         <obj_property name="ObjectShortName">exp_a_norm[9:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/exp_b_norm">
+         <obj_property name="ElementShortName">exp_b_norm[9:0]</obj_property>
+         <obj_property name="ObjectShortName">exp_b_norm[9:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/inc_overflow">
+         <obj_property name="ElementShortName">inc_overflow</obj_property>
+         <obj_property name="ObjectShortName">inc_overflow</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/addr_width">
+         <obj_property name="ElementShortName">addr_width[31:0]</obj_property>
+         <obj_property name="ObjectShortName">addr_width[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/rv32i_core_inst/data_path_inst/FP_mul/num_rds">
+         <obj_property name="ElementShortName">num_rds[31:0]</obj_property>
+         <obj_property name="ObjectShortName">num_rds[31:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group2550">
+      <obj_property name="label">IMEM</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/inst_mem_inst/clk_i">
+         <obj_property name="ElementShortName">clk_i</obj_property>
+         <obj_property name="ObjectShortName">clk_i</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/inst_mem_inst/rst_i">
+         <obj_property name="ElementShortName">rst_i</obj_property>
+         <obj_property name="ObjectShortName">rst_i</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/inst_mem_inst/cyc_i">
+         <obj_property name="ElementShortName">cyc_i</obj_property>
+         <obj_property name="ObjectShortName">cyc_i</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/inst_mem_inst/stb_i">
+         <obj_property name="ElementShortName">stb_i</obj_property>
+         <obj_property name="ObjectShortName">stb_i</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/inst_mem_inst/adr_i">
+         <obj_property name="ElementShortName">adr_i[31:0]</obj_property>
+         <obj_property name="ObjectShortName">adr_i[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/inst_mem_inst/we_i">
+         <obj_property name="ElementShortName">we_i</obj_property>
+         <obj_property name="ObjectShortName">we_i</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/inst_mem_inst/sel_i">
+         <obj_property name="ElementShortName">sel_i[3:0]</obj_property>
+         <obj_property name="ObjectShortName">sel_i[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/inst_mem_inst/dat_i">
+         <obj_property name="ElementShortName">dat_i[31:0]</obj_property>
+         <obj_property name="ObjectShortName">dat_i[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/inst_mem_inst/dat_o">
+         <obj_property name="ElementShortName">dat_o[31:0]</obj_property>
+         <obj_property name="ObjectShortName">dat_o[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/inst_mem_inst/ack_o">
+         <obj_property name="ElementShortName">ack_o</obj_property>
+         <obj_property name="ObjectShortName">ack_o</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/inst_mem_inst/wb_acc">
+         <obj_property name="ElementShortName">wb_acc</obj_property>
+         <obj_property name="ObjectShortName">wb_acc</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/inst_mem_inst/mem_write">
+         <obj_property name="ElementShortName">mem_write</obj_property>
+         <obj_property name="ObjectShortName">mem_write</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/rv32i_soc_tb/DUT/inst_mem_inst/mem_read">
+         <obj_property name="ElementShortName">mem_read</obj_property>
+         <obj_property name="ObjectShortName">mem_read</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/inst_mem_inst/word_addr">
+         <obj_property name="ElementShortName">word_addr[12:0]</obj_property>
+         <obj_property name="ObjectShortName">word_addr[12:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/inst_mem_inst/data_o_reg">
+         <obj_property name="ElementShortName">data_o_reg[31:0]</obj_property>
+         <obj_property name="ObjectShortName">data_o_reg[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/inst_mem_inst/mem_rdata">
+         <obj_property name="ElementShortName">mem_rdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">mem_rdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/rv32i_soc_tb/DUT/inst_mem_inst/DEPTH">
+         <obj_property name="ElementShortName">DEPTH[31:0]</obj_property>
+         <obj_property name="ObjectShortName">DEPTH[31:0]</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>

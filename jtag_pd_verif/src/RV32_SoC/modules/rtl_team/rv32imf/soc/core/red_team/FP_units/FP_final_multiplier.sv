@@ -55,7 +55,7 @@ module FP_final_Multiplier #(
     logic G,R,S;
     
     logic signed [9:0] exp_a_unbiased, exp_b_unbiased;
-    logic [5:0] lz;  // Leading zeros (0 to 47)    
+    logic [5:0] lz, lz_a, lz_b;  // Leading zeros (0 to 47)    
     logic signed [9:0] norm_exp_s; // Signed adjusted exponent
     logic [47:0] mant_res_shifted;  // temporary for shifted result
     
@@ -74,6 +74,38 @@ module FP_final_Multiplier #(
     logic is_inf_b;
     logic is_zero_a;
     logic is_zero_b;
+
+    logic [23:0] mant_a_norm, mant_b_norm;
+    logic signed [9:0] exp_a_norm, exp_b_norm;
+    logic signed [7:0] exp_a_ff, exp_b_ff;
+    logic signed [7:0] exp_a_ff2, exp_b_ff2;
+
+    
+
+    // Normalize inputs (combinational block)
+    always_comb begin
+        // Normalize input A
+        lz_a = 0;
+        lz_b = 0;
+        if (a[30:23] == 8'h00) begin
+            lz_a = count_leading_zeros({1'b0, a[22:0]});
+            mant_a_norm = {1'b0, a[22:0]} << lz_a;
+            exp_a_norm = 1 - lz_a;
+        end else begin
+            mant_a_norm = {1'b1, a[22:0]}; // Normalized mantissa
+            exp_a_norm = a[30:23] - 127;
+        end
+
+        // Normalize input B
+        if (b[30:23] == 8'h00) begin
+            lz_b = count_leading_zeros({1'b0, b[22:0]});
+            mant_b_norm = {1'b0, b[22:0]} << lz_b;
+            exp_b_norm = 1 - lz_b;
+        end else begin
+            mant_b_norm = {1'b1, b[22:0]}; // Normalized mantissa
+            exp_b_norm = b[30:23] - 127;
+        end
+    end
     
     // Pre-multiply pipeline stage (prepares operands)
     always_ff @(posedge clk, negedge rst_n) begin
@@ -87,6 +119,10 @@ module FP_final_Multiplier #(
             mant_a_pi2 <= 'b0;
             mant_b_pi2 <= 'b0;
             rm_pi2 <= 'b0;
+
+            exp_a_ff  <= 'b0;
+            exp_b_ff  <= 'b0;
+
             pipelined_signals_pi <= 'b0;
             P_signal_pi <= 1'b0;
       end else if (clear[1]) begin
@@ -98,6 +134,10 @@ module FP_final_Multiplier #(
             exp_b_pi2 <= 'b0;
             mant_a_pi2 <= 'b0;
             mant_b_pi2 <= 'b0;
+
+            exp_a_ff  <= 'b0;
+            exp_b_ff  <= 'b0;
+
             rm_pi2 <= 'b0;
             pipelined_signals_pi <= 'b0;
             P_signal_pi <= 1'b0;
@@ -106,10 +146,13 @@ module FP_final_Multiplier #(
             b_pi2 <= b;
             sign_a_pi <= a[31];
             sign_b_pi <= b[31];
-            exp_a_pi2 <= a[30:23];
-            exp_b_pi2 <= b[30:23];
-            mant_a_pi2 <= (a[30:23] == 8'h00) ? {1'b0, a[22:0]} : {1'b1, a[22:0]}; // Handle subnormal numbers
-            mant_b_pi2 <= (b[30:23] == 8'h00) ? {1'b0, b[22:0]} : {1'b1, b[22:0]}; // Handle subnormal numbers
+            exp_a_pi2 <= exp_a_norm;
+            exp_b_pi2 <= exp_b_norm;
+            mant_a_pi2 <= mant_a_norm;
+            mant_b_pi2 <= mant_b_norm;
+            exp_a_ff  <= exp_a_pi;
+            exp_b_ff  <= exp_b_pi;
+
             rm_pi2 <= rm;
             pipelined_signals_pi <= fmul_pipeline_signals_i;
             P_signal_pi <= P_signal;
@@ -136,6 +179,10 @@ module FP_final_Multiplier #(
             exp_a <=0 ;
             exp_b <=0;
             fmul_pipeline_signals_o <= 0;
+
+            exp_a_ff2  <= 'b0;
+            exp_b_ff2  <= 'b0;
+
         
         end else if (clear[0])begin
             a_pi <= 'b0;
@@ -148,6 +195,9 @@ module FP_final_Multiplier #(
             exp_a <=0 ;
             exp_b <=0;
             fmul_pipeline_signals_o <= 0;
+
+            exp_a_ff2  <= 'b0;
+            exp_b_ff2  <= 'b0;
         
          end else if (en) begin 
             a_pi <= a_pi2;
@@ -161,6 +211,9 @@ module FP_final_Multiplier #(
             exp_b <= exp_b_pi2;
       
             fmul_pipeline_signals_o <= pipelined_signals_pi;
+
+            exp_a_ff2  <= exp_a_ff;
+            exp_b_ff2  <= exp_b_ff;
      
         end 
     end
@@ -173,8 +226,10 @@ module FP_final_Multiplier #(
 
     always_comb begin
         // Determine unbiased exponent
-        exp_a_unbiased = (exp_a == 8'h00) ? -126 : {1'b0, exp_a} - 127;
-        exp_b_unbiased = (exp_b == 8'h00) ? -126 : {1'b0, exp_b} - 127;
+        // exp_a_unbiased = (exp_a == 8'h00) ? -126 : {1'b0, exp_a} - 127;
+        // exp_b_unbiased = (exp_b == 8'h00) ? -126 : {1'b0, exp_b} - 127;
+        exp_a_unbiased = exp_a;
+        exp_b_unbiased = exp_b;
     
         // Add exponents for multiplication
         exp_round = exp_a_unbiased + exp_b_unbiased + 127;
@@ -289,12 +344,12 @@ module FP_final_Multiplier #(
     
     // Special case handling
     always_comb begin
-        is_nan_a = (exp_a == 8'hFF && a_pi[22:0] != 0);
-        is_nan_b = (exp_b == 8'hFF && b_pi[22:0] != 0);
-        is_inf_a = (exp_a == 8'hFF && a_pi[22:0] == 0);
-        is_inf_b = (exp_b == 8'hFF && b_pi[22:0] == 0);
-        is_zero_a = (exp_a == 8'h00 && a_pi[22:0] == 0);
-        is_zero_b = (exp_b == 8'h00 && b_pi[22:0] == 0);
+        is_nan_a =  (exp_a_ff2 == 8'hFF && a_pi[22:0] != 0);
+        is_nan_b =  (exp_b_ff2 == 8'hFF && b_pi[22:0] != 0);
+        is_inf_a =  (exp_a_ff2 == 8'hFF && a_pi[22:0] == 0);
+        is_inf_b =  (exp_b_ff2 == 8'hFF && b_pi[22:0] == 0);
+        is_zero_a = (exp_a_ff2 == 8'h00 && a_pi[22:0] == 0);
+        is_zero_b = (exp_b_ff2 == 8'h00 && b_pi[22:0] == 0);
         
         if (is_nan_a || is_nan_b) begin // NaN case (if any input is NaN, result is NaN)
             result = {1'b0, 8'hFF, 23'h400000};  // Canonical NaN 0x7FC00000

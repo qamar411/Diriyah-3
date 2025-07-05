@@ -119,11 +119,14 @@ module core_dbg_fsm (
     logic core_running_o_ff;
     always @(posedge clk_i, posedge reset_i ) begin
         if(reset_i)
-            core_running_o_ff <= 'b0;
+            core_running_o_ff <= 'b1;
         else 
             core_running_o_ff <= core_running_o;
     end
+    
+    
     assign dbg_ret = ~core_running_o_ff & core_running_o;
+    
     `ifdef LINEAR_SYSTEM  // DV or DSV_DEBUG
     assign debug_on = 1'b1; // convert the system to linear operation ()
     `else

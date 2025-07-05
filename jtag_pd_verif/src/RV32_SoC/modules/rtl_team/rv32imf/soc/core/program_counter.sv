@@ -17,6 +17,8 @@ module program_counter #(
 		    current_pc_if1 <= 32'h80000000; // base address of inst mem (Verification)
        `elsif DV_DEBUG
             current_pc_if1 <= 32'h80000000; // base address of inst mem (Verification)
+       `elsif VIVADO_SIM
+            current_pc_if1 <= 32'h80000000; // base address of inst mem (Verification)
        `else
             current_pc_if1 <= 32'hfffff000; // base address of boot rom (RTL & Physical)
 	   `endif

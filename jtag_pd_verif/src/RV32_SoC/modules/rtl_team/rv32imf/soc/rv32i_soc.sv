@@ -242,16 +242,16 @@ module rv32i_soc #(
     wire        wb_s2m_spi_rty;
 
     // UART
-    wire [31:0] wb_m2s_uart_adr;
-    wire [31:0] wb_m2s_uart_dat;
-    wire  [3:0] wb_m2s_uart_sel;
-    wire        wb_m2s_uart_we;
-    wire        wb_m2s_uart_cyc;
-    wire        wb_m2s_uart_stb;
-    wire [31:0] wb_s2m_uart_dat;
-    wire        wb_s2m_uart_ack;
-    wire        wb_s2m_uart_err;
-    wire        wb_s2m_uart_rty;
+    wire [31:0] wb_m2s_uart1_adr;
+    wire [31:0] wb_m2s_uart1_dat;
+    wire  [3:0] wb_m2s_uart1_sel;
+    wire        wb_m2s_uart1_we;
+    wire        wb_m2s_uart1_cyc;
+    wire        wb_m2s_uart1_stb;
+    wire [31:0] wb_s2m_uart1_dat;
+    wire        wb_s2m_uart1_ack;
+    wire        wb_s2m_uart1_err;
+    wire        wb_s2m_uart1_rty;
 
     // UART2
     wire [31:0] wb_m2s_uart2_adr;
@@ -426,16 +426,16 @@ module rv32i_soc #(
     .wb_imem_err_i       (wb_s2m_imem_err),
     .wb_imem_rty_i       (wb_s2m_imem_rty),
 
-    .wb_uart_adr_o      (wb_m2s_uart_adr),
-    .wb_uart_dat_o      (wb_m2s_uart_dat),
-    .wb_uart_sel_o      (wb_m2s_uart_sel),
-    .wb_uart_we_o       (wb_m2s_uart_we),
-    .wb_uart_cyc_o      (wb_m2s_uart_cyc),
-    .wb_uart_stb_o      (wb_m2s_uart_stb),
-    .wb_uart_dat_i      (wb_s2m_uart_dat),
-    .wb_uart_ack_i      (wb_s2m_uart_ack),
-    .wb_uart_err_i      (wb_s2m_uart_err),
-    .wb_uart_rty_i      (wb_s2m_uart_rty),
+    .wb_uart_adr_o      (wb_m2s_uart1_adr),
+    .wb_uart_dat_o      (wb_m2s_uart1_dat),
+    .wb_uart_sel_o      (wb_m2s_uart1_sel),
+    .wb_uart_we_o       (wb_m2s_uart1_we),
+    .wb_uart_cyc_o      (wb_m2s_uart1_cyc),
+    .wb_uart_stb_o      (wb_m2s_uart1_stb),
+    .wb_uart_dat_i      (wb_s2m_uart1_dat),
+    .wb_uart_ack_i      (wb_s2m_uart1_ack),
+    .wb_uart_err_i      (wb_s2m_uart1_err),
+    .wb_uart_rty_i      (wb_s2m_uart1_rty),
 
 
     .wb_uart2_adr_o      (wb_m2s_uart2_adr),
