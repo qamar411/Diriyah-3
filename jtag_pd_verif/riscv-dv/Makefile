@@ -11,7 +11,7 @@ OUT_DIR         := $(DV_DIR)/out_$(DATE)
 TEST_LIST       := riscv_floating_point_arithmetic_test
 # TEST_LIST       := riscv_arithmetic_basic_test riscv_rand_jump_test riscv_jump_stress_test riscv_mmu_stress_test  riscv_loop_test
 ITER            := 1
-SEED            := 564205861
+SEED            := 1339291264
 POST_SYNTH      := 0
 POST_ROUTE      := 0
 LINKER_SCRIPT   := $(DV_DIR)/scripts/link.ld
@@ -67,6 +67,7 @@ dv_gen:
 	    --simulator vcs \
 	    --target $(TARGET) \
 	    --iterations $(ITER) \
+		--seed $(SEED) \
 	    --output $(OUT_DIR)/$$test; \
 	done
 
@@ -172,6 +173,8 @@ compare: format_csvs
 	@echo "\n🔍 Comparing traces…"
 	@for test in $(TEST_LIST); do \
 	  for i in `seq 0 $$(($(ITER)-1))`; do \
+	    sed -i '2d' $(OUT_DIR)/$$test/spike_trace_$$i.csv; \
+	    sed -i '2d' $(OUT_DIR)/$$test/core_trace_$$i.csv; \
 		$(COMPARE) \
 	      --csv_file_1 $(OUT_DIR)/$$test/spike_trace_$$i.csv \
 	      --csv_file_2 $(OUT_DIR)/$$test/core_trace_$$i.csv \
@@ -185,6 +188,8 @@ only_compare:
 	@echo "\n🔍 Comparing traces…"
 	@for test in $(TEST_LIST); do \
 	  for i in `seq 0 $$(($(ITER)-1))`; do \
+	    sed -i '2d' $(OUT_DIR)/$$test/spike_trace_$$i.csv; \
+	    sed -i '2d' $(OUT_DIR)/$$test/core_trace_$$i.csv; \
 		$(COMPARE) \
 	      --csv_file_1 $(OUT_DIR)/$$test/spike_trace_$$i.csv \
 	      --csv_file_2 $(OUT_DIR)/$$test/core_trace_$$i.csv \

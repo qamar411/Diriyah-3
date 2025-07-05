@@ -13,6 +13,18 @@ function automatic [5:0] count_leading_zeros(input logic [47:0] in);
     end
 endfunction
 
+function automatic [5:0] count_leading_zeros_24(input logic [23:0] in);
+    integer i;
+    begin
+        count_leading_zeros_24 = 0;
+        for (i = 23; i >= 0; i = i - 1) begin
+            if (in[i] == 1'b1)
+                break;
+            count_leading_zeros_24 = count_leading_zeros_24 + 1;
+        end
+    end
+endfunction
+
 
 module FP_final_Multiplier #(
     parameter addr_width = 5,
@@ -88,7 +100,7 @@ module FP_final_Multiplier #(
         lz_a = 0;
         lz_b = 0;
         if (a[30:23] == 8'h00) begin
-            lz_a = count_leading_zeros({1'b0, a[22:0]});
+            lz_a = count_leading_zeros_24({1'b0, a[22:0]});
             mant_a_norm = {1'b0, a[22:0]} << lz_a;
             exp_a_norm = 1 - lz_a;
         end else begin
@@ -98,7 +110,7 @@ module FP_final_Multiplier #(
 
         // Normalize input B
         if (b[30:23] == 8'h00) begin
-            lz_b = count_leading_zeros({1'b0, b[22:0]});
+            lz_b = count_leading_zeros_24({1'b0, b[22:0]});
             mant_b_norm = {1'b0, b[22:0]} << lz_b;
             exp_b_norm = 1 - lz_b;
         end else begin

@@ -74,14 +74,13 @@
 +define+tracer
 +define+USE_RS3
 +define+debug
+// +define+USE_SRAM
 
 # ============================
 # Tracer Files & Packages
 # ============================
 
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/lib.sv
-RV32_SoC/modules/rtl_team/rv32imf/soc/glbl.v
-
 RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/debug/debug_pkg.sv
 
 

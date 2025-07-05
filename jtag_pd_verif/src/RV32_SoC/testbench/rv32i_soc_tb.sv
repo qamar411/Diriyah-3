@@ -260,11 +260,11 @@
             `ifdef USE_SRAM
                 $readmemh("RV32_SoC/testbench/inst_formatted.hex", initial_imem);
                 $readmemh("RV32_SoC/testbench/data_formatted.hex", initial_dmem);
-                force `DUT_PATH.inst_mem_inst.tsmc_ram.u0.mem_core_array = initial_imem;
-                force `DUT_PATH.data_mem_inst.tsmc_ram.u0.mem_core_array = initial_dmem;
+                force `DUT_PATH.inst_mem_inst.tsmc_32k_inst.u0.mem_core_array = initial_imem;
+                force `DUT_PATH.data_mem_inst.tsmc_8k_inst.u0.mem_core_array = initial_dmem;
                 @(posedge RESET_N_PAD); 
-                release `DUT_PATH.inst_mem_inst.tsmc_ram.u0.mem_core_array;
-                release `DUT_PATH.data_mem_inst.tsmc_ram.u0.mem_core_array;
+                release `DUT_PATH.inst_mem_inst.tsmc_32k_inst.u0.mem_core_array;
+                release `DUT_PATH.data_mem_inst.tsmc_8k_inst.u0.mem_core_array;
             `elsif VCS_SIM
                 $readmemh("RV32_SoC/testbench/inst_formatted.hex", initial_imem);
                 $readmemh("RV32_SoC/testbench/data_formatted.hex", initial_dmem);
@@ -299,7 +299,7 @@
             // //         repeat (30) @(posedge CLK_PAD);
             // //     end
                 begin 
-                    repeat(500000) @(posedge CLK_PAD);                
+                    repeat(50000) @(posedge CLK_PAD);                
                 end
             // join_any
         `elsif VIVADO_SIM

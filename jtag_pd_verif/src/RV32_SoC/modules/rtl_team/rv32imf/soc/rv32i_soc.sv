@@ -168,11 +168,9 @@ module rv32i_soc #(
 
     logic [31:0] imem_addr;
 
-`ifndef PD_BUILD
-    `ifndef USE_SRAM
-        logic if_id_reg_en;
-    `endif
-`endif
+
+    logic if_id_reg_en;
+
     logic timer_irq;
     logic ptc_irq;
     logic spi_flash_irq;

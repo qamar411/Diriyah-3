@@ -1,0 +1,9 @@
+{"vcs1":{"timestamp_begin":1751704111.943731731, "rt":13.61, "ut":13.18, "st":0.33}}
+{"vcselab":{"timestamp_begin":1751704125.639907696, "rt":0.19, "ut":0.12, "st":0.06}}
+{"link":{"timestamp_begin":1751704125.895197145, "rt":0.65, "ut":0.40, "st":0.27}}
+{"SNPS_VCS_INTERNAL_ROOT_START_TIME": 1751704111.473549950}
+{"VCS_COMP_START_TIME": 1751704111.473549950}
+{"VCS_COMP_END_TIME": 1751704126.622586398}
+{"VCS_USER_OPTIONS": "-file /home/qamar/Documents/rtl/rv32imf/jtag_pd_verif/riscv-dv/vcs.compile.option.f +incdir+/home/qamar/Documents/rtl/rv32imf/jtag_pd_verif/riscv-dv/target/rv32imf +incdir+/home/qamar/Documents/rtl/rv32imf/jtag_pd_verif/riscv-dv/user_extension +vcs+lic+wait -f /home/qamar/Documents/rtl/rv32imf/jtag_pd_verif/riscv-dv/files.f -full64 -l /home/qamar/Documents/rtl/rv32imf/jtag_pd_verif/riscv-dv/out_2025-07-05/riscv_floating_point_arithmetic_test/compile.log -LDFLAGS -Wl,--no-as-needed -CFLAGS --std=c99 -fno-extended-identifiers -Mdir=/home/qamar/Documents/rtl/rv32imf/jtag_pd_verif/riscv-dv/out_2025-07-05/riscv_floating_point_arithmetic_test/vcs_simv.csrc -o /home/qamar/Documents/rtl/rv32imf/jtag_pd_verif/riscv-dv/out_2025-07-05/riscv_floating_point_arithmetic_test/vcs_simv"}
+{"vcs1": {"peak_mem": 475612}}
+{"vcselab": {"peak_mem": 158248}}

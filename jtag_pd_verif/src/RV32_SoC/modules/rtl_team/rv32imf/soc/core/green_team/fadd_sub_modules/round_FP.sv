@@ -63,7 +63,9 @@ always_comb begin
         result = {1'b0, 8'd255, 23'h40_0000}; // Canonical Nan = 0x7fc0_0000
         end 
         else if ((exp_norm == 0 && mantissa_norm == 0))
-        result = {1'b0, 8'd0, 23'd0}; // +0 -> zero
+        // result = {1'b0, 8'd0, 23'd0}; // +0 -> zero why?
+        result = {sign_res, 8'd0, 23'd0}; // same as result sign
+
         else if (inf1 || inf2) begin // infinity case 
             if(inf1 && inf2) begin
                 case ({sign1,sign2})
