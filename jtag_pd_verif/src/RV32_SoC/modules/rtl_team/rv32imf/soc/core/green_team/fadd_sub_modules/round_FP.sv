@@ -57,59 +57,26 @@ always_comb begin
         //     result = {sign_res, 8'd0, 23'b0}; // Zero
         // end 
 
-            // **Rounding Modes Implementation**
-         if (NaN) begin // NaN case 
-        // result = {1'b0, 8'd255, 23'hffffff}; // Nan
-        result = {1'b0, 8'd255, 23'h40_0000}; // Canonical Nan = 0x7fc0_0000
-        end 
-        else if ((exp_norm == 0 && mantissa_norm == 0))
-        // result = {1'b0, 8'd0, 23'd0}; // +0 -> zero why?
-        result = {sign_res, 8'd0, 23'd0}; // same as result sign
+        // Handle special cases first
+        if (NaN) begin // NaN case
+            result = {1'b0, 8'd255, 23'h40_0000}; // Canonical NaN = 0x7fc0_0000
+        end else if (inf1 && inf2) begin // Both inputs are infinity
+            if (sign1 == sign2) begin
+                result = {sign1, 8'd255, 23'd0}; // Same sign: Infinity
+            end else begin
+                result = {1'b0, 8'd255, 23'h40_0000}; // Opposite signs: NaN
+            end
+        end else if (inf1 || inf2) begin // One input is infinity
+            result = {inf1 ? sign1 : sign2, 8'd255, 23'd0}; // Infinity
+        end else if ((exp_norm == 0 && mantissa_norm == 0)) begin // Zero case
+            result = {sign_res, 8'd0, 23'd0}; // Zero
+        end else if (overflow) begin // Overflow case
+            result = {sign_res, 8'd255, 23'd0}; // Infinity
+        end else if (underflow) begin // Underflow case
+            result = {sign_res, 8'd0, 23'd0}; // Zero
+        end else begin
 
-        else if (inf1 || inf2) begin // infinity case 
-            if(inf1 && inf2) begin
-                case ({sign1,sign2})
-                    2'b00: begin
-                        result = {1'b0, 8'd255, 23'd0}; // Infinity = 0x7f80_0000
-                    end
-                    2'b01: begin
-                        // result = {1'b0, 8'd255, 23'hffffff}; // Nan
-                        result = {1'b0, 8'd255, 23'h40_0000}; // Canonical  Nan = 0x7fc0_0000
-                    end
-                    2'b10: begin
-                        // result = {1'b0, 8'd255, 23'hffffff}; // Nan
-                        result = {1'b0, 8'd255, 23'h40_0000}; // Canonical Nan = 0x7fc0_0000
-                    end
-                    2'b11: begin
-                        result = {1'b1, 8'b11111111, 23'd0}; // Infinity
-                    end
-                endcase
-            end
-            else begin
-                case ({inf1,inf2})
-                    2'b01: begin
-                        result = {sign2, 8'b11111111, 23'd0}; // Infinity
-                    end
-                    2'b10: begin
-                        result = {sign1, 8'b11111111, 23'd0}; // Infinity
-                    end
-                    default : 
-                     result = {sign1, 8'b11111111, 23'd0}; // Infinity
-                endcase
-            end
-        end
-        else begin     
-            if(overflow) begin
-                result = {sign_res, 8'd255, 23'd0}; // Infinity
-            end
-            
-         else if (underflow) begin
-            
-             result = {sign_res, 8'd0, 23'd0}; // Zero
-         end 
-
-            else begin
-case (rm)
+        case (rm)
             3'b000: begin // **RNE: Round to Nearest, Ties to Even**
                 if (G) begin
                     if (R || S || mantissa_norm[0]) begin
@@ -183,11 +150,10 @@ case (rm)
                 result = {sign_res, exp_norm, mantissa_norm};
             end
         endcase            
-    end
-
-
-
 end
-end          
+
+
+
+end        
     
 endmodule

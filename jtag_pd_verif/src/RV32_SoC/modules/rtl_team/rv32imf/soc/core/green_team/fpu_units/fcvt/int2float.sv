@@ -61,44 +61,33 @@ module int2float ( // FCVT.S.WU
             temp_result = {1'b0, exp, man};
             case (rm)
                 3'b000: begin // **RNE: Round to Nearest, Ties to Even**
-                    if(G) begin
-                        case ({R,S})
-                        2'b00: begin
-                            if(man[0]) begin
-                                result = temp_result + 1;
-                            end
-                            else begin
-                                result = temp_result;
-                            end
+                    if (G) begin
+                        if (R || S || man[0]) begin
+                            result = temp_result + 1; // Round up
+                        end else begin
+                            result = temp_result; // Keep as is
                         end
-                        default: begin
-                                result = temp_result + 1;
-                                end
-                        endcase
+                    end else begin
+                        result = temp_result; // No rounding needed
                     end
-                    else 
-                        result = temp_result;//result = Fpres[54:23] ;
                 end
 
                 3'b001: begin // **RTZ: Round Toward Zero (Truncate)**
-                        result = temp_result;
+                    result = temp_result;
                 end
 
                 3'b010: begin // **RDN: Round Down (-∞)**
-                    if ((R || S || G)) begin
-                        result = temp_result + 1;
-                    end
-                    else
-                        result = temp_result;
+                    result = temp_result; // Same as RTZ for unsigned integers
                 end
 
                 3'b011: begin // **RUP: Round Up (+∞)**
-                    if ((R || S || G)) begin
-                        result = temp_result + 1;
-                    end
-                    else
+                    if (G || R || S) begin
+                        result = temp_result + 1; // Round up
+                    end else begin
                         result = temp_result;
+                    end
                 end
+
 
                 3'b100: begin
                     if (G) begin
@@ -119,4 +108,3 @@ module int2float ( // FCVT.S.WU
     end
 
 endmodule
-

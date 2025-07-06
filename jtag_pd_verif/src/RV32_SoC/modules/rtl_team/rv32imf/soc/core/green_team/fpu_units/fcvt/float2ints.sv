@@ -18,8 +18,8 @@ module float2ints ( // FCVT.W.S
     assign man = floatIn[22:0];
     assign shiftExp = exp - 8'd127;    
     assign shiftval = (shiftExp<0) ? -shiftExp :shiftExp;    
-    assign FP = {31'd0,1'b1,man};  // 1.0000 + man = 1.man  ->  subnormal 0.00
-    assign S = |Fpres[20:0];
+    assign FP = {31'd0,(exp != 0),man};  // 1.0000 + man = 1.man  ->  subnormal 0.00
+    assign S = |FP[23:0];
     assign G = Fpres[22];
     assign R = Fpres[21];
     assign NaN = (man > 23'h000000 && exp == 8'b11111111);
@@ -120,4 +120,3 @@ module float2ints ( // FCVT.W.S
             end
     end
 endmodule
-
