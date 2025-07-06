@@ -757,7 +757,8 @@ module data_path #(
     
     // signals of floating-point unit (FPU)
     logic [31:0] fpu_result_exe;
-    logic p_signal_fpu;
+    logic [2:0] rm ;
+    
     // FPU: it's a unit for executing other Floating-Point instructions (e.g.fmax, fmin, fcvt, ..etc.)
     fpu FP_unit(
         .clk(clk),
@@ -768,7 +769,7 @@ module data_path #(
         .alu_ctrl(alu_ctrl_exe),
         .rs1(alu_op1_exe),
         .rs2(alu_op2_exe),
-        .fun3(fun3_exe),
+        .fun3(rm),
         .o_pipelined_signals(exe_fpu_bus),
         .p_last(p_signal_fpu),
         .result(fpu_result_exe)
@@ -827,6 +828,7 @@ module data_path #(
     // signals of FAdd_Sub_unit
     logic [31:0] fadd_sub_result_exe;
     logic p_signal_fadd_sub;
+    assign rm = (fun3_exe == 3'b111) ? 3'b000 : fun3_exe;
     
     // FAdd_Sub_unit
     FP_add_sub  fadd_sub_unit(
@@ -840,7 +842,7 @@ module data_path #(
         .add_sub(alu_ctrl_exe==FSUB),    // 0: fadd --- 1: fsub
         .num1(alu_op1_exe),
         .num2(alu_op2_exe),
-        .rm(fun3_exe),  // Rounding Mode
+        .rm(rm),  // Rounding Mode
         .p_result(p_signal_fadd_sub),
         .sum(fadd_sub_result_exe)       // result (either add or sub)
         
@@ -894,7 +896,7 @@ module data_path #(
         .c(rdata3_frw_exe),
         .alu_ctrl(alu_ctrl_exe),
         .p_signal(p_signal_start_exe[3]),
-        .rm(fun3_exe),
+        .rm(rm),
         .result(R4_result_exe), 
         .p_out_signal(p_signal_R4)
         // for clear logic
@@ -917,7 +919,7 @@ module data_path #(
         .en(~p_stall[1]&core_running),
         .a(alu_op1_exe),
         .b(alu_op2_exe),
-        .rm(fun3_exe),
+        .rm(rm),
         .P_signal(p_signal_start_exe[4]),
         .fmul_pipeline_signals_i(exe_main_bus),
         .fmul_pipeline_signals_o(exe_fmul_bus),
@@ -940,7 +942,7 @@ module data_path #(
         .b_in(alu_op2_exe),        // Divisor (we calculate 1/b)
         .p_start(p_signal_start_exe[2]),            // Start pulse
         .bus_i(exe_main_bus), // Pipeline signals input
-        .rm(fun3_exe),           // Rounding mode
+        .rm(rm),           // Rounding mode
         .en(~p_stall[0]&core_running),                 // Enable signal
         
         .result_out(fdiv_result_exe), // Final result: a * (1/b)

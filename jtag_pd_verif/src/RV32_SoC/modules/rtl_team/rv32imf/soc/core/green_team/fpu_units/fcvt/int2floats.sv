@@ -71,23 +71,8 @@ module int2floats( // FCVT.S.W
             temp_result = {sign, exp, man};
             case (rm)
                 3'b000: begin // **RNE: Round to Nearest, Ties to Even**
-                    if(G) begin
-                        case ({R,S})
-                        2'b00: begin
-                            if(man[0]) begin
-                                result = temp_result +1;
-                            end
-                            else begin
-                                result = temp_result;
-                            end
-                        end
-                        default: begin
-                                    result = temp_result;
-                                end
-                        endcase
-                    end
-                    else 
-                        result = temp_result;
+                    if(G & (R | S | man[0])) result = temp_result + 1;
+                    else                     result = temp_result;
                 end
 
                 3'b001: begin // **RTZ: Round Toward Zero (Truncate)**
@@ -95,7 +80,7 @@ module int2floats( // FCVT.S.W
                 end
 
                 3'b010: begin // **RDN: Round Down (-∞)**
-                    if ((R || S || G)) begin
+                    if (sign & (R || S || G)) begin
                         result = temp_result +1;
                     end
                     else
@@ -103,7 +88,7 @@ module int2floats( // FCVT.S.W
                 end
 
                 3'b011: begin // **RUP: Round Up (+∞)**
-                    if ((R || S || G)) begin
+                    if (~sign & (R || S || G)) begin
                         result = temp_result +1;
                     end
                     else

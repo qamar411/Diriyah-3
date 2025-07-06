@@ -49,6 +49,9 @@ module float2int ( // FCVT.WU.S
                 result = 32'd0;//-flow -> no negative values in unsigned-integer
                 else
                 result = 32'hffffffff;//+flow
+            end else if (floatIn[31])
+            begin 
+                result = 32'd0;//-flow -> no negative values in unsigned-integer
             end
             else begin
             case (rm)

@@ -32,7 +32,8 @@ module extract_align_FP(
         output logic [7:0] exp_res,
         output logic [47:0] mantissa1_aligned,
         output logic [47:0] mantissa2_aligned,
-        output logic zero
+        output logic zero,
+        output logic res_zero
 
     );
     
@@ -61,22 +62,27 @@ module extract_align_FP(
         NaN = (man1 > 23'h000000 && exp1 == 8'b11111111) || (man2 > 23'h000000 && exp2 == 8'b11111111);
         inf1 = (man1 == 23'd0 && exp1 == 8'b11111111);
         inf2 = (man2 ==23'd0 && exp2 == 8'b11111111); 
+        res_zero = 'b0;
          
+
          
-         // mantissa extraction and subnormal consideration 
-            if ( sign2 && !sign1 && (exp1 == exp2 && man1 == man2)) begin // need to hande special cases (e.g. inf - inf = inf)
+        //  // mantissa extraction and subnormal consideration 
+        //     if ( sign2 && !sign1 && (exp1 == exp2 && man1 == man2)) begin // need to hande special cases (e.g. inf - inf = inf)
+        //         exp1_sub=8'd0;
+        //         exp2_sub=8'd0;
+        //         mantissa1 =48'd0;
+        //         mantissa2 =48'd0;
+        //     end
+        //     else 
+            if ((exp1 == exp2 && man1 == man2) && (sign1 != sign2)) begin
                 exp1_sub=8'd0;
                 exp2_sub=8'd0;
                 mantissa1 =48'd0;
                 mantissa2 =48'd0;
-            end
-            else if (~sign2 && (exp1 == exp2 && man1 == man2) && (sign1 != sign2)) begin
-                exp1_sub=8'd0;
-                exp2_sub=8'd0;
-                mantissa1 =48'd0;
-                mantissa2 =48'd0;
-            end
-            else begin
+                res_zero = 1'b1;
+                
+            end else 
+            begin
                 // 1st operand
                 if (exp1==0 && man1 ==0) begin
                     mantissa1 = {1'b0,1'b0, man1,24'b0};

@@ -109,96 +109,81 @@ always_comb begin
          end 
 
             else begin
-                case (rm)
-                3'b000: begin // **RNE: Round to Nearest, Ties to Even**
-                    if(G) begin
-                        case ({R,S})
-                        2'b00: begin
-                            if(mantissa_norm[0]) begin
-                                {inc_overflow,mantissa_norm_res} = mantissa_norm + 1;
-                                if(inc_overflow) begin
-                                    exp_round = exp_norm + 1;
-                                end
-                                else begin
-                                    exp_round = exp_norm;
-                                end
-                                result = {sign_res, exp_round, mantissa_norm_res};
-                            end
-                            else begin
-                                result = {sign_res, exp_norm, mantissa_norm};
-                            end
-                        end
-                        default: begin
-                            {inc_overflow,mantissa_norm_res} = mantissa_norm + 1;
-                                if(inc_overflow) begin
-                                exp_round = exp_norm + 1;
-                                end
-                                else begin
-                                exp_round = exp_norm;
-                                end
-                                result = {sign_res, exp_norm, mantissa_norm_res};
-                        end
-                        endcase
-                    end
-                    else 
-                        result = {sign_res, exp_norm, mantissa_norm};
-                end
-
-                3'b001: begin // **RTZ: Round Toward Zero (Truncate)**
-                    result = {sign_res, exp_norm, mantissa_norm};
-                end
-
-                3'b010: begin // **RDN: Round Down (-∞)**
-                    if (sign_res && (R || S || G)) begin
-                        {inc_overflow,mantissa_norm_res} = mantissa_norm + 1;
-                        if(inc_overflow) begin
+case (rm)
+            3'b000: begin // **RNE: Round to Nearest, Ties to Even**
+                if (G) begin
+                    if (R || S || mantissa_norm[0]) begin
+                        {inc_overflow, mantissa_norm_res} = mantissa_norm + 1;
+                        if (inc_overflow) begin
                             exp_round = exp_norm + 1;
-                        end
-                        else begin
+                        end else begin
                             exp_round = exp_norm;
                         end
-                        result = {sign_res, exp_round, mantissa_norm_res};
+                    end else begin
+                        mantissa_norm_res = mantissa_norm;
+                        exp_round = exp_norm;
                     end
-                    else
-                        result = {sign_res, exp_norm, mantissa_norm};
+                end else begin
+                    mantissa_norm_res = mantissa_norm;
+                    exp_round = exp_norm;
                 end
-
-                3'b011: begin // **RUP: Round Up (+∞)**
-                    if (~sign_res && (R || S || G)) begin
-                        {inc_overflow,mantissa_norm_res} = mantissa_norm + 1;
-                        if(inc_overflow) begin
-                            exp_round = exp_norm + 1;
-                        end
-                        else begin
-                            exp_round = exp_norm;
-                        end
-                            result = {sign_res, exp_round, mantissa_norm_res};
-                    end
-                    else
-                        result = {sign_res, exp_norm, mantissa_norm};
-                end
-
-                3'b100: begin // round to maximum magnitude 
-                    if (G) begin
-                        {inc_overflow,mantissa_norm_res} = mantissa_norm + 1;
-                        if(inc_overflow) begin
-                            exp_round = exp_norm + 1;
-                        end
-                        else begin
-                            exp_round = exp_norm;
-                        end
-                        
-                        result = {sign_res, exp_round, mantissa_norm_res};
-                    end
-                    else
-                        result = {sign_res, exp_norm, mantissa_norm}; 
-                end
-                default : 
-                begin 
-                result = {sign_res, exp_norm, mantissa_norm};       
-                end
-                endcase
+                result = {sign_res, exp_round, mantissa_norm_res};
             end
+
+            3'b001: begin // **RTZ: Round Toward Zero (Truncate)**
+                result = {sign_res, exp_norm, mantissa_norm};
+            end
+
+            3'b010: begin // **RDN: Round Down (-∞)**
+                if (sign_res && (G || R || S)) begin
+                    {inc_overflow, mantissa_norm_res} = mantissa_norm + 1;
+                    if (inc_overflow) begin
+                        exp_round = exp_norm + 1;
+                    end else begin
+                        exp_round = exp_norm;
+                    end
+                end else begin
+                    mantissa_norm_res = mantissa_norm;
+                    exp_round = exp_norm;
+                end
+                result = {sign_res, exp_round, mantissa_norm_res};
+            end
+
+            3'b011: begin // **RUP: Round Up (+∞)**
+                if (!sign_res && (G || R || S)) begin
+                    {inc_overflow, mantissa_norm_res} = mantissa_norm + 1;
+                    if (inc_overflow) begin
+                        exp_round = exp_norm + 1;
+                    end else begin
+                        exp_round = exp_norm;
+                    end
+                end else begin
+                    mantissa_norm_res = mantissa_norm;
+                    exp_round = exp_norm;
+                end
+                result = {sign_res, exp_round, mantissa_norm_res};
+            end
+
+            3'b100: begin // **Round to Maximum Magnitude**
+                if (G) begin
+                    {inc_overflow, mantissa_norm_res} = mantissa_norm + 1;
+                    if (inc_overflow) begin
+                        exp_round = exp_norm + 1;
+                    end else begin
+                        exp_round = exp_norm;
+                    end
+                end else begin
+                    mantissa_norm_res = mantissa_norm;
+                    exp_round = exp_norm;
+                end
+                result = {sign_res, exp_round, mantissa_norm_res};
+            end
+
+            default: begin
+                result = {sign_res, exp_norm, mantissa_norm};
+            end
+        endcase            
+    end
 
 
 
