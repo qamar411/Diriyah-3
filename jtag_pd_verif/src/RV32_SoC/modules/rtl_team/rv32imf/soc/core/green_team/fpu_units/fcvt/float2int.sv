@@ -18,13 +18,13 @@ module float2int ( // FCVT.WU.S
     assign man = floatIn[22:0];
     assign shiftExp = exp - 8'd127;    
     assign shiftval = (shiftExp<0) ? -shiftExp :shiftExp;    
-    assign FP = {31'd0,1'b1,man};
-    assign S = |Fpres[20:0];
+    assign FP = {31'd0,(exp != 0),man};  // 1.0000 + man = 1.man  ->  subnormal 0.00
+    assign S = (Fpres==0)? (|FP[23:0]) : (|Fpres[20:0]);   
     assign G = Fpres[22];
     assign R = Fpres[21];
     assign NaN = (man > 23'h000000 && exp == 8'b11111111);
     assign inf = (man == 23'd0 && exp == 8'b11111111);
-    assign overflow = (exp >= 8'b10011111 && man > 23'h000000); //including Nan and inf
+    assign overflow = (exp >= 8'b10011111); //including Nan and inf
     // assign overflow = (exp >= 8'b10011111); //including Nan and inf
 
     always_comb begin
@@ -41,58 +41,43 @@ module float2int ( // FCVT.WU.S
             // if (inf || NaN) begin
             //     result = 32'hffffffff;
             // end
-            // else if(floatIn[31]) begin
-            //     result = 32'd0;
-            // end
+
             if(inf || NaN || overflow) begin
                 if(floatIn[31] & !NaN)
                 result = 32'd0;//-flow -> no negative values in unsigned-integer
                 else
                 result = 32'hffffffff;//+flow
-            end else if (floatIn[31])
-            begin 
-                result = 32'd0;//-flow -> no negative values in unsigned-integer
+            end else if(floatIn[31]) begin
+                result = 32'd0;
             end
             else begin
             case (rm)
                 3'b000: begin // **RNE: Round to Nearest, Ties to Even**
-                    if(G) begin
-                        case ({R,S})
-                        2'b00: begin
-                            if(Fpres[23]) begin
-                                result = Fpres[54:23] + 1;
-                            end
-                            else begin
-                                result = Fpres[54:23] ;
-                            end
+                    if (G) begin
+                        if (R || S || Fpres[23]) begin
+                            result = Fpres[54:23] + 1; // Round up
+                        end else begin
+                            result = Fpres[54:23]; // Keep as is
                         end
-                        default: begin
-                                result = Fpres[54:23] + 1;
-                                end
-                        endcase
+                    end else begin
+                        result = Fpres[54:23]; // No rounding needed
                     end
-                    else 
-                        result = Fpres[54:23] ;
                 end
 
                 3'b001: begin // **RTZ: Round Toward Zero (Truncate)**
-                        result = Fpres[54:23];
+                    result = Fpres[54:23];
                 end
 
                 3'b010: begin // **RDN: Round Down (-∞)**
-                    if ((R || S || G)) begin
-                        result = Fpres[54:23] + 1;
-                    end
-                    else
-                        result = Fpres[54:23];
+                    result = Fpres[54:23]; // Same as RTZ for unsigned integers
                 end
 
                 3'b011: begin // **RUP: Round Up (+∞)**
-                    if ((R || S || G)) begin
-                        result = Fpres[54:23] + 1;
-                    end
-                    else
+                    if (G || R || S) begin
+                        result = Fpres[54:23] + 1; // Round up
+                    end else begin
                         result = Fpres[54:23];
+                    end
                 end
 
                 3'b100: begin
@@ -111,4 +96,3 @@ module float2int ( // FCVT.WU.S
     end
 
 endmodule
-

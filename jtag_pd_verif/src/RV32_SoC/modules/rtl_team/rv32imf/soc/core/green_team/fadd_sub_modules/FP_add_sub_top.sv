@@ -37,8 +37,8 @@ assign sum = result;
 logic a_is_zero, b_is_zero;
 logic a_is_zero_EA, b_is_zero_EA;
 
-assign a_is_zero = (num1[30:0] == 31'b0) && (num1[31] == 1'b0); // check if num1 is zero
-assign b_is_zero = (num2[30:0] == 31'b0) && (num2[31] == 1'b0); // check if num2 is zero
+assign a_is_zero = (num1[30:0] == 31'b0); // check if num1 is zero
+assign b_is_zero = (num2[30:0] == 31'b0); // check if num2 is zero
 
 //pipeline logic
 always_ff @(posedge clk , negedge rst) begin
@@ -175,8 +175,8 @@ end
 end
 
 
-        logic [23:0] grs;
-        logic [23:0] mantissa_sum;
+        logic [2:0] grs;
+        logic [47:0] mantissa_sum;
         logic carry;
         logic sign_res;
         
@@ -199,8 +199,8 @@ end
     );
     
         logic zero_AS;
-        logic [23:0] grs_AS             ;
-        logic [23:0] mantissa_sum_AS    ;
+        logic [2:0] grs_AS             ;
+        logic [47:0] mantissa_sum_AS    ;
         logic        carry_AS           ;
         logic        sign_res_AS        ;  
         logic [7:0]       exp_res_AS             ;
@@ -275,7 +275,7 @@ else if(en) begin
 end
 
 end
-        logic [22:0] mantissa_norm;
+        logic [47:0] mantissa_norm;
         logic [7:0] exp_norm;
         logic underflow;
              // N  normalize stage
@@ -297,7 +297,7 @@ normalize_FP normalize_stage(
     );
 
         logic [22:0] mantissa_norm_N;
-        logic [23:0] grs_N;
+        logic [2:0] grs_N;
         logic [7:0]  exp_norm_N      ;
         logic        sign_res_N      ;
         logic   NaN_N;   

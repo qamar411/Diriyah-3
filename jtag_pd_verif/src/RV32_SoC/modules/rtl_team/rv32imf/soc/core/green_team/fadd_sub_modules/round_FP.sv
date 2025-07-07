@@ -27,7 +27,7 @@ module round_FP(
         input sign1,
         input sign2,
         input underflow,
-        input [23:0] grs,
+        input [2:0] grs,
         input [2:0] rm,
         input logic  sign_res,
         input logic [7:0] exp_norm,
@@ -44,9 +44,9 @@ module round_FP(
     logic [7:0] exp_round;
 always_comb begin
 
-        G = grs[23];
-        R = grs[22];
-        S = |grs[21:0];
+        G = grs[2];
+        R = grs[1];
+        S = grs[0];
 
         // Overflow & Underflow detection
         overflow = exp_norm > 8'd254;
