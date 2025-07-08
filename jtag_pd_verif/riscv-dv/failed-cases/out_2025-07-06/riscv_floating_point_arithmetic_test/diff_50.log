@@ -1,0 +1,22 @@
+spike : ../riscv-dv/out_2025-07-06/riscv_floating_point_arithmetic_test/spike_trace_50.csv
+core : ../riscv-dv/out_2025-07-06/riscv_floating_point_arithmetic_test/core_trace_50.csv
+Mismatch[1]:
+spike[317] : pc[80000544] fcvt.w.s s10, fa2: s10:ffffffff 
+core[317] : pc[80000548] xori	x9,x20,348: s1:0000015c 
+Mismatch[2]:
+spike[318] : pc[80000548] xori    s1, s4, 348: s1:0000015c 
+core[318] : pc[8000054c] fadd.s	f21,f30,f16: fs5:ff7fffff 
+Mismatch[3]:
+spike[320] : pc[8000054c] fadd.s  fs5, ft10, fa6: fs5:ff7fffff 
+core[320] : pc[80000554] fmv.w.x	f2,x1: ft2:00000000 
+Mismatch[4]:
+spike[321] : pc[80000554] fmv.w.x ft2, ra: ft2:00000000 
+core[321] : pc[80000558] xori	x9,x1,-1520: s1:fffffa10 
+Mismatch[5]:
+spike[322] : pc[80000558] xori    s1, ra, -1520: s1:fffffa10 
+core[322] : pc[8000055c] fcvt.s.wu	f24,x15: fs8:00000000 
+Mismatch[7166]:
+[9731] spike : pc[80009e94] ecall:  
+7 instructions left in trace core
+[FAILED]: 933 matched, 7173 mismatch
+

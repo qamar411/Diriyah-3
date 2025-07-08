@@ -1,0 +1,22 @@
+spike : ../riscv-dv/out_2025-07-06/riscv_floating_point_arithmetic_test/spike_trace_27.csv
+core : ../riscv-dv/out_2025-07-06/riscv_floating_point_arithmetic_test/core_trace_27.csv
+Mismatch[1]:
+spike[178] : pc[800002fc] fcvt.s.wu fa3, s6: fa3:4f761b46 
+core[178] : pc[800002fc] fcvt.s.wu	f13,x22: fa3:4f761b45 
+Mismatch[2]:
+spike[221] : pc[800003a8] fsqrt.s fs6, fa6: fs6:1fd4cd7d 
+core[221] : pc[800003a8] fsqrt.s	f22,f16: fs6:1f990d24 
+Mismatch[3]:
+spike[228] : pc[800003c8] fcvt.s.wu fs10, gp: fs10:4ef57b62 
+core[228] : pc[800003c8] fcvt.s.wu	f26,x3: fs10:4ef57b63 
+Mismatch[4]:
+spike[266] : pc[80000464] fsub.s  ft2, fa3, fs10: ft2:4ef6bb2a 
+core[266] : pc[80000464] fsub.s	f2,f13,f26: ft2:4ef6bb27 
+Mismatch[5]:
+spike[278] : pc[80000494] fmul.s  fs3, ft3, fa7: fs3:80000000 
+core[278] : pc[80000494] fmul.s	f19,f3,f17: fs3:e7822344 
+Mismatch[7628]:
+[9700] spike : pc[80009ed0] ecall:  
+74 instructions left in trace core
+[FAILED]: 327 matched, 7702 mismatch
+

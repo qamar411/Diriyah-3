@@ -1,0 +1,22 @@
+spike : ../riscv-dv/out_2025-07-06/riscv_floating_point_arithmetic_test/spike_trace_7.csv
+core : ../riscv-dv/out_2025-07-06/riscv_floating_point_arithmetic_test/core_trace_7.csv
+Mismatch[1]:
+spike[160] : pc[800002b4] fmul.s  fs11, ft5, ft1: fs11:3ebaf2cf 
+core[160] : pc[800002b4] fmul.s	f27,f5,f1: fs11:3ebaf2d0 
+Mismatch[2]:
+spike[201] : pc[80000360] fsub.s  fa5, fs11, ft6: fa5:3ebaf2cf 
+core[201] : pc[80000360] fsub.s	f15,f27,f6: fa5:3ebaf2d0 
+Mismatch[3]:
+spike[221] : pc[800003b4] fdiv.s  fs8, ft3, fs11: fs8:ff7fffff 
+core[221] : pc[800003b4] fdiv.s	f24,f3,f27: fs8:ff800000 
+Mismatch[4]:
+spike[257] : pc[8000044c] fadd.s  fs2, ft0, fs4: fs2:7f800000 
+core[257] : pc[8000044c] fadd.s	f18,f0,f20: fs2:00000000 
+Mismatch[5]:
+spike[268] : pc[80000478] fmin.s  ft11, ft5, fs2: ft11:7f7fffff 
+core[268] : pc[80000478] fmin.s	f31,f5,f18: ft11:00000000 
+Mismatch[7623]:
+[9687] spike : pc[80009e98] ecall:  
+78 instructions left in trace core
+[FAILED]: 451 matched, 7701 mismatch
+

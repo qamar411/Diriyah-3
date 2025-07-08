@@ -4,6 +4,8 @@ DV_DIR          := ../riscv-dv
 SIM_DIR         := ../src
 OUT_DIR         := $(DV_DIR)/out_$(DATE)
 
+GCC             := riscv32-unknown-elf-gcc
+
 # For normal runs, TEST_LIST drives everything.
 #riscv_floating_point_arithmetic_test
 #riscv_floating_point_rand_test
@@ -11,7 +13,11 @@ OUT_DIR         := $(DV_DIR)/out_$(DATE)
 TEST_LIST       := riscv_floating_point_arithmetic_test
 # TEST_LIST       := riscv_arithmetic_basic_test riscv_rand_jump_test riscv_jump_stress_test riscv_mmu_stress_test  riscv_loop_test
 ITER            := 1
-SEED            := 1339291264
+# SEED            := 609112406 # 8000 matches 
+SEED            := 810866298   # 430 matches
+# SEED            := 2123370466   # 7974 matches 
+# SEED              := 744416663 # error about of +0 and -0 in sub.s
+# SEED := 1942037138 
 POST_SYNTH      := 0
 POST_ROUTE      := 0
 LINKER_SCRIPT   := $(DV_DIR)/scripts/link.ld
@@ -20,9 +26,9 @@ INTERRUPT_TEST  := 0
 CUSTOM          ?= 0
 
 # Your directed-ASM source
-# ASM_TEST        := $(DV_DIR)/../src/tb/assembly_tests/crypto_tests/riscv_crypto_test_0.S
-# ASM_TEST        := $(DV_DIR)/custom_tests/sha_tests/riscv_sha_test_0.S
-ASM_TEST        := $(DV_DIR)/custom_tests/riscv-dv/arithmetic_test_0.S
+# ASM_TEST        := $(DV_DIR)/custom_tests/float/riscv_floating_point_arithmetic_test_0.S
+ASM_TEST        := $(DV_DIR)/custom_tests/float/test1_.S
+# ASM_TEST        := $(DV_DIR)/custom_tests/float/test1.S
 
 
 
@@ -33,6 +39,7 @@ SPIKE_LOG_2_CSV := python3 $(DV_DIR)/scripts/spike_log_to_trace_csv.py
 COMPARE         := python3 $(DV_DIR)/scripts/instr_trace_compare.py
 FORMAT          := python3 $(DV_DIR)/scripts/format_csv.py
 SUMMARY_SCRIPT  := python3 $(DV_DIR)/scripts/regression_summary.py
+FIX_ASM         := python3 $(DV_DIR)/scripts/fix_dynamic_rm.py
 
 TRACE_LOG_BASE  := $(SIM_DIR)/trace_core_00000001.log
 REGRESSION_SUM  := $(OUT_DIR)/regression_summary.csv
@@ -44,7 +51,7 @@ ASM_BASE := $(basename $(notdir $(ASM_TEST)))
 
 ifneq ($(CUSTOM),0)
     TEST_LIST := custom_test
-    TARGET    := rv32imac_zkne_zknd_zknh_zbkb_zbkc_zbkx_zbb
+    TARGET    := rv32imafc_zkne_zknd_zknh_zbkb_zbkc_zbkx_zbb
 	ITER      := 1
 endif
 
@@ -67,9 +74,34 @@ dv_gen:
 	    --simulator vcs \
 	    --target $(TARGET) \
 	    --iterations $(ITER) \
-		--seed $(SEED) \
+	    --seed $(SEED) \
+	    --steps gen \
+	    --output $(OUT_DIR)/$$test; \
+	  echo "🔧 Fixing RM and recompiling for $$test"; \
+	  for i in `seq 0 $$(($(ITER)-1))`; do \
+	    echo "  ➤ Fixing: $$test\_$$i.S"; \
+	    $(FIX_ASM) $(OUT_DIR)/$$test/asm_test/$$test\_$$i.S --rounding-mode rne; \
+	    echo "  ➤ Compiling: $$test\_$$i.S → $$test\_$$i.o"; \
+	    $(GCC) -O0 -march=rv32imf_zicsr_zifencei -mabi=ilp32 -static -nostdlib \
+	      -T $(DV_DIR)/scripts/link.ld \
+		  -I $(DV_DIR)/user_extension \
+	      -o $(OUT_DIR)/$$test/asm_test/$$test\_$$i.o \
+	         $(OUT_DIR)/$$test/asm_test/$$test\_$$i.S || echo "❌ Compile failed: $$test\_$$i.S"; \
+	  done; \
+	  python3 run.py \
+	    --test $$test \
+	    --simulator vcs \
+	    --target $(TARGET) \
+	    --iterations $(ITER) \
+	    --seed $(SEED) \
+	    --steps iss_sim \
 	    --output $(OUT_DIR)/$$test; \
 	done
+
+
+
+	 
+
 
 #-------------------------------------------------------------------
 # 1b) Single custom test drops straight into the same OUT_DIR/TEST_LIST

@@ -175,10 +175,10 @@ end
 end
 
 
-        logic [2:0] grs;
         logic [47:0] mantissa_sum;
         logic carry;
         logic sign_res;
+        logic sticky_bit_EA;
         
         //AS  add sub stage 
  add_sub_FP add_sub_stage(
@@ -190,16 +190,17 @@ end
         .a_is_zero        (a_is_zero_EA),
         .b_is_zero        (b_is_zero_EA),
         //outputs
-        .grs                (grs),
         .mantissa_sum       (mantissa_sum),
         .carry              (carry),
-        .sign_res           (sign_res)
+        .sign_res           (sign_res),
+        .sticky_bit         (sticky_bit_EA)
         
         
     );
     
         logic zero_AS;
         logic [2:0] grs_AS             ;
+        logic sticky_bit_AS;
         logic [47:0] mantissa_sum_AS    ;
         logic        carry_AS           ;
         logic        sign_res_AS        ;  
@@ -221,7 +222,6 @@ always_ff @(posedge clk , negedge rst) begin
 if (~rst) begin 
    
        zero_AS <= 1'b0;
-        grs_AS            <=24'd0;
         mantissa_sum_AS   <=24'd0;
         carry_AS          <=1'b0;
         sign_res_AS       <=1'b0; 
@@ -233,12 +233,13 @@ if (~rst) begin
         sign2_AS          <=1'b0;
         rm_AS             <=3'd0;
         res_is_zero_AS <= 1'b0;
+        sticky_bit_AS <= 1'b0;
+
 
 end
 else if (clear[1]) begin 
     
        zero_AS <= 1'b0;
-        grs_AS            <=24'd0;
         mantissa_sum_AS   <=24'd0;
         carry_AS          <=1'b0;
         sign_res_AS       <=1'b0;
@@ -250,7 +251,7 @@ else if (clear[1]) begin
         sign2_AS          <=1'b0;
         rm_AS             <=3'd0;
         res_is_zero_AS <= 1'b0;
-
+        sticky_bit_AS <= 1'b0;
 
 
   
@@ -258,7 +259,6 @@ end
 else if(en) begin 
 
     zero_AS <= zero_EA;
-        grs_AS            <=grs;
         mantissa_sum_AS   <=mantissa_sum;
         carry_AS          <=carry;
         sign_res_AS       <=sign_res;
@@ -270,7 +270,7 @@ else if(en) begin
         sign2_AS          <=sign2_EA  ;
         rm_AS<=rm_EA;
         res_is_zero_AS <= res_is_zero_EA;
-
+        sticky_bit_AS <= sticky_bit_EA;
 
 end
 
@@ -288,7 +288,8 @@ normalize_FP normalize_stage(
         .sign1(sign1_AS),
         .sign2(sign2_AS),
         .zero(zero_AS),
-
+        .sticky_bit          (sticky_bit_AS),
+        .grs(grs_AS),
         //output
         .mantissa_norm       (mantissa_norm),
         .exp_norm            (exp_norm),
@@ -388,6 +389,10 @@ logic [31:0] result_temp;
         .result         (result_temp)
     );
 
-assign result = res_is_zero_N ? 32'b0 : result_temp; // if result is zero, return 0, else return the computed result
+logic exception;
+assign exception = NaN_N | inf1_N | inf2_N ;;
+
+assign result = (res_is_zero_N & ~exception) ? 
+                ((rm_N == 3'b010) ?  32'h80000000 : 32'b0) : result_temp; // if result is zero, return 0, else return the computed result
 
 endmodule

@@ -1,0 +1,22 @@
+spike : ../riscv-dv/out_2025-07-06/riscv_floating_point_arithmetic_test/spike_trace_31.csv
+core : ../riscv-dv/out_2025-07-06/riscv_floating_point_arithmetic_test/core_trace_31.csv
+Mismatch[1]:
+spike[199] : pc[80000360] fcvt.s.w fa7, s2: fa7:cdc56321 
+core[199] : pc[80000360] fcvt.s.w	f17,x18: fa7:cdc56322 
+Mismatch[2]:
+spike[379] : pc[80000650] fdiv.s  fa2, ft2, fs3: fa2:7f7fffff 
+core[379] : pc[80000650] fdiv.s	f12,f2,f19: fa2:7f800000 
+Mismatch[3]:
+spike[399] : pc[800006a4] fcvt.w.s t4, ft5: t4:ffffffff 
+core[399] : pc[800006a4] fcvt.w.s	x29,f5: t4:00000000 
+Mismatch[4]:
+spike[422] : pc[80000704] fsub.s  fs9, ft6, ft10: fs9:ff800000 
+core[422] : pc[80000704] fsub.s	f25,f6,f30: fs9:80000000 
+Mismatch[5]:
+spike[436] : pc[80000740] mulhu   t3, a2, t4: t3:00000331 
+core[436] : pc[80000740] mulhu	x28,x12,x29: t3:00000000 
+Mismatch[7682]:
+[9721] spike : pc[80009ed0] ecall:  
+74 instructions left in trace core
+[FAILED]: 421 matched, 7756 mismatch
+

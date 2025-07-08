@@ -1,0 +1,19 @@
+spike : ../riscv-dv/out_2025-07-06/riscv_floating_point_arithmetic_test/spike_trace_0.csv
+core : ../riscv-dv/out_2025-07-06/riscv_floating_point_arithmetic_test/core_trace_0.csv
+Mismatch[1]:
+spike[146] : pc[8000027c] fsqrt.s ft10, ft0: ft10:1fdb3a80 
+core[146] : pc[8000027c] fsqrt.s	f30,f0: ft10:1f9ce2a5 
+Mismatch[2]:
+spike[238] : pc[80000404] fmul.s  ft5, fs6, fs3: ft5:a9cadb7d 
+core[238] : pc[80000404] fmul.s	f5,f22,f19: ft5:a9cadb7e 
+Mismatch[3]:
+spike[263] : pc[8000046c] fsqrt.s fs2, fs8: fs2:1f98980d 
+core[263] : pc[8000046c] fsqrt.s	f18,f24: fs2:1f755584 
+Mismatch[4]:
+spike[308] : pc[8000052c] fcvt.s.w fs9, t5: fs9:ceffc6fa 
+core[308] : pc[8000052c] fcvt.s.w	f25,x30: fs9:ceffc6f9 
+Mismatch[5]:
+spike[310] : pc[80000534] fdiv.s  ft1, ft3, ft11: ft1:a5a1238f 
+core[310] : pc[80000534] fdiv.s	f1,f3,f31: ft1:a5212390 
+[FAILED]: 836 matched, 7042 mismatch
+
