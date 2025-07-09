@@ -51,7 +51,8 @@ always_comb begin
 //             end
              else begin // result is subnormal value
                 mantissa_norm =mantissa_sum [46:24];
-                exp_norm = 8'b0;
+                if(mantissa_sum[47]) exp_norm = 8'b1;
+                else exp_norm = 8'b0;
                 {G, R, S} = {mantissa_sum[23], mantissa_sum[22], |mantissa_sum[21:0]};
              end
          end

@@ -71,7 +71,33 @@ always_comb begin
         end else if ((exp_norm == 0 && mantissa_norm == 0)) begin // Zero case
             result = {sign_res, 8'd0, 23'd0}; // Zero
         end else if (overflow) begin // Overflow case
-            result = {sign_res, 8'd255, 23'd0}; // Infinity
+            case (rm)
+                3'b000: begin // **RNE: Round to Nearest, Ties to Even**
+                    result = {sign_res, 8'd255, 23'd0}; // Infinity
+                end
+
+                3'b011: begin // **RUP: Round Up (+∞)**
+                    if(sign_res) result = {sign_res, 8'd254, mantissa_norm}; 
+                    else result = {sign_res, 8'd255, 23'd0}; // Infinity
+                end
+
+                3'b100: begin // **RMM: Round to Maximum Magnitude**
+                    result = {sign_res, 8'd255, 23'd0}; // Infinity
+                end
+
+                3'b001: begin // **RTZ: Round Toward Zero**
+                    result = {sign_res, 8'd254, mantissa_norm}; // Clamp to max finite value
+                end
+
+                3'b010: begin // **RDN: Round Down (-∞)**
+                    if(~sign_res) result = {sign_res, 8'd254, mantissa_norm}; 
+                    else result = {sign_res, 8'd255, 23'd0}; // Infinity
+                end
+
+                default: begin
+                    result = {sign_res, 8'd255, 23'd0}; // Default: Infinity
+                end
+            endcase
         end else if (underflow) begin // Underflow case
             result = {sign_res, 8'd0, 23'd0}; // Zero
         end else begin
