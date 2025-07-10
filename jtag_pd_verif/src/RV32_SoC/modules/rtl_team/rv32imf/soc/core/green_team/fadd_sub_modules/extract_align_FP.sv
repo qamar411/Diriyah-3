@@ -90,8 +90,8 @@ module extract_align_FP(
                 end
                 else if (exp1==0) begin  // subnormal
                     mantissa1 = {1'b0,1'b0, man1,24'b0};
-//                    exp1_sub=exp1+1;
-                    exp1_sub=exp1;
+                    if(exp2!=0) exp1_sub=exp1+1;
+                    else        exp1_sub=exp1;
                 end
                 else begin
                     mantissa1 = {1'b0,1'b1, man1,24'b0};
@@ -105,8 +105,8 @@ module extract_align_FP(
                 end
                 else if(exp2==0) begin  // subnormal
                     mantissa2 = {1'b0,1'b0, man2,24'b0};
-//                    exp2_sub=exp2+1;
-                    exp2_sub=exp2;
+                    if(exp1!=0) exp2_sub=exp2+1;
+                    else        exp2_sub=exp2;
                 end
                 else begin
                     mantissa2 = {1'b0,1'b1, man2,24'b0};

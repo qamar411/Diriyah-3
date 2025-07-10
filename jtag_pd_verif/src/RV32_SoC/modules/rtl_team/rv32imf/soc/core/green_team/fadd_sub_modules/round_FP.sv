@@ -77,7 +77,7 @@ always_comb begin
                 end
 
                 3'b011: begin // **RUP: Round Up (+∞)**
-                    if(sign_res) result = {sign_res, 8'd254, mantissa_norm}; 
+                    if(sign_res) result = {sign_res, 8'd254, 23'h7fffff}; 
                     else result = {sign_res, 8'd255, 23'd0}; // Infinity
                 end
 
@@ -86,11 +86,11 @@ always_comb begin
                 end
 
                 3'b001: begin // **RTZ: Round Toward Zero**
-                    result = {sign_res, 8'd254, mantissa_norm}; // Clamp to max finite value
+                    result = {sign_res, 8'd254, 23'h7fffff}; // Clamp to max finite value
                 end
 
                 3'b010: begin // **RDN: Round Down (-∞)**
-                    if(~sign_res) result = {sign_res, 8'd254, mantissa_norm}; 
+                    if(~sign_res) result = {sign_res, 8'd254, 23'h7fffff}; 
                     else result = {sign_res, 8'd255, 23'd0}; // Infinity
                 end
 

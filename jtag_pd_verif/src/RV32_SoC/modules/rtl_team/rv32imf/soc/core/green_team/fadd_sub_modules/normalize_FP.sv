@@ -23,7 +23,7 @@
 module normalize_FP(
         input sign1,
         input sign2,
-        input [48:0] mantissa_sum,
+        input [47:0] mantissa_sum,
         input [7:0] exp_res,
         input  carry,
         input  zero,
@@ -35,11 +35,13 @@ module normalize_FP(
     );
 
     logic G, R, S;
+    logic [21:0] stick_part;
 
 always_comb begin
          G = 0;
          R = 0;
          S = 0;
+         stick_part = 0;
          if (exp_res==0) begin
             if (mantissa_sum[47:24] ==0) begin // result=0
                 mantissa_norm =0;
@@ -53,6 +55,7 @@ always_comb begin
                 mantissa_norm =mantissa_sum [46:24];
                 if(mantissa_sum[47]) exp_norm = 8'b1;
                 else exp_norm = 8'b0;
+
                 {G, R, S} = {mantissa_sum[23], mantissa_sum[22], |mantissa_sum[21:0]};
              end
          end
@@ -90,8 +93,12 @@ always_comb begin
             end
             
             else begin
-
-                if (mantissa_sum[47]) begin
+                if(exp_res==1 && ~mantissa_sum[47]) begin 
+                    mantissa_norm = mantissa_sum[46:24];
+                    exp_norm = 8'b0;
+                    {G, R, S} = {mantissa_sum[23], mantissa_sum[22], |mantissa_sum[21:0]};
+                end
+                else if (mantissa_sum[47]) begin
                     mantissa_norm = mantissa_sum[46:24];
                     exp_norm = exp_res;
                     {G, R, S} = {mantissa_sum[23], mantissa_sum[22], |mantissa_sum[21:0]};
@@ -218,10 +225,14 @@ always_comb begin
                     {G, R, S} = {1'b0, 1'b0, 1'b0};
                 end
 
-                if (exp_norm>exp_res)
+                if (exp_norm>exp_res) begin 
                     underflow=1'b1;
+                    exp_norm = 'b0;
+                    {mantissa_norm, G, R, stick_part} = mantissa_sum[47:0] << (exp_res - 1);
+                    S = |stick_part;
+                end   
                 else
-                underflow=1'b0;
+                    underflow=1'b0;
             end
                         
 end       
