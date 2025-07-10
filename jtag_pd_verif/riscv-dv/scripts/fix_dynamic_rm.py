@@ -28,12 +28,14 @@ NON_ROUNDING_OPS = {
 }
 
 def patch_rm_line(line, default_rm):
-    parts = line.strip().split()
-    if not parts or len(parts) < 2:
-        return line
+    # Extract label if any (e.g., 'main:')
+    label_match = re.match(r'^(\s*\w+:)?\s*(\S+)\s+(.*)$', line)
+    if not label_match:
+        return line  # Skip malformed lines or comments
 
-    instr = parts[0].strip()
-    operands_str = ' '.join(parts[1:])
+    label = label_match.group(1) or ''
+    instr = label_match.group(2)
+    operands_str = label_match.group(3)
     operands = [op.strip() for op in operands_str.split(',') if op.strip()]
 
     if instr not in ROUNDING_OPS:
@@ -41,15 +43,16 @@ def patch_rm_line(line, default_rm):
 
     expected_ops = ROUNDING_OPS[instr]
 
-    # If already has expected + 1 operands, assume RM present
+    # Check if rounding mode already present
     if len(operands) == expected_ops + 1 and operands[-1] in ROUNDING_MODES:
         return line
 
-    # If missing RM, add it
     if len(operands) == expected_ops:
-        return f"    {instr}    {', '.join(operands)}, {default_rm}\n"
+        new_line = f"{label or ''}\t{instr}\t{', '.join(operands)}, {default_rm}\n"
+        return new_line
 
-    return line  # Malformed or already patched
+    return line
+
 
 def process_file(path, default_rm):
     with open(path, 'r') as f:

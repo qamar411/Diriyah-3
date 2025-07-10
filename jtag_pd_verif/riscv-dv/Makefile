@@ -12,7 +12,7 @@ GCC             := riscv32-unknown-elf-gcc
 #riscv_floating_point_mmu_stress_test
 TEST_LIST       := riscv_floating_point_arithmetic_test
 # TEST_LIST       := riscv_arithmetic_basic_test riscv_rand_jump_test riscv_jump_stress_test riscv_mmu_stress_test  riscv_loop_test
-ITER            := 10
+ITER            := 100
 # SEED            := 609112406 # 8000 matches 
 # SEED            := 810866298   # 430 matches
 # SEED            := 2123370466   # 7974 matches 
