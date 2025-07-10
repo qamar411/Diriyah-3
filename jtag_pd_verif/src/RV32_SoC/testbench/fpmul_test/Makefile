@@ -9,7 +9,8 @@ CFLAGS   = -march=rv32imf -mabi=ilp32 -nostdlib -Wall
 LDSCRIPT = linker.ld
 
 TARGET   = firmware
-SRC      = mul.S
+# SRC      = sqrt.S
+SRC      = mul.S # Uncomment the above line to test the multiplication instead of square root
 
 all: $(TARGET).elf $(TARGET).dis inst.hex data.hex
 

@@ -1,8 +1,9 @@
 Vivado Simulator 2019.1
 Copyright 1986-1999, 2001-2019 Xilinx, Inc. All Rights Reserved.
-Running: /home/it/Xilinx/Vivado/Vivado/2019.1/bin/unwrapped/lnx64.o/xelab -wto 1b9f1b1a3be140d793d857660e6133b8 --incr --debug typical --relax --mt 8 -d VIVADO_SIM= -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot rv32i_soc_tb_behav xil_defaultlib.rv32i_soc_tb xil_defaultlib.glbl -log elaborate.log 
+Running: /home/it/Xilinx/Vivado/Vivado/2019.1/bin/unwrapped/lnx64.o/xelab -wto 3d2a86cd729c4f488f97d0c2e812bd09 --incr --debug typical --relax --mt 8 -d VIVADO_SIM= -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot rv32i_soc_tb_behav xil_defaultlib.rv32i_soc_tb xil_defaultlib.glbl -log elaborate.log 
 Using 8 slave threads.
 Starting static elaboration
+WARNING: [VRFC 10-3091] actual bit length 48 differs from formal bit length 23 for port 'mantissa_norm' [/home/it/rv32imf/jtag_pd_verif/src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/green_team/fadd_sub_modules/FP_add_sub_top.sv:294]
 WARNING: [VRFC 10-3091] actual bit length 3 differs from formal bit length 4 for port 'dbg_am_st_i' [/home/it/rv32imf/jtag_pd_verif/src/RV32_SoC/modules/rtl_team/rv32imf/soc/rv32i_soc.sv:350]
 WARNING: [VRFC 10-3091] actual bit length 3 differs from formal bit length 4 for port 'am_st_o' [/home/it/rv32imf/jtag_pd_verif/src/RV32_SoC/modules/rtl_team/rv32imf/soc/rv32i_soc.sv:864]
 Completed static elaboration
@@ -11,7 +12,7 @@ WARNING: [XSIM 43-4100] "/home/it/rv32imf/jtag_pd_verif/src/RV32_SoC/modules/rtl
 WARNING: [XSIM 43-4100] "/home/it/rv32imf/jtag_pd_verif/src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/debug/debug_pkg.sv" Line 1. Module common_pkg has a timescale but at least one module in design doesn't have timescale.
 WARNING: [XSIM 43-4100] "/home/it/rv32imf/jtag_pd_verif/src/RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/debug/debug_pkg.sv" Line 10. Module debug_pkg has a timescale but at least one module in design doesn't have timescale.
 WARNING: [XSIM 43-4100] "/home/it/rv32imf/jtag_pd_verif/src/RV32_SoC/testbench/rv32i_soc_tb.sv" Line 48. Module rv32i_soc_tb has a timescale but at least one module in design doesn't have timescale.
-WARNING: [XSIM 43-4100] "/home/it/rv32imf/jtag_pd_verif/src/RV32_SoC/modules/rtl_team/rv32imf/soc/rv32i_soc.sv" Line 14. Module rv32i_soc(DMEM_DEPTH=2048,IMEM_DEPTH=8192) has a timescale but at least one module in design doesn't have timescale.
+WARNING: [XSIM 43-4100] "/home/it/rv32imf/jtag_pd_verif/src/RV32_SoC/modules/rtl_team/rv32imf/soc/rv32i_soc.sv" Line 16. Module rv32i_soc(DMEM_DEPTH=2048,IMEM_DEPTH=8192) has a timescale but at least one module in design doesn't have timescale.
 WARNING: [XSIM 43-4100] "/home/it/rv32imf/jtag_pd_verif/src/RV32_SoC/modules/rtl_team/rv32imf/soc/io_mux.sv" Line 1. Module io_mux has a timescale but at least one module in design doesn't have timescale.
 WARNING: [XSIM 43-4100] "/home/it/rv32imf/jtag_pd_verif/src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/rv32i_top.sv" Line 3. Module rv32i(DMEM_DEPTH=2048,IMEM_DEPTH=8192) has a timescale but at least one module in design doesn't have timescale.
 WARNING: [XSIM 43-4100] "/home/it/rv32imf/jtag_pd_verif/src/RV32_SoC/modules/rtl_team/rv32imf/soc/core/data_path.sv" Line 3. Module data_path(DMEM_DEPTH=2048,IMEM_DEPTH=8192) has a timescale but at least one module in design doesn't have timescale.
