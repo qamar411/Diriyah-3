@@ -284,13 +284,20 @@ _start:
     # fmv.w.x ft1, t1      
     # fsub.s fa2, ft0, ft1, rmm  
 
-    # TEST 32: Floating-Point Sub
-    li t1, 0x072ff30b
-    fmv.w.x ft0, t1                
-    li t1, 0x072ffdeb    
-    fmv.w.x ft1, t1      
-    fsub.s fa2, ft0, ft1, rmm  
+    # # TEST 32: Floating-Point Sub
+    # li t1, 0x072ffe0b
+    # fmv.w.x ft0, t1                
+    # li t1, 0x072ffdeb    
+    # fmv.w.x ft1, t1      
+    # fsub.s fa2, ft0, ft1, rmm  
 
+
+    # TEST 33: Floating-Point Sub
+    li t1, 0x82c21559
+    fmv.w.x ft0, t1                
+    li t1, 0x82c21411   
+    fmv.w.x ft1, t1      
+    fsub.s fa2, ft0, ft1, rne
 
 
     nop

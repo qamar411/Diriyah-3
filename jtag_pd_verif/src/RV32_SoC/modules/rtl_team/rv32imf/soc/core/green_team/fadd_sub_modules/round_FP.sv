@@ -98,8 +98,8 @@ always_comb begin
                     result = {sign_res, 8'd255, 23'd0}; // Default: Infinity
                 end
             endcase
-        end else if (underflow) begin // Underflow case
-            result = {sign_res, 8'd0, 23'd0}; // Zero
+        // end else if (underflow) begin // Underflow case
+        //     result = {sign_res, 8'd0, 23'd0}; // Zero
         end else begin
 
         case (rm)

@@ -5,13 +5,13 @@ firmware.elf:     file format elf32-littleriscv
 Disassembly of section .text:
 
 10000000 <_start>:
-10000000:	072ff337          	lui	t1,0x72ff
-10000004:	30b30313          	addi	t1,t1,779 # 72ff30b <result+0x72ff303>
+10000000:	82c21337          	lui	t1,0x82c21
+10000004:	55930313          	addi	t1,t1,1369 # 82c21559 <_start+0x72c21559>
 10000008:	f0030053          	fmv.w.x	ft0,t1
-1000000c:	07300337          	lui	t1,0x7300
-10000010:	deb30313          	addi	t1,t1,-533 # 72ffdeb <result+0x72ffde3>
+1000000c:	82c21337          	lui	t1,0x82c21
+10000010:	41130313          	addi	t1,t1,1041 # 82c21411 <_start+0x72c21411>
 10000014:	f00300d3          	fmv.w.x	ft1,t1
-10000018:	08104653          	fsub.s	fa2,ft0,ft1,rmm
+10000018:	08100653          	fsub.s	fa2,ft0,ft1,rne
 1000001c:	00000013          	nop
 10000020:	00000013          	nop
 10000024:	00000013          	nop
