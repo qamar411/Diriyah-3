@@ -396,6 +396,7 @@ logic [31:0] result_temp;
         .mantissa_norm  (mantissa_norm_N),
         .sign_res       (sign_res_N),
         .underflow       (underflow_N),
+        .res_is_zero    (res_is_zero_N),
 
        //outputs
         .result         (result_temp)

@@ -33,7 +33,8 @@ module round_fp_r4(
         input logic [7:0] exp_norm,
         output logic [31:0] result,
         
-        input logic [22:0] mantissa_norm
+        input logic [22:0] mantissa_norm,
+        input logic        res_is_zero
         
     );
 
@@ -42,6 +43,23 @@ module round_fp_r4(
 //    logic [23:0] mantissa_norm_res;  // wrong
     logic [22:0] mantissa_norm_res; // correct
     logic [7:0] exp_round;
+    logic       sign_res_final;
+
+
+    always_comb begin 
+        if(res_is_zero || (result[30:0] == 0)) begin
+            case(rm)
+                3'b000: sign_res_final  = sign_res; // Round to Nearest, Ties to Even
+                3'b011: sign_res_final  = 1'b0;     // Round Up (+∞)
+                3'b100: sign_res_final  = sign_res; // Round to Maximum Magnitude
+                3'b001: sign_res_final  = sign_res; // Round Toward Zero
+                3'b010: sign_res_final  = 1'b1;     // Round Down (-∞)
+                default: sign_res_final = sign_res; // Default: Same as input sign
+            endcase
+        end else begin
+            sign_res_final = sign_res;
+        end
+    end
 always_comb begin
 
         G = grs[2];
@@ -54,7 +72,7 @@ always_comb begin
 
         // else if (underflow) begin
             
-        //     result = {sign_res, 8'd0, 23'b0}; // Zero
+        //     result = {sign_res_final, 8'd0, 23'b0}; // Zero
         // end 
 
         // Handle special cases first
@@ -69,38 +87,39 @@ always_comb begin
         end else if (inf1 || inf2) begin // One input is infinity
             result = {inf1 ? sign1 : sign2, 8'd255, 23'd0}; // Infinity
         end else if ((exp_norm == 0 && mantissa_norm == 0)) begin // Zero case
-            result = {sign_res, 8'd0, 23'd0}; // Zero
+            result = {sign_res_final, 8'd0, 23'd0}; // Zero
         end else if (overflow) begin // Overflow case
             case (rm)
                 3'b000: begin // **RNE: Round to Nearest, Ties to Even**
-                    result = {sign_res, 8'd255, 23'd0}; // Infinity
+                    result = {sign_res_final, 8'd255, 23'd0}; // Infinity
                 end
 
                 3'b011: begin // **RUP: Round Up (+∞)**
-                    if(sign_res) result = {sign_res, 8'd254, 23'h7fffff}; 
-                    else result = {sign_res, 8'd255, 23'd0}; // Infinity
+                    if(sign_res_final) result = {sign_res_final, 8'd254, 23'h7fffff}; 
+                    else result = {sign_res_final, 8'd255, 23'd0}; // Infinity
                 end
 
                 3'b100: begin // **RMM: Round to Maximum Magnitude**
-                    result = {sign_res, 8'd255, 23'd0}; // Infinity
+                    result = {sign_res_final, 8'd255, 23'd0}; // Infinity
                 end
 
                 3'b001: begin // **RTZ: Round Toward Zero**
-                    result = {sign_res, 8'd254, 23'h7fffff}; // Clamp to max finite value
+                    result = {sign_res_final, 8'd254, 23'h7fffff}; // Clamp to max finite value
                 end
 
                 3'b010: begin // **RDN: Round Down (-∞)**
-                    if(~sign_res) result = {sign_res, 8'd254, 23'h7fffff}; 
-                    else result = {sign_res, 8'd255, 23'd0}; // Infinity
+                    if(~sign_res_final) result = {sign_res_final, 8'd254, 23'h7fffff}; 
+                    else result = {sign_res_final, 8'd255, 23'd0}; // Infinity
                 end
 
                 default: begin
-                    result = {sign_res, 8'd255, 23'd0}; // Default: Infinity
+                    result = {sign_res_final, 8'd255, 23'd0}; // Default: Infinity
                 end
             endcase
         // end else if (underflow) begin // Underflow case
-        //     result = {sign_res, 8'd0, 23'd0}; // Zero
+        //     result = {sign_res_final, 8'd0, 23'd0}; // Zero
         end else begin
+
 
         case (rm)
             3'b000: begin // **RNE: Round to Nearest, Ties to Even**
@@ -120,15 +139,15 @@ always_comb begin
                     mantissa_norm_res = mantissa_norm;
                     exp_round = exp_norm;
                 end
-                result = {sign_res, exp_round, mantissa_norm_res};
+                result = {sign_res_final, exp_round, mantissa_norm_res};
             end
 
             3'b001: begin // **RTZ: Round Toward Zero (Truncate)**
-                result = {sign_res, exp_norm, mantissa_norm};
+                result = {sign_res_final, exp_norm, mantissa_norm};
             end
 
             3'b010: begin // **RDN: Round Down (-∞)**
-                if (sign_res && (G || R || S)) begin
+                if (sign_res_final && (G || R || S)) begin
                     {inc_overflow, mantissa_norm_res} = mantissa_norm + 1;
                     if (inc_overflow) begin
                         exp_round = exp_norm + 1;
@@ -139,11 +158,11 @@ always_comb begin
                     mantissa_norm_res = mantissa_norm;
                     exp_round = exp_norm;
                 end
-                result = {sign_res, exp_round, mantissa_norm_res};
+                result = {sign_res_final, exp_round, mantissa_norm_res};
             end
 
             3'b011: begin // **RUP: Round Up (+∞)**
-                if (!sign_res && (G || R || S)) begin
+                if (!sign_res_final && (G || R || S)) begin
                     {inc_overflow, mantissa_norm_res} = mantissa_norm + 1;
                     if (inc_overflow) begin
                         exp_round = exp_norm + 1;
@@ -154,7 +173,7 @@ always_comb begin
                     mantissa_norm_res = mantissa_norm;
                     exp_round = exp_norm;
                 end
-                result = {sign_res, exp_round, mantissa_norm_res};
+                result = {sign_res_final, exp_round, mantissa_norm_res};
             end
 
             3'b100: begin // **Round to Maximum Magnitude**
@@ -169,11 +188,11 @@ always_comb begin
                     mantissa_norm_res = mantissa_norm;
                     exp_round = exp_norm;
                 end
-                result = {sign_res, exp_round, mantissa_norm_res};
+                result = {sign_res_final, exp_round, mantissa_norm_res};
             end
 
             default: begin
-                result = {sign_res, exp_norm, mantissa_norm};
+                result = {sign_res_final, exp_norm, mantissa_norm};
             end
         endcase            
 end
