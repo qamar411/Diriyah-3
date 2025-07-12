@@ -2,7 +2,6 @@ import riscv_types::*;
 
 
 
-
 module fpmul_r4 #(
     parameter addr_width = 5,
     parameter num_rds = 2
@@ -20,12 +19,14 @@ module fpmul_r4 #(
     output logic [addr_width-1:0] uu_rd [0:num_rds-1],
     output logic [num_rds-1:0] uu_reg_write,
     output logic [num_rds-1:0] uu_FP_reg_write,
-    output logic [9:0] exp_o,
-    output logic [47:0] mant_o,
+    output logic [7:0]  exp_o, 
+    output logic [46:0] mant_o,
     output logic        sign_o,
-    output logic        is_NaN_o, 
+
+    output logic        is_NaN_o,
     output logic        is_inf_o,
     output logic        is_zero_o
+    
 );
     // Output registers (for pipeline)
     logic [2:0] rm_pi;
@@ -34,14 +35,20 @@ module fpmul_r4 #(
     logic [7:0] exp_a_pi, exp_b_pi;
     logic [31:0] a_pi, b_pi;
   
+    logic sign_res;
     logic [7:0] exp_a, exp_b, exp_res;
-    logic [7:0] final_exp;
-    logic [22:0] final_mant;
+    logic signed [9:0] exp_round;
+    logic [47:0] mant_round;
 
     assign exp_a_pi = a[30:23];
     assign exp_b_pi = b[30:23];
+
+    logic G,R,S;
     
-    logic signed [9:0] exp_a_unbiased, exp_b_unbiased; 
+    logic signed [9:0] exp_a_unbiased, exp_b_unbiased;
+    logic [5:0] lz;  // Leading zeros (0 to 47)    
+    logic signed [9:0] norm_exp_s; // Signed adjusted exponent
+    logic [47:0] mant_res_shifted;  // temporary for shifted result
     
     // Pre-multiply registers (for pipeline) 
     // NOTE: signals labeled as _pi2 precede _pi signals
@@ -51,12 +58,16 @@ module fpmul_r4 #(
     logic [23:0] mant_a_pi2, mant_b_pi2;
     logic [2:0] rm_pi2;
     exe_p_mux_bus_type pipelined_signals_pi;
+    logic [5:0] shift_amt;
+    logic [6:0] shift_amt_extended;
     logic is_nan_a;
     logic is_nan_b;
     logic is_inf_a;
     logic is_inf_b;
     logic is_zero_a;
     logic is_zero_b;
+
+    logic [23:0] grs;
     
     // Pre-multiply pipeline stage (prepares operands)
     always_ff @(posedge clk, negedge rst_n) begin
@@ -103,6 +114,7 @@ module fpmul_r4 #(
 
     assign mant_round_pi = mant_a_pi2 * mant_b_pi2;
     
+    logic inc_overflow; 
  
  // Output pipeline stage (holds control signals)
       always@(posedge clk ,negedge rst_n)begin 
@@ -111,10 +123,10 @@ module fpmul_r4 #(
             a_pi <= 'b0;
             b_pi <= 'b0;
             
-            sign_o <= 0;
+            sign_res <= 0;
             P_O_signal <= 0;
             rm_pi <= 0;
-            mant_o <= 0;
+            mant_round <= 0;
             exp_a <=0 ;
             exp_b <=0;
             fmul_pipeline_signals_o <= 0;
@@ -123,10 +135,10 @@ module fpmul_r4 #(
             a_pi <= 'b0;
             b_pi <= 'b0;
             
-            sign_o <= 0;
+            sign_res <= 0;
             P_O_signal <= 0;
             rm_pi <= 0;
-            mant_o <= 0;
+            mant_round <= 0;
             exp_a <=0 ;
             exp_b <=0;
             fmul_pipeline_signals_o <= 0;
@@ -135,10 +147,10 @@ module fpmul_r4 #(
             a_pi <= mant_a_pi2;
             b_pi <= mant_b_pi2;
             
-            sign_o <= sign_res_pi;
+            sign_res <= sign_res_pi;
             P_O_signal <= P_signal_pi;
             rm_pi <= rm_pi2;
-            mant_o <= mant_round_pi;
+            mant_round <= mant_round_pi;
             exp_a <= exp_a_pi2;
             exp_b <= exp_b_pi2;
       
@@ -159,10 +171,62 @@ module fpmul_r4 #(
         exp_b_unbiased = (exp_b == 8'h00) ? -126 : {1'b0, exp_b} - 127;
     
         // Add exponents for multiplication
-        exp_o = exp_a_unbiased + exp_b_unbiased + 127;
+        exp_round = exp_a_unbiased + exp_b_unbiased + 127;
+    end
+            
+    // Normalize
+    assign     shift_amt_extended = 1 - norm_exp_s;
+    always_comb begin
+        shift_amt = 'b0;
+        norm_exp_s = 'b0;
+
+
+        // Not normalized: count leading zeros and shift left
+        lz = count_leading_zeros(mant_round); 
+        mant_res_shifted = mant_round << lz;
+        norm_exp_s = $signed(exp_round) - lz; 
+
+        if (norm_exp_s >= 1) begin
+            // Normal number
+            if (mant_round[47]) begin
+                // Overflow in mantissa (bit 47 is high): shift right by 1, exponent++
+                mant_o = mant_round[46:0];
+                exp_o = exp_round + 1;
+            end else if (mant_round[46]) begin
+                // Already normalized: just extract mantissa
+                mant_o = {mant_round[45:0], 1'b0};
+                exp_o = exp_round[7:0];
+            end else begin            
+                mant_o = mant_res_shifted[46:0];
+                exp_o = norm_exp_s + 1;
+            end
+        end else if (norm_exp_s == 0 && mant_res_shifted[47]) begin
+            // Subnormal number
+            exp_o = 8'd1;
+            mant_o = mant_res_shifted[46:0]; // Extracts 25 bits downwards   
+        end else if (norm_exp_s >= -23) begin
+            // Subnormal number
+            shift_amt = 1 - norm_exp_s;  
+            exp_o = 8'd0;
+            mant_o = {mant_res_shifted, 1'b0} >> shift_amt; // Extracts 25 bits downwards
+            
+        end else if(norm_exp_s >= -25) begin
+            // Underflow to zero
+            shift_amt = 1 - norm_exp_s;
+            exp_o = 8'd0;
+            if(shift_amt == shift_amt_extended) begin 
+                mant_o = {mant_res_shifted, 1'b0} >> shift_amt; // Extracts 25 bits downwards
+            end else begin 
+                mant_o = |mant_round ? 'b0 : 'b1;
+            end
+        end else begin 
+            exp_o = 8'd0;
+            mant_o = |mant_round ? 'b0 : 'b1;
+        end
     end
 
 
+    
     // Special case handling
     always_comb begin
         is_nan_a = (exp_a == 8'hFF && a_pi[22:0] != 0);
@@ -172,19 +236,24 @@ module fpmul_r4 #(
         is_zero_a = (exp_a == 8'h00 && a_pi[22:0] == 0);
         is_zero_b = (exp_b == 8'h00 && b_pi[22:0] == 0);
 
-        is_NaN_o = 1'b0;
-        is_inf_o = 1'b0;    
-        is_zero_o = 1'b0;
+        is_NaN_o = 0;
+        is_inf_o = 0;   
+        is_zero_o = 0;
         
         if (is_nan_a || is_nan_b) begin // NaN case (if any input is NaN, result is NaN)
-            is_NaN_o = 1'b1;
+            is_NaN_o = 1;
         end else if ((is_inf_a && is_zero_b) || (is_inf_b && is_zero_a)) begin
-            is_NaN_o = 1'b1;
+            is_NaN_o = 1;
         end else if (is_inf_a || is_inf_b) begin // Infinity case
-            is_inf_o = 1'b1;
+            is_inf_o = 1;
         end else if (is_zero_a || is_zero_b) begin // Zero case
-            is_zero_o = 1'b1;
+            is_zero_o = 1;
         end 
-    end  
+        
+    end
+
+    assign sign_o = sign_res;
+
+
     
 endmodule

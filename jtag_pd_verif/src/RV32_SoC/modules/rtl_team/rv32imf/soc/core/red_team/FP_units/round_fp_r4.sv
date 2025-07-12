@@ -30,7 +30,7 @@ module round_fp_r4(
         input [2:0] grs,
         input [2:0] rm,
         input logic  sign_res,
-        input logic [9:0] exp_norm,
+        input logic [7:0] exp_norm,
         output logic [31:0] result,
         
         input logic [22:0] mantissa_norm

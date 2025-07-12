@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module add_sub_FP(
+module add_sub_gp_r4(
         input sign1,
         input sign2,
         input [47:0] mantissa1_aligned,
@@ -43,13 +43,9 @@ always_comb begin
          {mantissa_sum_extended} = mantissa1_aligned - mantissa2_aligned;
          sign_res = sign1;
      end 
-     else if (mantissa2_aligned > mantissa1_aligned) begin
-         {mantissa_sum_extended} = mantissa2_aligned - mantissa1_aligned;
-         sign_res = sign2;
-     end 
      else begin
          {mantissa_sum_extended} = mantissa2_aligned - mantissa1_aligned;
-         sign_res = 1'b0;
+         sign_res = sign2;
      end
      
      sticky_bit = 'b0;

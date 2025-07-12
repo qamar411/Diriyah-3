@@ -195,6 +195,21 @@ package riscv_types;
 //    } branch_t;
 
     // NEW BRANCH TYPE
+
+
+    // Function to count leading zeros
+    function automatic [5:0] count_leading_zeros(input logic [47:0] in);
+        integer i;
+        begin
+            count_leading_zeros = 0;
+            for (i = 47; i >= 0; i = i - 1) begin
+                if (in[i] == 1'b1)
+                    break;
+                count_leading_zeros = count_leading_zeros + 1;
+            end
+        end
+    endfunction    
+    
     typedef enum logic [2:0] {
         BEQ = 'b0, 
         BNE = 'b1, 

@@ -24,12 +24,12 @@ module normalize_fp_r4(
         input sign1,
         input sign2,
         input [47:0] mantissa_sum,
-        input [9:0] exp_res,
+        input [7:0] exp_res,
         input  carry,
         input  zero,
         input  sticky_bit,
         output logic [22:0] mantissa_norm,
-        output logic [9:0] exp_norm,
+        output logic [7:0] exp_norm,
         output logic underflow,
         output logic [2:0] grs 
     );

@@ -69,12 +69,12 @@ module R4_Unit #(
                 add_sub = 1'b1;
             end 
             
-            FNMADD:begin // -(rs1 * rs2) + rs3
-                add_sub = 1'b0;
+            FNMADD:begin // -(rs1 * rs2) - rs3
+                add_sub = 1'b1;
             end   
             
-            FNMSUB:begin // -(rs1 * rs2) - rs3
-                add_sub = 1'b1;
+            FNMSUB:begin // -(rs1 * rs2) + rs3
+                add_sub = 1'b0;
             end
             
             default: begin
@@ -84,13 +84,13 @@ module R4_Unit #(
     end 
  
     logic        P_O_signal;
-    logic [9:0]  mul_exp_o;
-    logic [47:0] mul_mant_o;
+    logic [7:0]  mul_exp_o;
+    logic [46:0] mul_mant_o;
     logic        mul_sign_o;
     logic        adder_op1_sign;
 
-    logic [9:0]  adder_op1_exp_pi;
-    logic [47:0] adder_op1_mant_pi;
+    logic [7:0]  adder_op1_exp_pi;
+    logic [46:0] adder_op1_mant_pi;
     logic        adder_op1_sign_pi;
 
 

@@ -6,8 +6,8 @@ module faddsub_r4 (
     input  logic        en,
     input  logic [2:0]  clear,    // based on number of stages in this pipelined unit 
     input  logic        add_sub,
-    input  logic [9:0]  num1_exp,   
-    input  logic [47:0] num1_mant,  
+    input  logic [7:0]  num1_exp,   
+    input  logic [46:0] num1_mant,  
     input  logic        num1_sign,  
     input  logic        num1_is_NaN, 
     input  logic        num1_is_inf, 
@@ -127,7 +127,7 @@ logic res_is_zero_N;
     logic             inf2_EA                ;
     logic             sign1_EA                ;
     logic             sign2_EA                ;
-    logic [9:0]       exp_res_EA             ;
+    logic [7:0]       exp_res_EA             ;
     logic [47:0]      mantissa1_aligned_EA   ;
     logic [47:0]      mantissa2_aligned_EA   ;
     logic [2:0] rm_EA;
@@ -216,7 +216,7 @@ end
         logic [47:0] mantissa_sum_AS    ;
         logic        carry_AS           ;
         logic        sign_res_AS        ;  
-        logic [9:0]       exp_res_AS             ;
+        logic [7:0]       exp_res_AS             ;
         logic NaN_AS   ;
         logic inf1_AS  ;
         logic inf2_AS  ;
@@ -288,7 +288,7 @@ end
 
 end
         logic [47:0] mantissa_norm;
-        logic [9:0] exp_norm;
+        logic [7:0] exp_norm;
         logic underflow;
              // N  normalize stage
 normalize_fp_r4 normalize_stage(
@@ -311,7 +311,7 @@ normalize_fp_r4 normalize_stage(
 
         logic [22:0] mantissa_norm_N;
         logic [2:0] grs_N;
-        logic [9:0]  exp_norm_N      ;
+        logic [7:0]  exp_norm_N      ;
         logic        sign_res_N      ;
         logic   NaN_N;   
         logic  inf1_N;  

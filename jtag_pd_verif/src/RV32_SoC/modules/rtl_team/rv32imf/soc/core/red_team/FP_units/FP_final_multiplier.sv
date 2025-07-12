@@ -1,19 +1,5 @@
 import riscv_types::*;
 
-// Function to count leading zeros
-function automatic [5:0] count_leading_zeros(input logic [47:0] in);
-    integer i;
-    begin
-        count_leading_zeros = 0;
-        for (i = 47; i >= 0; i = i - 1) begin
-            if (in[i] == 1'b1)
-                break;
-            count_leading_zeros = count_leading_zeros + 1;
-        end
-    end
-endfunction
-
-
 module FP_final_Multiplier #(
     parameter addr_width = 5,
     parameter num_rds = 2
