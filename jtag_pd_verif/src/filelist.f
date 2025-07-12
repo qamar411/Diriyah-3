@@ -117,6 +117,11 @@ RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/priority_units/priority_cont
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/priority_units/priority_mux.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/priority_units/P_Decoder.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/FP_units/FP_final_multiplier.sv
+RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/FP_units/extract_align_r4.sv
+RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/FP_units/normalize_fp_r4.sv
+RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/FP_units/round_fp_r4.sv
+RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/FP_units/faddsub_r4.sv
+RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/FP_units/fpmul_r4.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/FP_units/R4_unit.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/FP_units/fdiv.sv
 
