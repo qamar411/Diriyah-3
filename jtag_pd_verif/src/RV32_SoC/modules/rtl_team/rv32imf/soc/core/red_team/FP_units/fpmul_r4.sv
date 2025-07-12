@@ -248,8 +248,15 @@ module fpmul_r4 #(
             is_inf_o = 1;
         end else if (is_zero_a || is_zero_b) begin // Zero case
             is_zero_o = 1;
+        end else if (exp_res >= 8'hFF || (exp_round > 254)) begin // Overflow case (result is greater than max value, return infinity)
+            case (rm_pi)
+                3'b000:                is_inf_o = 1; // Infinity
+                3'b010:  if( sign_res) is_inf_o = 1; // Round down to -∞
+                3'b011:  if(~sign_res) is_inf_o = 1; // Round up to +∞
+                3'b100:                is_inf_o = 1; // Round to Maximum Magnitude
+                3'b001:                is_inf_o = 0; // Round Toward Zero 
+            endcase
         end 
-        
     end
 
     assign sign_o = sign_res;
