@@ -27,6 +27,7 @@ module extract_align_r4(
         input logic         num1_sign,  // sign of num1
         input logic [31:0]  num2,
         input logic         num1_is_NaN,
+        input logic         num1_is_zero,
         output logic        NaN,
         output logic        inf2,
         output logic        sign1,
@@ -68,9 +69,15 @@ module extract_align_r4(
         res_zero = 'b0;
          
 
+            if(num1_is_zero) begin
+                mantissa1 = 48'b0; // zero mantissa
+                exp1_sub = 10'b0; // zero exponent
+            end 
+            else begin 
+                mantissa1 = man1;
+                exp1_sub = exp1;
+            end
 
-            mantissa1 = man1;
-            exp1_sub = exp1;
             // 2nd operand
             if (exp2==0 && man2 ==0) begin
                 mantissa2 = {1'b0,1'b0, man2,24'b0};

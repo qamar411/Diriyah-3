@@ -69,12 +69,12 @@ module R4_Unit #(
                 add_sub = 1'b1;
             end 
             
-            FNMADD:begin // -(rs1 * rs2) - rs3
-                add_sub = 1'b1;
+            FNMADD:begin // -(rs1 * rs2) + rs3
+                add_sub = 1'b0;
             end   
             
-            FNMSUB:begin // -(rs1 * rs2) + rs3
-                add_sub = 1'b0;
+            FNMSUB:begin // -(rs1 * rs2) - rs3
+                add_sub = 1'b1;
             end
             
             default: begin

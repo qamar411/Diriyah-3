@@ -105,6 +105,7 @@ logic res_is_zero_N;
         .num1_mant(num1_mant)                  ,
         .num1_sign(num1_sign)                  ,
         .num1_is_NaN(num1_is_NaN)              ,
+        .num1_is_zero(num1_is_zero)          ,
         .num2(num2)                            ,
         // outputs                             ,
         .NaN(NaN)                              ,
