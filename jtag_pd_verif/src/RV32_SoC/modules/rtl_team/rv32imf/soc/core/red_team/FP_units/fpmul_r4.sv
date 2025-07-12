@@ -69,6 +69,9 @@ module fpmul_r4 #(
     logic is_zero_b;
 
     logic [23:0] grs;
+
+    logic [7:0] final_exp;
+    logic [46:0] final_mant;
     
     // Pre-multiply pipeline stage (prepares operands)
     always_ff @(posedge clk, negedge rst_n) begin
@@ -191,38 +194,38 @@ module fpmul_r4 #(
             // Normal number
             if (mant_round[47]) begin
                 // Overflow in mantissa (bit 47 is high): shift right by 1, exponent++
-                mant_o = mant_round[46:0];
-                exp_o = exp_round + 1;
+                final_mant = mant_round[46:0];
+                final_exp = exp_round + 1;
             end else if (mant_round[46]) begin
                 // Already normalized: just extract mantissa
-                mant_o = {mant_round[45:0], 1'b0};
-                exp_o = exp_round[7:0];
+                final_mant = {mant_round[45:0], 1'b0};
+                final_exp = exp_round[7:0];
             end else begin            
-                mant_o = mant_res_shifted[46:0];
-                exp_o = norm_exp_s + 1;
+                final_mant = mant_res_shifted[46:0];
+                final_exp = norm_exp_s + 1;
             end
         end else if (norm_exp_s == 0 && mant_res_shifted[47]) begin
             // Subnormal number
-            exp_o = 8'd1;
-            mant_o = mant_res_shifted[46:0]; // Extracts 25 bits downwards   
+            final_exp = 8'd1;
+            final_mant = mant_res_shifted[46:0]; // Extracts 25 bits downwards   
         end else if (norm_exp_s >= -23) begin
             // Subnormal number
             shift_amt = 1 - norm_exp_s;  
-            exp_o = 8'd0;
-            mant_o = {mant_res_shifted, 1'b0} >> shift_amt; // Extracts 25 bits downwards
+            final_exp = 8'd0;
+            final_mant = {mant_res_shifted, 1'b0} >> shift_amt; // Extracts 25 bits downwards
             
         end else if(norm_exp_s >= -25) begin
             // Underflow to zero
             shift_amt = 1 - norm_exp_s;
-            exp_o = 8'd0;
+            final_exp = 8'd0;
             if(shift_amt == shift_amt_extended) begin 
-                mant_o = {mant_res_shifted, 1'b0} >> shift_amt; // Extracts 25 bits downwards
+                final_mant = {mant_res_shifted, 1'b0} >> shift_amt; // Extracts 25 bits downwards
             end else begin 
-                mant_o = |mant_round ? 'b0 : 'b1;
+                final_mant = |mant_round ? 'b0 : 'b1;
             end
         end else begin 
-            exp_o = 8'd0;
-            mant_o = |mant_round ? 'b0 : 'b1;
+            final_exp = 8'd0;
+            final_mant = |mant_round ? 'b0 : 'b1;
         end
     end
 
@@ -240,6 +243,9 @@ module fpmul_r4 #(
         is_NaN_o = 0;
         is_inf_o = 0;   
         is_zero_o = 0;
+
+        exp_o = final_exp;
+        mant_o = final_mant;
         
         if (is_nan_a || is_nan_b) begin // NaN case (if any input is NaN, result is NaN)
             is_NaN_o = 1;
@@ -249,11 +255,23 @@ module fpmul_r4 #(
             is_inf_o = 1;
         end else if (is_zero_a || is_zero_b) begin // Zero case
             is_zero_o = 1;
-        end else if (exp_o >= 8'hFF || (exp_round > 254)) begin // Overflow case (result is greater than max value, return infinity)
+        end else if (final_exp >= 8'hFF || (exp_round > 254)) begin // Overflow case (result is greater than max value, return infinity)
             case (rm_pi)
                 3'b000:                is_inf_o = 1; // Infinity
-                3'b010:  if( adder_op1_sign) is_inf_o = 1; // Round down to -∞
-                3'b011:  if(~adder_op1_sign) is_inf_o = 1; // Round up to +∞
+                3'b010:                begin 
+                    if( adder_op1_sign) is_inf_o = 1; // Round down to -∞
+                    else begin                 
+                                        exp_o  = 8'hFF; // Round up to +∞
+                                        mant_o = 47'h7FFFFFFFFFFF; // Maximum magnitude
+                    end
+                end
+                3'b011:                begin 
+                    if(~adder_op1_sign) is_inf_o = 1; // Round up to +∞
+                    else begin                 
+                                        exp_o  = 8'hFF; // Round up to +∞
+                                        mant_o = 47'h7FFFFFFFFFFF; // Maximum magnitude
+                    end
+                end
                 3'b100:                is_inf_o = 1; // Round to Maximum Magnitude
                 3'b001:                is_inf_o = 0; // Round Toward Zero 
             endcase
