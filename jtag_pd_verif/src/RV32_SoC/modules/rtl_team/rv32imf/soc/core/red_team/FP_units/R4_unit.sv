@@ -83,13 +83,27 @@ module R4_Unit #(
         endcase
     end 
  
-    logic P_O_signal;
+    logic        P_O_signal;
+    logic [9:0]  mul_exp_o;
+    logic [47:0] mul_mant_o;
+    logic        mul_sign_o;
+    logic        adder_op1_sign;
 
-    FP_final_Multiplier M1 (.a(a),  // its name was "FP_Multiplier"
+    logic [9:0]  adder_op1_exp_pi;
+    logic [47:0] adder_op1_mant_pi;
+    logic        adder_op1_sign_pi;
+
+
+    logic       mul_NaN_o, mul_inf_o, mul_zero_o; 
+    logic       adder_op1_is_NaN_pi, adder_op1_is_inf_pi, adder_op1_is_zero_pi;
+
+    fpmul_r4 M1 (.a(a),  // its name was "FP_Multiplier"
         .b(b),
         .clk(clk),      // added
         .rst_n(rst),      // added
-        .result(result_temp),
+        .exp_o(mul_exp_o),
+        .mant_o(mul_mant_o),
+        .sign_o(mul_sign_o),
         .rm(rm),
         .fmul_pipeline_signals_i(fadd_sub_pipeline_signals_i),
         .fmul_pipeline_signals_o(stages[0]),
@@ -99,15 +113,19 @@ module R4_Unit #(
         .uu_rd(R4_fmul_uu_rd),
         .uu_reg_write(R4_fmul_uu_reg_write),
         .uu_FP_reg_write(R4_fmul_uu_FP_reg_write),
-        .en(en)
+        .en(en),
+
+        .is_NaN_o(mul_NaN_o), 
+        .is_inf_o(mul_inf_o),
+        .is_zero_o(mul_zero_o)
     ); // takes 3 cycles
     
 
     always@(*)begin 
         if(alu_ctrl_pi == FNMADD || alu_ctrl_pi == FNMSUB) begin 
-            result_temp2 = {!result_temp[31], result_temp[30:0]};
+            adder_op1_sign = ~mul_sign_o; // negate the sign 
         end else 
-            result_temp2 = result_temp;
+            adder_op1_sign = mul_sign_o; // keep the sign 
     end
     
     
@@ -166,19 +184,34 @@ module R4_Unit #(
     // single pipeline register between "fmul" and "fadd_sub" units
     always@(posedge clk ,negedge rst) begin
         if(!rst) begin
-            result_temp_pi <= 0;
+            adder_op1_exp_pi <= 'b0;
+            adder_op1_mant_pi <= 'b0;   
+            adder_op1_sign_pi <= 1'b0;
+            adder_op1_is_inf_pi <= 1'b0;
+            adder_op1_is_NaN_pi <= 1'b0;
+            adder_op1_is_zero_pi <= 1'b0;
             p_pi_signal <= 0;
             stages[1] <= 0;
             alu_ctrl_pi <= ADD; // defualt value
         
         end else if (clear[2]) begin 
-            result_temp_pi <= 0;
+            adder_op1_exp_pi <= 'b0;
+            adder_op1_mant_pi <= 'b0;   
+            adder_op1_sign_pi <= 1'b0;
+            adder_op1_is_inf_pi <= 1'b0;
+            adder_op1_is_NaN_pi <= 1'b0;
+            adder_op1_is_zero_pi <= 1'b0;
             p_pi_signal <= 0;
             stages[1] <= 'b0;
             alu_ctrl_pi <= ADD; // defualt value
         
         end else if (en) begin 
-            result_temp_pi <= result_temp2;
+            adder_op1_exp_pi <= mul_exp_o; // delayed value
+            adder_op1_mant_pi <= mul_mant_o; // delayed value   
+            adder_op1_sign_pi <= adder_op1_sign; // delayed value
+            adder_op1_is_inf_pi <= mul_inf_o; // delayed value
+            adder_op1_is_NaN_pi <= mul_NaN_o; // delayed        
+            adder_op1_is_zero_pi <= mul_zero_o; // delayed value
             p_pi_signal <= P_O_signal;
             stages[1] <= stages[0];  // no needs
             alu_ctrl_pi <= alu_ctrl_pi2;
@@ -189,13 +222,18 @@ module R4_Unit #(
     
     logic p_add;
 
-    FP_add_sub A1 (
+    faddsub_r4 A1 (
         .clk(clk), 
         .rst(rst), 
         .en(en),
         .clear(clear[5:3]), // clear[1] duplicated?
         .add_sub(add_sub_pi),
-        .num1(result_temp_pi),
+        .num1_exp(adder_op1_exp_pi),
+        .num1_mant(adder_op1_mant_pi),
+        .num1_sign(adder_op1_sign_pi),
+        .num1_is_NaN(adder_op1_is_NaN_pi),
+        .num1_is_inf(adder_op1_is_inf_pi), 
+        .num1_is_zero(adder_op1_is_zero_pi),
         .num2(c_temp_pi),
         .rm(rm_pi),
         .sum(result),  // sum
