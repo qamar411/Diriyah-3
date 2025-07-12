@@ -100,14 +100,14 @@ module extract_align_r4(
         
             
             // Align exponent by shifting mantissa
-            if ($signed(exp1_sub) > $signed({2'b00, exp2_sub})) begin
+            if (exp1_sub > exp2_sub) begin
                 exp_diff = exp1_sub - exp2_sub;
                 mantissa2_aligned = mantissa2 >> exp_diff;
                 // mantissa2_aligned = mantissa2 >> $clog2(exp_diff); // quick test
                 mantissa1_aligned = mantissa1;
                 exp_res = exp1_sub;
             end 
-            else if($signed(exp1_sub) < $signed({2'b00, exp2_sub}))begin
+            else if(exp1_sub < exp2_sub)begin
                 exp_diff = exp2_sub - exp1_sub;
                 mantissa1_aligned = mantissa1 >> exp_diff;
                 // mantissa1_aligned = mantissa1 >> $clog2(exp_diff); // quick test
