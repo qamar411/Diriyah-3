@@ -25,7 +25,8 @@ module fpmul_r4 #(
 
     output logic        is_NaN_o,
     output logic        is_inf_o,
-    output logic        is_zero_o
+    output logic        is_zero_o,
+    input  logic        adder_op1_sign
     
 );
     // Output registers (for pipeline)
@@ -251,8 +252,8 @@ module fpmul_r4 #(
         end else if (exp_o >= 8'hFF || (exp_round > 254)) begin // Overflow case (result is greater than max value, return infinity)
             case (rm_pi)
                 3'b000:                is_inf_o = 1; // Infinity
-                3'b010:  if( sign_res) is_inf_o = 1; // Round down to -∞
-                3'b011:  if(~sign_res) is_inf_o = 1; // Round up to +∞
+                3'b010:  if( adder_op1_sign) is_inf_o = 1; // Round down to -∞
+                3'b011:  if(~adder_op1_sign) is_inf_o = 1; // Round up to +∞
                 3'b100:                is_inf_o = 1; // Round to Maximum Magnitude
                 3'b001:                is_inf_o = 0; // Round Toward Zero 
             endcase

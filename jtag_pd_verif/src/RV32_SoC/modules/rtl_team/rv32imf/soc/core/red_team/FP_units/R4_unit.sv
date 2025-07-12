@@ -114,7 +114,7 @@ module R4_Unit #(
         .uu_reg_write(R4_fmul_uu_reg_write),
         .uu_FP_reg_write(R4_fmul_uu_FP_reg_write),
         .en(en),
-
+        .adder_op1_sign(adder_op1_sign),
         .is_NaN_o(mul_NaN_o), 
         .is_inf_o(mul_inf_o),
         .is_zero_o(mul_zero_o)
