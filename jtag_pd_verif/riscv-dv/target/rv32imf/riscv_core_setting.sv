@@ -27,8 +27,7 @@ parameter satp_mode_t SATP_MODE = BARE;
 privileged_mode_t supported_privileged_mode[] = {MACHINE_MODE};
 
 // Unsupported instructions
-riscv_instr_name_t unsupported_instr[$] = {FMSUB_S, FNMSUB_S, FMADD_S, FNMADD_S,
-                                           FDIV_S, FSQRT_S, FMUL_S};
+riscv_instr_name_t unsupported_instr[$] = { FDIV_S, FSQRT_S};
 
 // ISA supported by the processor
 riscv_instr_group_t supported_isa[$] = {RV32I, RV32M, RV32F};

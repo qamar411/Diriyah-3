@@ -9,7 +9,7 @@ ROUNDING_OPS = {
     'fmadd.s': 4,
     'fnmadd.s': 4,
     'fnmsub.s': 4,
-    'fnmsub.s': 4,
+    'fmsub.s': 4,
     'fadd.s': 3,
     'fsub.s': 3,
     'fmul.s': 3,

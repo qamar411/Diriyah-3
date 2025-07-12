@@ -68,12 +68,15 @@ module FP_final_Multiplier #(
     logic [2:0] rm_pi2;
     exe_p_mux_bus_type pipelined_signals_pi;
     logic [5:0] shift_amt;
+    logic [6:0] shift_amt_extended;
     logic is_nan_a;
     logic is_nan_b;
     logic is_inf_a;
     logic is_inf_b;
     logic is_zero_a;
     logic is_zero_b;
+
+    logic [23:0] grs;
     
     // Pre-multiply pipeline stage (prepares operands)
     always_ff @(posedge clk, negedge rst_n) begin
@@ -150,8 +153,8 @@ module FP_final_Multiplier #(
             fmul_pipeline_signals_o <= 0;
         
          end else if (en) begin 
-            a_pi <= a_pi2;
-            b_pi <= b_pi2;
+            a_pi <= mant_a_pi2;
+            b_pi <= mant_b_pi2;
             
             sign_res <= sign_res_pi;
             P_O_signal <= P_signal_pi;
@@ -181,111 +184,122 @@ module FP_final_Multiplier #(
     end
             
     // Normalize
+    assign     shift_amt_extended = 1 - norm_exp_s;
     always_comb begin
-        if (mant_round[47]) begin
-            // Overflow in mantissa (bit 47 is high): shift right by 1, exponent++
-            final_mant = mant_round[46:24];
-            final_exp = exp_round + 1;
-        end else if (mant_round[46]) begin
-            // Already normalized: just extract mantissa
-            final_mant = mant_round[45:23];
-            final_exp = exp_round[7:0];
-        end else begin
-            // Not normalized: count leading zeros and shift left
-            lz = count_leading_zeros(mant_round); 
-            mant_res_shifted = mant_round << lz;
-            norm_exp_s = $signed(exp_round) - lz; 
+        shift_amt = 'b0;
+        norm_exp_s = 'b0;
+        grs = 'b0;
 
-            if (norm_exp_s >= 1) begin
-                // Normal number
+
+        // Not normalized: count leading zeros and shift left
+        lz = count_leading_zeros(mant_round); 
+        mant_res_shifted = mant_round << lz;
+        norm_exp_s = $signed(exp_round) - lz; 
+
+        if (norm_exp_s >= 1) begin
+            // Normal number
+            if (mant_round[47]) begin
+                // Overflow in mantissa (bit 47 is high): shift right by 1, exponent++
+                final_mant = mant_round[46:24];
+                final_exp = exp_round + 1;
+                {G, R, S} = {mant_round[23], mant_round[22], |mant_round[21:0]};
+            end else if (mant_round[46]) begin
+                // Already normalized: just extract mantissa
+                final_mant = mant_round[45:23];
+                final_exp = exp_round[7:0];
+                {G, R, S} = {mant_round[22], mant_round[21], |mant_round[20:0]};
+            end else begin            
                 final_exp = norm_exp_s + 1;
                 final_mant = mant_res_shifted[46:24];
-            end else if (norm_exp_s >= -23) begin
-                // Subnormal number
-                shift_amt = 1 - norm_exp_s;
-                final_exp = 8'd0;
-                final_mant = mant_res_shifted[47-:25] >> shift_amt; // Extracts 25 bits downwards
-            end else begin
-                // Underflow to zero
-                final_exp = 8'd0;
-                final_mant = 23'd0;
+                {G, R, S} = {mant_res_shifted[23], mant_res_shifted[22], |mant_res_shifted[21:0]};
             end
+        end else if (norm_exp_s == 0 && mant_res_shifted[47]) begin
+            // Subnormal number
+            final_exp = 8'd1;
+            final_mant = mant_res_shifted[46:24]; // Extracts 25 bits downwards                
+            {G, R, S} = {mant_res_shifted[23], mant_res_shifted[22], |mant_res_shifted[21:0]};
+        end else if (norm_exp_s >= -23) begin
+            // Subnormal number
+            shift_amt = 1 - norm_exp_s;  
+            final_exp = 8'd0;
+            final_mant = mant_res_shifted[47:23] >> shift_amt; // Extracts 25 bits downwards
+            grs[22:0] = mant_res_shifted >> shift_amt;                
+            {G, R, S} = {grs[22], grs[21], |grs[20:0]};
+            
+        end else if(norm_exp_s >= -25) begin
+            // Underflow to zero
+            shift_amt = 1 - norm_exp_s;
+            final_exp = 8'd0;
+            final_mant = 23'd0;
+            if(shift_amt == shift_amt_extended) begin 
+                grs = mant_res_shifted >> shift_amt;
+                {G, R, S} = {grs[22], grs[21], |grs[20:0]};
+            end else begin 
+                grs = 0;
+                G = 0;
+                R = 0;
+                S = |mant_round;
+            end
+        end else begin 
+            // Underflow to zero
+            shift_amt = 1 - norm_exp_s;
+            final_exp = 8'd0;
+            final_mant = 23'd0;
+            grs = 0;
+            G = 0;
+            R = 0;
+            S = |mant_round; // does it even matter here? :)
         end
     end
 
     // Round
     always_comb begin
-        G = mant_round[23];
-        R = mant_round[22];
-        S = |mant_round[21:0];
-
+        // G = mant_round[23];
+        // R = mant_round[22];
+        // S = |mant_round[21:0];
+                inc_overflow = 'b0;
                 case (rm_pi)
                 3'b000: begin // *RNE: Round to Nearest, Ties to Even*
                     if (G && (R || S || final_mant[0])) begin
                             {inc_overflow, mant_res} = {1'b0, final_mant} + 1;
-                            exp_res = final_exp + inc_overflow;
                         end else begin
                             mant_res = final_mant;
-                            exp_res = final_exp;
                         end
                 end
                 3'b001: begin // *RTZ: Round Toward Zero (Truncate)*
                       mant_res = final_mant;
-                        exp_res = final_exp;
                 end
                 3'b010: begin // *RDN: Round Down (-∞)*
                     if (sign_res && (R || S || G)) begin
                         {inc_overflow,mant_res} = final_mant + 1;
-                        if(inc_overflow) begin
-                            exp_res = final_exp + 1;
-                        end
-                        else begin
-                            exp_res = final_exp;
-                        end
                     end
                     else
                           mant_res = final_mant;
-                        exp_res = final_exp;
                 end
                 3'b011: begin // *RUP: Round Up (+∞)*
                     if (~sign_res && (R || S || G)) begin
                         {inc_overflow,mant_res} = final_mant + 1;
-                        if(inc_overflow) begin
-                            exp_res = final_exp + 1;
-                        end
-                        else begin
-                             exp_res = final_exp ;
-                        end
                     end
                     else
                           mant_res = final_mant;
-                        exp_res = final_exp;
                 end
                 3'b100: begin // round to maximum magnitude 
                     if (G) begin
                         {inc_overflow,mant_res} = final_mant + 1;
-                        if(inc_overflow) begin
-                            exp_res = final_exp + 1;
-                        end
-                        else begin
-                            exp_res = final_exp;
-                        end  
                     end
                     else
                         mant_res = final_mant;
-                        exp_res = final_exp;
                 end
                 default : begin // *RNE: Round to Nearest, Ties to Even*
                         if (G && (R || S || final_mant[0])) begin
                             {inc_overflow, mant_res} = {1'b0, final_mant} + 1;
-                            exp_res = final_exp + inc_overflow;
                         end else begin
                             mant_res = final_mant;
-                            exp_res = final_exp;
                         end
                     end
                 endcase
             end
+    assign exp_res = final_exp + inc_overflow;
     
     // Special case handling
     always_comb begin
@@ -305,9 +319,33 @@ module FP_final_Multiplier #(
         end else if (is_zero_a || is_zero_b) begin // Zero case
             result = {sign_res, 8'b0, 23'b0};
         end else if (exp_res >= 8'hFF || (exp_round > 254)) begin // Overflow case (result is greater than max value, return infinity)
-            result = {sign_res, 8'hFF, 23'b0};
-        end else if (exp_round <= -125 ) begin // Result underflow
-            result = {sign_res, 8'b0, 23'b0};
+            case (rm_pi)
+                3'b000: begin // **RNE: Round to Nearest, Ties to Even**
+                    result = {sign_res, 8'd255, 23'd0}; // Infinity
+                end
+
+                3'b011: begin // **RUP: Round Up (+∞)**
+                    if(sign_res) result = {sign_res, 8'd254, 23'h7fffff}; 
+                    else result = {sign_res, 8'd255, 23'd0}; // Infinity
+                end
+
+                3'b100: begin // **RMM: Round to Maximum Magnitude**
+                    result = {sign_res, 8'd255, 23'd0}; // Infinity
+                end
+
+                3'b001: begin // **RTZ: Round Toward Zero**
+                    result = {sign_res, 8'd254, 23'h7fffff}; // Clamp to max finite value
+                end
+
+                3'b010: begin // **RDN: Round Down (-∞)**
+                    if(~sign_res) result = {sign_res, 8'd254, 23'h7fffff}; 
+                    else result = {sign_res, 8'd255, 23'd0}; // Infinity
+                end
+
+                default: begin
+                    result = {sign_res, 8'd255, 23'd0}; // Default: Infinity
+                end
+            endcase
         end else begin // Normal case (result is valid)
             result = {sign_res, exp_res, mant_res};
         end
