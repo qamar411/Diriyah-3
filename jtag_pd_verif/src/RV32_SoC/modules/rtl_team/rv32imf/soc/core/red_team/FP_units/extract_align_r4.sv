@@ -115,9 +115,18 @@ module extract_align_r4(
                 exp_res = exp2_sub;
             end 
             else begin
-                mantissa1_aligned = mantissa1;
-                mantissa2_aligned = mantissa2;
-                exp_res = exp1_sub ;
+                if(mantissa1 == mantissa2 && (sign1 != sign2)) begin
+                    res_zero = 1'b1;
+                    mantissa1_aligned = mantissa1;
+                    mantissa2_aligned = mantissa2;
+                    exp_res = 'b0;
+                end
+                else begin
+                    res_zero = 1'b0;
+                    mantissa1_aligned = mantissa1;
+                    mantissa2_aligned = mantissa2;
+                    exp_res = exp1_sub ;
+                end
             end
             
     

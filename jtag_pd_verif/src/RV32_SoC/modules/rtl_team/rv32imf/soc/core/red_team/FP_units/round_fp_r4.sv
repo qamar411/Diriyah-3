@@ -47,7 +47,7 @@ module round_fp_r4(
 
 
     always_comb begin 
-        if(res_is_zero || (result[30:0] == 0)) begin
+        if(res_is_zero || (result[30:0] == 0) && (sign1 != sign2)) begin
             case(rm)
                 3'b000: sign_res_final  = sign_res; // Round to Nearest, Ties to Even
                 3'b011: sign_res_final  = 1'b0;     // Round Up (+∞)
