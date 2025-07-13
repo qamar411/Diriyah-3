@@ -95,6 +95,7 @@ logic res_is_zero;
 logic res_is_zero_EA;
 logic res_is_zero_AS;
 logic res_is_zero_N;
+logic a_is_apox_zero;
         
 
         // EA extract align stage 
@@ -116,7 +117,8 @@ logic res_is_zero_N;
         .exp_res(exp_res)                      ,
         .mantissa1_aligned(mantissa1_aligned)  ,
         .mantissa2_aligned(mantissa2_aligned)  ,
-        .res_zero(res_is_zero) 
+        .res_zero(res_is_zero),
+        .num1_is_apox_zero(a_is_apox_zero)
     );
     assign inf1 = num1_is_inf; 
 
@@ -127,6 +129,7 @@ logic res_is_zero_N;
     logic             inf2_EA                ;
     logic             sign1_EA                ;
     logic             sign2_EA                ;
+    logic             a_is_apox_zero_EA;
     logic [7:0]       exp_res_EA             ;
     logic [47:0]      mantissa1_aligned_EA   ;
     logic [47:0]      mantissa2_aligned_EA   ;
@@ -149,6 +152,7 @@ if (~rst) begin
      a_is_zero_EA <= 1'b0;
      b_is_zero_EA <= 1'b0;
      res_is_zero_EA <= 1'b0;
+     a_is_apox_zero_EA <= 1'b0;
 end
 else if (clear[0]) begin 
     
@@ -165,6 +169,7 @@ else if (clear[0]) begin
      a_is_zero_EA <= 'b0;
      b_is_zero_EA <= 'b0;
      res_is_zero_EA <= 1'b0;
+     a_is_apox_zero_EA <= 1'b0;
 end 
 else if(en) begin 
     
@@ -181,7 +186,7 @@ else if(en) begin
      a_is_zero_EA <= a_is_zero;
      b_is_zero_EA <= b_is_zero;
      res_is_zero_EA <= res_is_zero;
-
+     a_is_apox_zero_EA <= a_is_apox_zero;
 end
 
 end
@@ -223,6 +228,7 @@ end
         logic sign1_AS ;
         logic sign2_AS ;
         logic [2:0] rm_AS ;
+        logic a_is_apox_zero_AS;
   
   
   
@@ -246,6 +252,7 @@ if (~rst) begin
         rm_AS             <=3'd0;
         res_is_zero_AS <= 1'b0;
         sticky_bit_AS <= 1'b0;
+        a_is_apox_zero_AS <= 1'b0;
 
 
 end
@@ -264,6 +271,7 @@ else if (clear[1]) begin
         rm_AS             <=3'd0;
         res_is_zero_AS <= 1'b0;
         sticky_bit_AS <= 1'b0;
+        a_is_apox_zero_AS <= 1'b0;
 
 
   
@@ -283,6 +291,7 @@ else if(en) begin
         rm_AS<=rm_EA;
         res_is_zero_AS <= res_is_zero_EA;
         sticky_bit_AS <= sticky_bit_EA;
+        a_is_apox_zero_AS <= a_is_apox_zero_EA;
 
 end
 
@@ -320,6 +329,7 @@ normalize_fp_r4 normalize_stage(
         logic sign2_N; 
         logic underflow_N; 
         logic [2:0] rm_N; 
+        logic a_is_apox_zero_N;
         
         
 always_ff @(posedge clk , negedge rst) begin
@@ -337,6 +347,7 @@ sign2_N             <=1'b0;
 rm_N<=3'd0;
 underflow_N<=1'b0;
 res_is_zero_N <= 1'b0;
+a_is_apox_zero_N <= 1'b0;
 
 
 
@@ -357,6 +368,7 @@ sign2_N             <=1'b0;
 rm_N<=3'd0;
 underflow_N<=1'b0;
 res_is_zero_N <= 1'b0;
+a_is_apox_zero_N <= 1'b0;
 end 
 else if(en) begin 
 
@@ -372,7 +384,7 @@ sign2_N             <=sign2_AS;
 rm_N<=rm_AS;
 underflow_N<=underflow;
 res_is_zero_N <= res_is_zero_AS;
-
+a_is_apox_zero_N <= a_is_apox_zero_AS;
 
 
 end
@@ -389,6 +401,7 @@ logic [31:0] result_temp;
         .inf2           (inf2_N),
         .sign1          (sign1_N),
         .sign2          (sign2_N),
+        .a_is_apox_zero (a_is_apox_zero_N),
         .grs            (grs_N),
         .rm             (rm_N),
 //        .rm             (~rm_N),    // negate it if you're using RISC-V32 toolchain (like gcc-toolchain or gnu-toolchain)

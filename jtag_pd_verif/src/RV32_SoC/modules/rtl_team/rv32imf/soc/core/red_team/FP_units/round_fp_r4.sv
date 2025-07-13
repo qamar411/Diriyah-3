@@ -34,7 +34,8 @@ module round_fp_r4(
         output logic [31:0] result,
         
         input logic [22:0] mantissa_norm,
-        input logic        res_is_zero
+        input logic        res_is_zero,
+        input logic        a_is_apox_zero
         
     );
 
@@ -50,10 +51,16 @@ module round_fp_r4(
         if(res_is_zero || (result[30:0] == 0) && (sign1 != sign2)) begin
             case(rm)
                 3'b000: sign_res_final  = sign_res; // Round to Nearest, Ties to Even
-                3'b011: sign_res_final  = 1'b0;     // Round Up (+∞)
+                3'b011: begin 
+                    if(a_is_apox_zero) sign_res_final =  sign1;
+                    else sign_res_final  = 1'b0;     // Round Up (+∞)
+                end
                 3'b100: sign_res_final  = sign_res; // Round to Maximum Magnitude
                 3'b001: sign_res_final  = sign_res; // Round Toward Zero
-                3'b010: sign_res_final  = 1'b1;     // Round Down (-∞)
+                3'b010: begin 
+                    if(a_is_apox_zero) sign_res_final =  sign1;
+                    else sign_res_final  = 1'b1;     // Round Up (-∞)
+                end
                 default: sign_res_final = sign_res; // Default: Same as input sign
             endcase
         end else begin

@@ -36,8 +36,8 @@ module extract_align_r4(
         output logic [47:0] mantissa1_aligned,
         output logic [47:0] mantissa2_aligned,
         output logic        zero,
-        output logic        res_zero
-
+        output logic        res_zero,
+        output logic        num1_is_apox_zero
     );
     
 //    logic sign1; 
@@ -51,6 +51,7 @@ module extract_align_r4(
     logic [7:0] exp2_sub;
     logic [7:0] exp_diff;
     logic zero1,zero2;
+    logic apox_zero1;
     
     assign sign1 = num1_sign;
     assign exp1  = num1_exp; 
@@ -59,9 +60,11 @@ module extract_align_r4(
     assign exp2  = num2[30:23];
     assign man2  = num2[22:0];
 
-    assign zero1 = num1_is_zero || (exp1 == 8'h00 && man1 == 47'h0);
-    assign zero2 = (exp2 == 8'h00) && (man2 == 23'h0);
+    assign apox_zero1 = (exp1 == 8'h00 && man1 == 47'h0);
+    assign zero1      = num1_is_zero || apox_zero1;
+    assign zero2      = (exp2 == 8'h00) && (man2 == 23'h0);
     assign zero = zero1 || zero2; 
+    assign num1_is_apox_zero = apox_zero1;
     
     always_comb begin
         NaN = num1_is_NaN || (man2 > 23'h000000 && exp2 == 8'b11111111);
