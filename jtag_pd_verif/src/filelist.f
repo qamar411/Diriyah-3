@@ -12,68 +12,17 @@
 // ============== Verification's Macros ==============
 +define+DV
 +define+TRACER_ENABLE
-// +define+PADS_TRACER_ENABLE
-//+define+DV_DEBUG
-//+define+USE_RS3
 +define+NO_WAW
 +define+LINEAR_SYSTEM
-//+define+POST_SYNTHESIS
-//+define+VCS
-//+define+VCS_SIM -> maybe soc_verif + PD
 
 
-//+define+tracer // replaced by "DV"
-//+define+JTAG
-//+define+JTAG_verf
-//+define+dump_wave
-//+define+dump_mem
-// +define+PD_BUILD
-
-// ========= all macros =========
-// what are these macros??
-//+define+VIVADO_BUILD  // JTAG on FPGA
-//+define+GPIO_STRICT_32BIT_ACCESS
-//+define+GPIO_AUX_IMPLEMENT
-//+define+GPIO_CLKPAD
-//+define+WAVES
-//+define+PTC_IMPLEMENTED
-//+define+PTC_RPTC_CNTR
-//+define+PTC_RPTC_HRC
-//+define+PTC_RPTC_LRC
-//+define+PTC_RPTC_CTRL
-//+define+PTC_FULL_DECODE
-//+define+PTC_STRICT_32BIT_ACCESS
-//+define+PTC_READREGS
-//+define+UART_HAS_BAUDRATE_OUTPUT
-//+define+PRESCALER_PRESET_HARD
-//+define+ViDBo
-//+define+USE_SRAM
-//+define+VCS_SIM    
-//+define+dump_mem
-//+define+USE_RS3
-//+define+DV
-//+define+TRACER_ENABLE
-
-// ./modules/tracer_modules/Tracer/pkg.sv
-// ./modules/tracer_modules/Tracer/tracer_pkg.sv
-
-// ============== Debugging Macros ==============
-//+define+dump_mem
-
-
-
-//  TODO: check why verif needs "tracer", "debug", and "VCS_SIM" ???
-// ============= new_need filelist, please merge them ... ====================
-# Filelist for VCS simulation
-
-# Compilation Flags
 -timescale=1ns/10ps
 -sverilog
 
++define+PD_BUILD
 +define+VCS_SIM
 +define+tracer
 +define+USE_RS3
-+define+debug
 // +define+USE_SRAM
 
 # ============================
@@ -89,13 +38,11 @@ RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/debug/debug_pkg.sv
 # ============================
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/core_dbg_fsm.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/linearization.sv
-
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/alignment_units.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/alu_control.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/alu.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/branch_controller.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/control_unit.sv
-RV32_SoC/modules/rtl_team/rv32imf/soc/core/data_mem.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/data_path.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/forwarding_unit.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/hazard_controller.sv
@@ -108,11 +55,16 @@ RV32_SoC/modules/rtl_team/rv32imf/soc/core/rom.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/rv32i_top.sv
 
 # ============================
+# Memory Models 
+# ============================
+RV32_SoC/modules/rtl_team/rv32imf/soc/core/data_mem.sv
+RV32_SoC/modules/rtl_team/rv32imf/soc/rom/rom.sv
+
+# ============================
 # M-Extension Files
 # ============================
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/int_units/int_div_rem.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/int_units/int_mul.sv
-// RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/int_units/mul_unit.sv // Qamar
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/priority_units/priority_controller.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/priority_units/priority_mux.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/red_team/priority_units/P_Decoder.sv
@@ -197,7 +149,6 @@ RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/uart/uart_wb.v
 # GPIO Files
 # ============================
 +incdir+RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/gpio
-// RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/gpio/bidirec.sv  // deleted
 RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/gpio/gpio_defines.v
 RV32_SoC/modules/rtl_team/rv32imf/soc/uncore/gpio/gpio_top.sv
 
@@ -217,10 +168,6 @@ RV32_SoC/modules/rtl_team/rv32imf/soc/dump_mem.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/io_mux.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/rv32i_soc.sv
 
-# ============================
-# TSMC Files
-# ============================
-// i think you can find them in the shared folder
 
 # ============================
 # I/O Pads & FPGA Files
@@ -231,23 +178,6 @@ RV32_SoC/modules/rtl_team/rv32imf/pads/top_rv32i_soc.sv
 # Testbench Files
 # ============================
 RV32_SoC/testbench/rv32i_soc_tb.sv
-
-
-
-# ============================
-# Testbench Files for Pads
-# ============================
-// RV32_SoC/modules/rtl_team/rv32imf/pads.sv // don't use it, it's old version (24 gpio)
-// RV32_SoC/modules/rtl_team/rv32imf/soc/pads.sv
-// RV32_SoC/testbench/tracer_rv32i_soc_with_pad_tb.sv
-
-# ============================
-# Other Testbenches
-# ============================
-//RV32_SoC/testbench/rv32i_tb.sv
-//RV32_SoC/testbench/rv32i_soc_tb.sv
-//RV32_SoC/testbench/rv32i_soc_jtag_tb.sv
-
 
 
 
