@@ -35,7 +35,11 @@ module add_sub_gp_r4(
 
 logic [48:0] mantissa_sum_extended;
 always_comb begin
-     if (sign1 == sign2) begin
+     if(a_is_zero && b_is_zero && (sign1 != sign2)) begin 
+        mantissa_sum_extended = 'b0;
+        sign_res = 1'b1;
+     end
+     else if (sign1 == sign2) begin
          {mantissa_sum_extended} = mantissa2_aligned + mantissa1_aligned;
          sign_res = sign1;
      end 

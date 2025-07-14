@@ -137,7 +137,30 @@ main:             li a0, 0x7f7fffff
                   fadd.s fa1, fa0, fa0, rtz
                   fadd.s fa1, fa0, fa0, rdn
                   fadd.s fa1, fa0, fa0, rmm
-                  fadd.s fa1, fa0, fa0, rup
+                  
+
+                  
+                  fmv.w.x fa0, x0
+                  fmsub.s fa1, fa0, fa0, fa0, rdn
+                  li t1, 0x7f7fffff
+                  fmv.w.x fa2, t1
+                  fmsub.s fa3, fa2, fa0, fa0, rdn
+                  fsub.s ft0, fa0, fa0, rdn
+                  fsub.s ft0, fa0, fa0, rne
+
+                  li t1, 0x0d81c2fe
+                  li t2, 0x80041020
+                  fmv.w.x fa1, t1
+                  fmv.w.x fa2, t2
+                  fnmadd.s fs0, fa1, fa2, fa0, rdn
+
+
+                  li t1, 0x7f7fffff
+                  li t2, 0x80000000
+                  fmv.w.x fa1, t1
+                  fmv.w.x fa2, t2
+                  fnmadd.s fs0, fa1, fa2, fa0, rdn
+                
 
             
                   add          s2, s2, a4
