@@ -134,7 +134,9 @@
 // Tbuf        4.7us            1.3us   Bus free time between a stop and start condition
 //
 
-`ifndef VCS_SIM
+`ifdef VIVADO_BUILD
+    `include "i2c_master_defines.v"
+`elsif VIVADO_SIM
     `include "i2c_master_defines.v"
 `endif
 module i2c_master_bit_ctrl (

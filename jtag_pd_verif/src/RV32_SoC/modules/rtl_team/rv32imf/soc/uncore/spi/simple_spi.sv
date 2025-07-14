@@ -304,13 +304,14 @@ module simple_spi #(
               begin
                   bcnt  <= 3'h7;   // set transfer counter
                   treg  <= wfdout; // load transfer register
-                  sck_o <= cpol;   // set sck
 
                   if (~wfempty) begin
                     wfre  <= 1'b1;
                     state <= 2'b01;
                     if (cpha) sck_o <= ~sck_o;
-                  end
+                    else sck_o <= cpol; // set sck
+                  end else 
+                    sck_o <= cpol; // set sck
               end
 
            2'b01: // clock-phase2, next data

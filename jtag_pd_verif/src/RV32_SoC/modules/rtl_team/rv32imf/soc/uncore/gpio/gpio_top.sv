@@ -42,7 +42,6 @@ assign gpio_write = wb_acc & wb_we_i;
 
 
 // Register sets
-logic [NO_OF_GPIO_PINS-1:0] rgpio_in;
 logic [NO_OF_GPIO_PINS-1:0] rgpio_out;
 logic [NO_OF_GPIO_PINS-1:0] rgpio_oe;
 logic [NO_OF_SHARED_PINS-1:0] io_sel_reg;
@@ -64,8 +63,8 @@ logic [1:0] unsed_sel;
 n_bit_dec #(
   .n(3)
 ) gpio_reg_sel_decoder (
-  .in (wb_adr_i[4:2]),
-  .out({ unsed_sel,
+  .in_(wb_adr_i[4:2]),
+  .out_({ unsed_sel,
           rgpio_is_sel,
           rgpio_ie_sel,
           io_sel_sel,

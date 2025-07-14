@@ -189,10 +189,11 @@
 //
 //
 
-`ifndef VCS
+`ifdef VIVADO_BUILD
 	`include "uart_defines.v"
-`endif 
-
+`elsif VIVADO_SIM
+	`include "uart_defines.v"
+`endif
 
 `default_nettype wire
 

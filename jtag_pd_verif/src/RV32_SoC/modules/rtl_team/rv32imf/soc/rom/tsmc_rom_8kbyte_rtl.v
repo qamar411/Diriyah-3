@@ -31,7 +31,7 @@
 //  Compiler Name      : ts18s1p10v2sb02p2                             
 //  Platform           : Linux4.18.0-553.54.1.el8_10.x86_64            
 //                     : #1 SMP Sat May 17 16:41:33 EDT 2025x86_64     
-//  Date of Generation : Mon Jun 30 19:46:13 PKT 2025                  
+//  Date of Generation : Mon Jun 30 20:00:41 PKT 2025                  
 //                                                                     
 //---------------------------------------------------------------------
 //   --------------------------------------------------------------     
@@ -42,14 +42,14 @@
 //                THIS IS A SYNCHRONOUS 1-PORT MEMORY MODEL           
 //                                                                    
 //   Memory Name:tsmc_rom_8kbyte                                      
-//   Memory Size:8192 words x 32 bits                                 
+//   Memory Size:2048 words x 32 bits                                 
 //                                                                    
 //                               PORT NAME                            
 //                               ---------                            
 //               Output Ports                                         
 //                                   Q[31:0]                          
 //               Input Ports:                                         
-//                                   ADR[12:0]                        
+//                                   ADR[10:0]                        
 //                                   OE                               
 //                                   ME                               
 //                                   CLK                              
@@ -74,7 +74,7 @@ parameter PreloadFilename = "/home/icdesign/work_fc/syn_180/emb/dummy.hex";
 parameter MES_ALL = "ON";
 
 output  [31:0] Q;
-input  [12:0] ADR;
+input  [10:0] ADR;
 input OE;
 input ME;
 input CLK;
@@ -100,7 +100,7 @@ endmodule
 
 module generic_tsmc_rom_8kbyte ( Q, ADR, OE, ME, CLK);
 
-parameter words = 8192, I_bit = 32, I_word = 8192, bits = 32, addrbits = 13, PreloadFilename = "/home/icdesign/work_fc/syn_180/emb/dummy.hex", timingmode = 1;
+parameter words = 2048, I_bit = 32, I_word = 2048, bits = 32, addrbits = 11, PreloadFilename = "/home/icdesign/work_fc/syn_180/emb/dummy.hex", timingmode = 1;
 
 output [bits-1:0] Q;
 input [addrbits-1:0] ADR;

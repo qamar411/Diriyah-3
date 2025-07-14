@@ -1,3 +1,4 @@
+`ifndef PD_BUILD
 module data_mem #(
     parameter DEPTH = 1024
 )(
@@ -61,3 +62,5 @@ assign dat_o = data_o_reg;
 
 
 endmodule
+
+`endif

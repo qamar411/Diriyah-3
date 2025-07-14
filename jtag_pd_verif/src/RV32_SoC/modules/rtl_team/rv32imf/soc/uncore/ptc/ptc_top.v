@@ -62,9 +62,12 @@
 // synopsys translate_off
 //`include "timescale.v"
 // synopsys translate_on
-`ifndef VCS_SIM
+`ifdef VIVADO_BUILD
 	`include "ptc_defines.v"
-`endif 
+`elsif VIVADO_SIM
+	`include "ptc_defines.v"
+`endif
+
 module ptc_top(
 	// WISHBONE Interface
 	wb_clk_i, wb_rst_i, wb_cyc_i, wb_adr_i, wb_dat_i, wb_sel_i, wb_we_i, wb_stb_i,

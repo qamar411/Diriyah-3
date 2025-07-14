@@ -69,9 +69,7 @@
 //               Changed PRER reset value from 0x0000 to 0xffff, conform specs.
 //
 
-`ifndef VCS_SIM
-    `include "i2c_master_defines.v"
-`endif
+
 
 module i2c_master_top(
 	wb_clk_i, wb_rst_i, arst_i, wb_adr_i, wb_dat_i, wb_dat_o,

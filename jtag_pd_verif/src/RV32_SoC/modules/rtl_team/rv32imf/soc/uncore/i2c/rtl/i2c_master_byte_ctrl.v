@@ -68,9 +68,13 @@
 
 
 
-`ifndef VCS_SIM
+`ifdef VIVADO_BUILD
+    `include "i2c_master_defines.v"
+`elsif VIVADO_SIM
     `include "i2c_master_defines.v"
 `endif
+
+
 
 module i2c_master_byte_ctrl (
 	clk, rst, nReset, ena, clk_cnt, start, stop, read, write, ack_in, din,

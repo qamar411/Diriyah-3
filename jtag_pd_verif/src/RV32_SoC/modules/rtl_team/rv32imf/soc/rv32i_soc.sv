@@ -302,6 +302,18 @@ module rv32i_soc #(
     wire        wb_s2m_imem_err;
     wire        wb_s2m_imem_rty;
 
+    // BOOT ROM
+    wire [31:0] wb_m2s_rom_adr;
+    wire [31:0] wb_m2s_rom_dat;
+    wire  [3:0] wb_m2s_rom_sel;
+    wire        wb_m2s_rom_we;
+    wire        wb_m2s_rom_cyc;
+    wire        wb_m2s_rom_stb;
+    wire [31:0] wb_s2m_rom_dat;
+    wire        wb_s2m_rom_ack;
+    wire        wb_s2m_rom_err;
+    wire        wb_s2m_rom_rty;
+
 
     // DMEM
     wire [31:0] wb_m2s_dmem_adr;
@@ -423,6 +435,18 @@ module rv32i_soc #(
     .wb_imem_ack_i       (wb_s2m_imem_ack),
     .wb_imem_err_i       (wb_s2m_imem_err),
     .wb_imem_rty_i       (wb_s2m_imem_rty),
+
+// BOOT ROM
+    .wb_rom_adr_o       (wb_m2s_rom_adr),
+    .wb_rom_dat_o       (wb_m2s_rom_dat),
+    .wb_rom_sel_o       (wb_m2s_rom_sel),
+    .wb_rom_we_o        (wb_m2s_rom_we),
+    .wb_rom_cyc_o       (wb_m2s_rom_cyc),
+    .wb_rom_stb_o       (wb_m2s_rom_stb),
+    .wb_rom_dat_i       (wb_s2m_rom_dat),
+    .wb_rom_ack_i       (wb_s2m_rom_ack),
+    .wb_rom_err_i       (wb_s2m_rom_err),
+    .wb_rom_rty_i       (wb_s2m_rom_rty),
 
     .wb_uart_adr_o      (wb_m2s_uart1_adr),
     .wb_uart_dat_o      (wb_m2s_uart1_dat),
@@ -772,57 +796,45 @@ assign imem_addr = (sel_boot_rom | core_halted) ? wb_m2s_imem_adr: current_pc;
     //                   BOOT ROM
     // ============================================
 
-	logic [31:0] rom_inst_ff;
-	`ifdef USE_SRAM  // maybe PD needs to delete it and use PD_BUILD only
-	    tsmc_rom_1k #(
-		.PreloadFilename("/home/qamar/Desktop/RivRtos/src/tb/rom.hex")		
-		)rom_instance (
-		.Q(rom_inst_ff),
-		.ADR(current_pc[9:2]),
-		.ME(sel_boot_rom),
-		.OE(reset_n),
-		.CLK(clk)
-		);
-	`elsif PD_BUILD
-	    tsmc_rom_1k #(
-		.PreloadFilename("/home/qamar/Desktop/RivRtos/src/tb/rom.hex")		
-		)rom_instance (  // its name was "tsmc_rom_inst" but changed into "rom_instance" based on PD team
-		.Q(rom_inst_ff),
-		.ADR(current_pc[9:2]),
-		.ME(sel_boot_rom),
-		.OE(reset_n),
-		.CLK(clk)
-		);
-	`else // maybe PD needs to comment it
-	    logic [31:0] rom_inst;
-	    rom rom_instance(
-		.addr     (current_pc[11:0]),
-		.inst     (rom_inst  )
-	    );
+	logic [31:0] rom_inst, rom_addr;
 
-	    // register after boot rom (to syncronize with the pipeline and inst mem)
-	    n_bit_reg #(
-		.n(32)
-	    ) rom_inst_reg (
-		.clk(clk),
-		.reset_n(reset_n),
-		.data_i(rom_inst),
-		.data_o(rom_inst_ff),
-		.wen(if_id_reg_en)
-	    );
+    assign rom_addr = sel_boot_rom ? current_pc : wb_m2s_rom_adr;
 
-	`endif
+        `ifdef USE_SRAM
+            rom_8k_wrapper tsmc_rom_inst (
+        `elsif PD_BUILD
+            rom_8k_wrapper tsmc_rom_inst (
+        `else 
+            rom  tsmc_rom_inst (
+        `endif
+                .clk_i       (clk            ),
+                .rst_i       (wb_rst         ),
+                .cyc_i       (wb_m2s_rom_cyc | sel_boot_rom), 
+                .stb_i       (wb_m2s_rom_stb | sel_boot_rom),
+                .adr_i       (rom_addr[12:2]),
+                .we_i        (wb_m2s_rom_we & ~sel_boot_rom),
+                .sel_i       (wb_m2s_rom_sel),
+                .dat_i       (wb_m2s_rom_dat),
+                .dat_o       (wb_s2m_rom_dat),
+                .ack_o       (wb_s2m_rom_ack)
+            );
+
+    assign rom_inst = wb_s2m_rom_dat;
+
 
     // Inst selection mux
-    assign sel_boot_rom = &current_pc[31:12]; // 0xfffff000 - to - 0xffffffff 
-    always @(posedge clk) sel_boot_rom_ff <= sel_boot_rom;
+    assign sel_boot_rom = ~|current_pc[31:13]; // 0x00000000 - to - 0x00001fff 
+    always @(posedge clk, negedge reset_n) begin 
+        if(~reset_n) sel_boot_rom_ff <= 'b0;
+        else         sel_boot_rom_ff <= sel_boot_rom;
+    end
     mux2x1 #(
         .n(32)
     ) rom_imem_inst_sel_mux (
         .in0    (imem_inst      ),
-        .in1    (rom_inst_ff    ),
+        .in1    (rom_inst    ),
         .sel    (sel_boot_rom_ff),
-        .out    (inst           )
+        .out_    (inst           )
     );
 
 

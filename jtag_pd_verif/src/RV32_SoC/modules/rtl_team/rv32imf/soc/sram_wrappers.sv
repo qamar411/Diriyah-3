@@ -137,3 +137,57 @@ always_ff @(posedge clk_i, posedge rst_i) begin
 end
 
 endmodule : sram_8k_wrapper
+
+
+
+module rom_8k_wrapper (
+  // 32bit WISHBONE bus slave interface
+  input  wire        clk_i,         // clock
+  input  wire        rst_i,         // reset (synchronous active high)
+  input  wire        cyc_i,         // cycle
+  input  wire        stb_i,         // strobe
+  input  wire [12:2] adr_i,         // address
+  input  wire        we_i,          // write enable
+  input  wire [3:0]  sel_i,
+  input  wire [31:0] dat_i,         // data input
+  output reg  [31:0] dat_o,         // data output
+  output reg         ack_o          // normal bus termination
+);
+
+
+
+logic  [31:0] Q;
+logic  [10:0] ADR;
+logic OE;
+wire  ME;
+logic CLK;
+
+
+assign ADR = adr_i[12:2];
+assign dat_o = Q;
+assign ME  = ~rst_i; // stb_i & cyc_i
+assign CLK = clk_i;
+
+always_ff @(posedge clk_i, posedge rst_i) begin 
+  if(rst_i) OE <= 'b0;
+  else      OE <= ~we_i & stb_i & cyc_i;
+end
+
+tsmc_rom_8kbyte tsmc_rom_8k_inst ( 
+    .Q, 
+    .ADR, 
+    .OE, 
+    .ME, 
+    .CLK
+    );
+
+
+always_ff @(posedge clk_i, posedge rst_i) begin 
+  if(rst_i) ack_o <= 'b0;
+  else ack_o <= stb_i & cyc_i & ~ack_o;
+end
+
+
+endmodule : rom_8k_wrapper
+
+
