@@ -798,7 +798,7 @@ assign imem_addr = (sel_boot_rom | core_halted) ? wb_m2s_imem_adr: current_pc;
 
 	logic [31:0] rom_inst, rom_addr;
 
-    assign rom_addr = sel_boot_rom ? current_pc : wb_m2s_rom_adr;
+    assign rom_addr = (sel_boot_rom & ~core_halted) ? current_pc : wb_m2s_rom_adr;
 
         `ifdef USE_SRAM
             rom_8k_wrapper tsmc_rom_inst (
@@ -809,8 +809,8 @@ assign imem_addr = (sel_boot_rom | core_halted) ? wb_m2s_imem_adr: current_pc;
         `endif
                 .clk_i       (clk            ),
                 .rst_i       (wb_rst         ),
-                .cyc_i       (wb_m2s_rom_cyc | sel_boot_rom), 
-                .stb_i       (wb_m2s_rom_stb | sel_boot_rom),
+                .cyc_i       (wb_m2s_rom_cyc | (sel_boot_rom & ~core_halted)), 
+                .stb_i       (wb_m2s_rom_stb | (sel_boot_rom & ~core_halted)),
                 .adr_i       (rom_addr[12:2]),
                 .we_i        (wb_m2s_rom_we & ~sel_boot_rom),
                 .sel_i       (wb_m2s_rom_sel),
