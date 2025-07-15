@@ -834,7 +834,7 @@ assign imem_addr = (sel_boot_rom | core_halted) ? wb_m2s_imem_adr: current_pc;
         .in0    (imem_inst      ),
         .in1    (rom_inst    ),
         .sel    (sel_boot_rom_ff),
-        .out_    (inst           )
+        .out    (inst           )
     );
 
 

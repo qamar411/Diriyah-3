@@ -19,7 +19,6 @@
 -timescale=1ns/10ps
 -sverilog
 
-+define+PD_BUILD
 +define+VCS_SIM
 +define+tracer
 +define+USE_RS3
@@ -51,7 +50,6 @@ RV32_SoC/modules/rtl_team/rv32imf/soc/core/main_control.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/pipeline_controller.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/program_counter.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/reg_file.sv
-RV32_SoC/modules/rtl_team/rv32imf/soc/core/rom.sv
 RV32_SoC/modules/rtl_team/rv32imf/soc/core/rv32i_top.sv
 
 # ============================
