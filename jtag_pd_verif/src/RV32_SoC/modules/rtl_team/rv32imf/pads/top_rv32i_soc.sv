@@ -16,14 +16,30 @@ module top_rv32i_soc #(
 `ifdef PD_BUILD
     // Power ports
     ,
-    input  VDD_LEFT,               // Power
-    input  VDD_RIGHT,              // Ground
-    input  VDD_TOP,                // Power
-    input  VDD_BOTTOM,             // Ground
-    input  VSS_LEFT,               // Power
-    input  VSS_RIGHT,              // Ground
-    input  VSS_TOP,                // Power
-    input  VSS_BOTTOM,             // Ground
+    input  VDD_LEFT_1,               // Power
+    input  VDD_LEFT_2,               // Power
+
+    input  VDD_RIGHT_1,              // Power
+    input  VDD_RIGHT_2,              // Power
+
+    input  VDD_TOP_1,                // Power
+    input  VDD_TOP_2,                // Power
+
+    input  VDD_BOTTOM_1,             // Power
+    input  VDD_BOTTOM_2,             // Power
+
+    input  VSS_LEFT_1,               // Power
+    input  VSS_LEFT_2,               // Power
+
+    input  VSS_RIGHT_1,              // Ground
+    input  VSS_RIGHT_2,              // Ground
+
+    input  VSS_TOP_1,                // Power
+    input  VSS_TOP_2,                // Power
+
+    input  VSS_BOTTOM_1,             // Ground
+    input  VSS_BOTTOM_2,             // Ground
+
     input VDDPST_LEFT,             // Power
     input VDDPST_RIGHT,            // Ground
     input VDDPST_TOP,              // Power
@@ -85,13 +101,16 @@ module top_rv32i_soc #(
   endgenerate
 
 
-  wire tck_i_internal;
-  PDD24DGZ u_tck_pad (
-      .I   (1'b0),
-      .OEN (1'b1),
-      .PAD (I_TCK_PAD),
-      .C   (tck_i_internal)
-  );
+    wire tck_i_internal;
+    PDXO03DG u_tck_pad (
+        .XIN  (I_TCK_PAD),
+        .XC   (tck_i_internal)
+    );
+
+
+
+
+
   wire tms_i_internal;
   PDD24DGZ u_tms_pad (
       .I   (1'b0),
@@ -143,76 +162,76 @@ module top_rv32i_soc #(
 `ifdef PD_BUILD
 
     PVDD1DGZ vdd_left_1 (
-        .VDD()
+        .VDD(VDD_LEFT_1)
     );
     PVDD1DGZ vdd_right_1 (
-        .VDD()
+        .VDD(VDD_RIGHT_1)
     );
     PVDD1DGZ vdd_top_1 (
-        .VDD()
+        .VDD(VDD_TOP_1)
     );
     PVDD1DGZ vdd_bottom_1 (
-        .VDD()
+        .VDD(VDD_BOTTOM_1)
     );
     PVDD1DGZ vdd_left_2 (
-        .VDD()
+        .VDD(VDD_LEFT2)
     );
     PVDD1DGZ vdd_right_2 (
-        .VDD()
+        .VDD(VDD_RIGHT_2)
     );
     PVDD1DGZ vdd_top_2 (
-        .VDD()
+        .VDD(VDD_TOP_2)
     );
     PVDD1DGZ vdd_bottom_2 (
-        .VDD()
+        .VDD(VDD_BOTTOM_2)
     );
     PVSS1DGZ vss_left_1 (
-        .VSS()
+        .VSS(VSS_LEFT_1)
     );
     PVSS1DGZ vss_right_1 (
-        .VSS()
+        .VSS(VSS_RIGHT_1)
     );
     PVSS1DGZ vss_top_1 (
-        .VSS()
+        .VSS(VSS_TOP_1)
     );
     PVSS1DGZ vss_bottom_1 (
-        .VSS()
+        .VSS(VSS_BOTTOM_1)
     );
     PVSS1DGZ vss_left_2 (
-        .VSS()
+        .VSS(VSS_LEFT_2)
     );
     PVSS1DGZ vss_right_2 (
-        .VSS()
+        .VSS(VSS_RIGHT_2)
     );
     PVSS1DGZ vss_top_2 (
-        .VSS()
+        .VSS(VSS_TOP_2)
     );
     PVSS1DGZ vss_bottom_2 (
-        .VSS()
+        .VSS(VSS_BOTTOM_2)
     );
     PVDD2DGZ iovdd_left (
-        .VDDPST()
+        .VDDPST(VDDPST_LEFT)
     );
     PVDD2DGZ iovdd_right (
-        .VDDPST()
+        .VDDPST(VDDPST_RIGHT)
     );
     PVDD2DGZ iovdd_top (
-        .VDDPST()
+        .VDDPST(VDDPST_TOP)
     );
     PVDD2DGZ iovdd_bottom (
-        .VDDPST()
+        .VDDPST(VDDPST_BOTTOM)
     );
     PVSS2DGZ iovss_left (
-        .VSSPST()
+        .VSSPST(VSSPST_LEFT)
     );
     PVSS2DGZ iovss_right (
-        .VSSPST()
+        .VSSPST(VSSPST_RIGHT)
     );
     PVSS2DGZ iovss_top (
-        .VSSPST()
+        .VSSPST(VSSPST_TOP)
     );
     PVSS2DGZ iovss_bottom (
-        .VSSPST()
+        .VSSPST(VSSPST_BOTTOM)
     );
 
 `endif

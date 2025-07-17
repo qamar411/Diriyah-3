@@ -2,7 +2,7 @@ import common_pkg::*;
 import debug_pkg::*;
 
 
-`define IDCODE_VALUE  32'h10e31913
+`define IDCODE_VALUE  32'hD1A00003
 `define DTMCS_ABITS   6'b000111
 `define DTMCS_VERSION 4'b0001
 `define DTMCS_VALUE   32'h00000101
