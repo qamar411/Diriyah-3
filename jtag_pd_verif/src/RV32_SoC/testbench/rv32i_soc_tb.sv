@@ -274,8 +274,8 @@
                 release `DUT_PATH.inst_mem_inst.dmem;
                 release `DUT_PATH.data_mem_inst.dmem;          
             `else 
-                $readmemh("/home/it/rv32imf/jtag_pd_verif/src/RV32_SoC/testbench/inst_formatted.hex", initial_imem);
-                $readmemh("/home/it/rv32imf/jtag_pd_verif/src/RV32_SoC/testbench/data_formatted.hex", initial_dmem);
+                $readmemh("/home/it/Diriyah-3/jtag_pd_verif/src/RV32_SoC/testbench/inst_formatted.hex", initial_imem);
+                $readmemh("/home/it/Diriyah-3/jtag_pd_verif/src/RV32_SoC/testbench/data_formatted.hex", initial_dmem);
                 force `DUT_PATH.inst_mem_inst.dmem = initial_imem;
                 force `DUT_PATH.data_mem_inst.dmem = initial_dmem;
                 #1; 

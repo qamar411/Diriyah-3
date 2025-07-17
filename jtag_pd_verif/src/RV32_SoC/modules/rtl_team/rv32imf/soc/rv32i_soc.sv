@@ -514,6 +514,8 @@ module rv32i_soc #(
     assign wb_s2m_imem_rty  = 1'b0;
     assign wb_s2m_dmem_err  = 1'b0;
     assign wb_s2m_dmem_rty  = 1'b0;
+    assign wb_s2m_rom_err   = 1'b0;
+    assign wb_s2m_rom_rty   = 1'b0;
 
     // ============================================
     //                  SPI Flash

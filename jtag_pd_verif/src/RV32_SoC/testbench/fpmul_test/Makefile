@@ -10,7 +10,7 @@ LDSCRIPT = linker.ld
 
 TARGET   = firmware
 # SRC      = sqrt.S
-SRC      = mul.S # Uncomment the above line to test the multiplication instead of square root
+SRC      = mac.S # Uncomment the above line to test the multiplication instead of square root
 
 all: $(TARGET).elf $(TARGET).dis inst.hex data.hex
 

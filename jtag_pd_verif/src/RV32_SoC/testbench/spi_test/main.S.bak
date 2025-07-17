@@ -1,0 +1,32 @@
+.globl _start
+
+.equ SPCR,  0x20000200
+.equ SPSR,  0x20000204
+.equ SPDR,  0x20000208
+.equ SPER,  0x2000020c
+.equ SPCS,  0x20000210
+
+_start:
+
+    # Initialize SPI
+    call spiInit
+
+    li t0, SPER
+    lbu t1, 0(t0)
+    ori  t1, t1, 0x00 # force uppoer two bits to one
+    sb t1, 0(t0)
+
+    # enable interrupts 
+    li t0, SPCR
+    lbu t1, 0(t0)
+    ori t1, t1, 0x80
+    sb  t1, 0(t0)
+    
+
+    call spiSendGetData
+    call spiSendGetData
+    call spiSendGetData
+    call spiSendGetData
+
+end: j end
+

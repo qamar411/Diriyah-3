@@ -1,0 +1,488 @@
+
+boot.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <main>:
+   0:	80042117          	auipc	sp,0x80042
+   4:	00010113          	addi	sp,sp,0 # 80042000 <_stack_top>
+   8:	45c000ef          	jal	ra,464 <spiInit>
+   c:	4e0000ef          	jal	ra,4ec <uart_init>
+  10:	200002b7          	lui	t0,0x20000
+  14:	10028293          	addi	t0,t0,256 # 20000100 <GPIO_IN>
+  18:	0002a303          	lw	t1,0(t0)
+  1c:	01f35313          	srli	t1,t1,0x1f
+  20:	04031463          	bne	t1,zero,68 <handshake>
+  24:	0001a537          	lui	a0,0x1a
+  28:	c1c1c5b7          	lui	a1,0xc1c1c
+  2c:	1c158593          	addi	a1,a1,449 # c1c1c1c1 <MAGIC_NUM>
+  30:	0fc000ef          	jal	ra,12c <check_magic>
+  34:	02050a63          	beq	a0,zero,68 <handshake>
+
+00000038 <exec_flash>:
+  38:	00010537          	lui	a0,0x10
+  3c:	800005b7          	lui	a1,0x80000
+  40:	00008637          	lui	a2,0x8
+  44:	00000693          	addi	a3,zero,0
+  48:	118000ef          	jal	ra,160 <prog_sram>
+  4c:	00018537          	lui	a0,0x18
+  50:	800405b7          	lui	a1,0x80040
+  54:	00002637          	lui	a2,0x2
+  58:	00000693          	addi	a3,zero,0
+  5c:	104000ef          	jal	ra,160 <prog_sram>
+  60:	800002b7          	lui	t0,0x80000
+  64:	00028067          	jalr	zero,0(t0) # 80000000 <IMEM_ADDR>
+
+00000068 <handshake>:
+  68:	4c8000ef          	jal	ra,530 <uart_getc>
+  6c:	04300293          	addi	t0,zero,67
+  70:	fe551ce3          	bne	a0,t0,68 <handshake>
+  74:	4a4000ef          	jal	ra,518 <uart_putc>
+
+00000078 <command_loop>:
+  78:	4b8000ef          	jal	ra,530 <uart_getc>
+  7c:	05300293          	addi	t0,zero,83
+  80:	fe551ce3          	bne	a0,t0,78 <command_loop>
+  84:	4ac000ef          	jal	ra,530 <uart_getc>
+  88:	00050913          	addi	s2,a0,0 # 18000 <FLASH_APP_ADDR+0x8000>
+  8c:	4a4000ef          	jal	ra,530 <uart_getc>
+  90:	01851513          	slli	a0,a0,0x18
+  94:	00050413          	addi	s0,a0,0
+  98:	498000ef          	jal	ra,530 <uart_getc>
+  9c:	01051513          	slli	a0,a0,0x10
+  a0:	00a46433          	or	s0,s0,a0
+  a4:	48c000ef          	jal	ra,530 <uart_getc>
+  a8:	00851513          	slli	a0,a0,0x8
+  ac:	00a46433          	or	s0,s0,a0
+  b0:	480000ef          	jal	ra,530 <uart_getc>
+  b4:	00a46433          	or	s0,s0,a0
+  b8:	478000ef          	jal	ra,530 <uart_getc>
+  bc:	00050493          	addi	s1,a0,0
+  c0:	470000ef          	jal	ra,530 <uart_getc>
+  c4:	00851513          	slli	a0,a0,0x8
+  c8:	00a4e4b3          	or	s1,s1,a0
+  cc:	04600293          	addi	t0,zero,70
+  d0:	02590463          	beq	s2,t0,f8 <do_flash>
+  d4:	05800293          	addi	t0,zero,88
+  d8:	02590863          	beq	s2,t0,108 <do_exec>
+  dc:	05500293          	addi	t0,zero,85
+  e0:	02590663          	beq	s2,t0,10c <do_upload>
+  e4:	05200293          	addi	t0,zero,82
+  e8:	02590c63          	beq	s2,t0,120 <do_run>
+  ec:	04e00513          	addi	a0,zero,78
+  f0:	428000ef          	jal	ra,518 <uart_putc>
+  f4:	f75ff06f          	jal	zero,68 <handshake>
+
+000000f8 <do_flash>:
+  f8:	00040513          	addi	a0,s0,0
+  fc:	00048593          	addi	a1,s1,0
+ 100:	118000ef          	jal	ra,218 <prog_flash>
+ 104:	f65ff06f          	jal	zero,68 <handshake>
+
+00000108 <do_exec>:
+ 108:	f31ff06f          	jal	zero,38 <exec_flash>
+
+0000010c <do_upload>:
+ 10c:	00040593          	addi	a1,s0,0
+ 110:	00048613          	addi	a2,s1,0
+ 114:	00100693          	addi	a3,zero,1
+ 118:	048000ef          	jal	ra,160 <prog_sram>
+ 11c:	f4dff06f          	jal	zero,68 <handshake>
+
+00000120 <do_run>:
+ 120:	04f00513          	addi	a0,zero,79
+ 124:	3f4000ef          	jal	ra,518 <uart_putc>
+ 128:	00040067          	jalr	zero,0(s0)
+
+0000012c <check_magic>:
+ 12c:	ff810113          	addi	sp,sp,-8
+ 130:	00112023          	sw	ra,0(sp)
+ 134:	00812223          	sw	s0,4(sp)
+ 138:	00058413          	addi	s0,a1,0 # 80040000 <DMEM_ADDR>
+ 13c:	28c000ef          	jal	ra,3c8 <flash_read_word>
+ 140:	00a40663          	beq	s0,a0,14c <magic_is_there>
+ 144:	00000513          	addi	a0,zero,0
+ 148:	0080006f          	jal	zero,150 <skip_magic>
+
+0000014c <magic_is_there>:
+ 14c:	00100513          	addi	a0,zero,1
+
+00000150 <skip_magic>:
+ 150:	00012083          	lw	ra,0(sp)
+ 154:	00412403          	lw	s0,4(sp)
+ 158:	00810113          	addi	sp,sp,8
+ 15c:	00008067          	jalr	zero,0(ra)
+
+00000160 <prog_sram>:
+ 160:	00050413          	addi	s0,a0,0
+ 164:	00058493          	addi	s1,a1,0
+ 168:	00060913          	addi	s2,a2,0 # 2000 <DMEM_SIZE>
+ 16c:	00058a13          	addi	s4,a1,0
+ 170:	00060a93          	addi	s5,a2,0
+ 174:	00008b13          	addi	s6,ra,0
+ 178:	328000ef          	jal	ra,4a0 <spiCSDown>
+ 17c:	00300513          	addi	a0,zero,3
+ 180:	328000ef          	jal	ra,4a8 <spiSendGetData>
+ 184:	2b4000ef          	jal	ra,438 <flash_send_addr>
+
+00000188 <prog_next_sram_byte>:
+ 188:	02090063          	beq	s2,zero,1a8 <checksum_check>
+ 18c:	31c000ef          	jal	ra,4a8 <spiSendGetData>
+ 190:	00068463          	beq	a3,zero,198 <skip_uart>
+ 194:	39c000ef          	jal	ra,530 <uart_getc>
+
+00000198 <skip_uart>:
+ 198:	00a48023          	sb	a0,0(s1)
+ 19c:	fff90913          	addi	s2,s2,-1
+ 1a0:	00148493          	addi	s1,s1,1
+ 1a4:	fe5ff06f          	jal	zero,188 <prog_next_sram_byte>
+
+000001a8 <checksum_check>:
+ 1a8:	00100513          	addi	a0,zero,1
+ 1ac:	04068663          	beq	a3,zero,1f8 <skip_checksum>
+ 1b0:	380000ef          	jal	ra,530 <uart_getc>
+ 1b4:	00050413          	addi	s0,a0,0
+ 1b8:	378000ef          	jal	ra,530 <uart_getc>
+ 1bc:	00851513          	slli	a0,a0,0x8
+ 1c0:	00a46433          	or	s0,s0,a0
+ 1c4:	36c000ef          	jal	ra,530 <uart_getc>
+ 1c8:	01051513          	slli	a0,a0,0x10
+ 1cc:	00a46433          	or	s0,s0,a0
+ 1d0:	360000ef          	jal	ra,530 <uart_getc>
+ 1d4:	01851513          	slli	a0,a0,0x18
+ 1d8:	00a46433          	or	s0,s0,a0
+ 1dc:	000a0513          	addi	a0,s4,0
+ 1e0:	000a8593          	addi	a1,s5,0
+ 1e4:	00000613          	addi	a2,zero,0
+ 1e8:	360000ef          	jal	ra,548 <adler32>
+ 1ec:	00050593          	addi	a1,a0,0
+ 1f0:	04e00513          	addi	a0,zero,78
+ 1f4:	00b41463          	bne	s0,a1,1fc <checksum_mismatch_>
+
+000001f8 <skip_checksum>:
+ 1f8:	04f00513          	addi	a0,zero,79
+
+000001fc <checksum_mismatch_>:
+ 1fc:	31c000ef          	jal	ra,518 <uart_putc>
+ 200:	00058d13          	addi	s10,a1,0
+ 204:	00040d93          	addi	s11,s0,0
+ 208:	290000ef          	jal	ra,498 <spiCSUp>
+ 20c:	00048513          	addi	a0,s1,0
+ 210:	000b0093          	addi	ra,s6,0
+ 214:	00008067          	jalr	zero,0(ra)
+
+00000218 <prog_flash>:
+ 218:	fe810113          	addi	sp,sp,-24
+ 21c:	00112023          	sw	ra,0(sp)
+ 220:	00812223          	sw	s0,4(sp)
+ 224:	00912423          	sw	s1,8(sp)
+ 228:	01212623          	sw	s2,12(sp)
+ 22c:	00a12823          	sw	a0,16(sp)
+ 230:	00b12a23          	sw	a1,20(sp)
+ 234:	00050413          	addi	s0,a0,0
+ 238:	00058493          	addi	s1,a1,0
+
+0000023c <erase_flash_block>:
+ 23c:	264000ef          	jal	ra,4a0 <spiCSDown>
+ 240:	00600513          	addi	a0,zero,6
+ 244:	264000ef          	jal	ra,4a8 <spiSendGetData>
+ 248:	250000ef          	jal	ra,498 <spiCSUp>
+ 24c:	254000ef          	jal	ra,4a0 <spiCSDown>
+ 250:	0d800513          	addi	a0,zero,216
+ 254:	254000ef          	jal	ra,4a8 <spiSendGetData>
+ 258:	1e0000ef          	jal	ra,438 <flash_send_addr>
+ 25c:	23c000ef          	jal	ra,498 <spiCSUp>
+ 260:	118000ef          	jal	ra,378 <wait_busy>
+ 264:	04300513          	addi	a0,zero,67
+ 268:	2b0000ef          	jal	ra,518 <uart_putc>
+ 26c:	00448493          	addi	s1,s1,4
+ 270:	fff00913          	addi	s2,zero,-1
+
+00000274 <program_next_page>:
+ 274:	22c000ef          	jal	ra,4a0 <spiCSDown>
+ 278:	00600513          	addi	a0,zero,6
+ 27c:	22c000ef          	jal	ra,4a8 <spiSendGetData>
+ 280:	218000ef          	jal	ra,498 <spiCSUp>
+ 284:	21c000ef          	jal	ra,4a0 <spiCSDown>
+ 288:	00200513          	addi	a0,zero,2
+ 28c:	21c000ef          	jal	ra,4a8 <spiSendGetData>
+ 290:	1a8000ef          	jal	ra,438 <flash_send_addr>
+ 294:	00400293          	addi	t0,zero,4
+ 298:	0292ce63          	blt	t0,s1,2d4 <skip_magic_word>
+ 29c:	0c100513          	addi	a0,zero,193
+ 2a0:	208000ef          	jal	ra,4a8 <spiSendGetData>
+ 2a4:	0c100513          	addi	a0,zero,193
+ 2a8:	200000ef          	jal	ra,4a8 <spiSendGetData>
+ 2ac:	0c100513          	addi	a0,zero,193
+ 2b0:	1f8000ef          	jal	ra,4a8 <spiSendGetData>
+ 2b4:	0c100513          	addi	a0,zero,193
+ 2b8:	1f0000ef          	jal	ra,4a8 <spiSendGetData>
+ 2bc:	00400413          	addi	s0,zero,4
+
+000002c0 <get_next_checksum_byte>:
+ 2c0:	270000ef          	jal	ra,530 <uart_getc>
+ 2c4:	1e4000ef          	jal	ra,4a8 <spiSendGetData>
+ 2c8:	fff40413          	addi	s0,s0,-1
+ 2cc:	fe041ae3          	bne	s0,zero,2c0 <get_next_checksum_byte>
+ 2d0:	0400006f          	jal	zero,310 <page_prog_done>
+
+000002d4 <skip_magic_word>:
+ 2d4:	10000913          	addi	s2,zero,256
+ 2d8:	10040413          	addi	s0,s0,256
+
+000002dc <page_program>:
+ 2dc:	02048a63          	beq	s1,zero,310 <page_prog_done>
+ 2e0:	00090e63          	beq	s2,zero,2fc <send_ready>
+ 2e4:	00048513          	addi	a0,s1,0
+ 2e8:	248000ef          	jal	ra,530 <uart_getc>
+ 2ec:	1bc000ef          	jal	ra,4a8 <spiSendGetData>
+ 2f0:	fff48493          	addi	s1,s1,-1
+ 2f4:	fff90913          	addi	s2,s2,-1
+ 2f8:	fe5ff06f          	jal	zero,2dc <page_program>
+
+000002fc <send_ready>:
+ 2fc:	19c000ef          	jal	ra,498 <spiCSUp>
+ 300:	078000ef          	jal	ra,378 <wait_busy>
+ 304:	04300513          	addi	a0,zero,67
+ 308:	210000ef          	jal	ra,518 <uart_putc>
+ 30c:	f69ff06f          	jal	zero,274 <program_next_page>
+
+00000310 <page_prog_done>:
+ 310:	188000ef          	jal	ra,498 <spiCSUp>
+ 314:	064000ef          	jal	ra,378 <wait_busy>
+ 318:	01012503          	lw	a0,16(sp)
+ 31c:	01412583          	lw	a1,20(sp)
+ 320:	00100613          	addi	a2,zero,1
+ 324:	224000ef          	jal	ra,548 <adler32>
+ 328:	00050413          	addi	s0,a0,0
+ 32c:	01012503          	lw	a0,16(sp)
+ 330:	01412583          	lw	a1,20(sp)
+ 334:	00b50533          	add	a0,a0,a1
+ 338:	00450513          	addi	a0,a0,4
+ 33c:	08c000ef          	jal	ra,3c8 <flash_read_word>
+ 340:	00050593          	addi	a1,a0,0
+ 344:	04e00513          	addi	a0,zero,78
+ 348:	00b41463          	bne	s0,a1,350 <checksum_mismatch>
+ 34c:	04f00513          	addi	a0,zero,79
+
+00000350 <checksum_mismatch>:
+ 350:	1c8000ef          	jal	ra,518 <uart_putc>
+ 354:	00058d13          	addi	s10,a1,0
+ 358:	000d0d93          	addi	s11,s10,0
+
+0000035c <ret_flash_prog>:
+ 35c:	00048513          	addi	a0,s1,0
+ 360:	00012083          	lw	ra,0(sp)
+ 364:	00412403          	lw	s0,4(sp)
+ 368:	00812483          	lw	s1,8(sp)
+ 36c:	00c12903          	lw	s2,12(sp)
+ 370:	01810113          	addi	sp,sp,24
+ 374:	00008067          	jalr	zero,0(ra)
+
+00000378 <wait_busy>:
+ 378:	ffc10113          	addi	sp,sp,-4
+ 37c:	00112023          	sw	ra,0(sp)
+ 380:	120000ef          	jal	ra,4a0 <spiCSDown>
+ 384:	00500513          	addi	a0,zero,5
+ 388:	120000ef          	jal	ra,4a8 <spiSendGetData>
+
+0000038c <wait_busy_>:
+ 38c:	11c000ef          	jal	ra,4a8 <spiSendGetData>
+ 390:	00157513          	andi	a0,a0,1
+ 394:	fe051ce3          	bne	a0,zero,38c <wait_busy_>
+ 398:	100000ef          	jal	ra,498 <spiCSUp>
+ 39c:	00012083          	lw	ra,0(sp)
+ 3a0:	00410113          	addi	sp,sp,4
+ 3a4:	00008067          	jalr	zero,0(ra)
+
+000003a8 <tiny_delay>:
+ 3a8:	000182b7          	lui	t0,0x18
+ 3ac:	6a028293          	addi	t0,t0,1696 # 186a0 <FLASH_APP_ADDR+0x86a0>
+ 3b0:	00c0006f          	jal	zero,3bc <add_more_delay>
+
+000003b4 <delay>:
+ 3b4:	009382b7          	lui	t0,0x938
+ 3b8:	06b28293          	addi	t0,t0,107 # 93806b <FLASH_APP_ADDR+0x92806b>
+
+000003bc <add_more_delay>:
+ 3bc:	fff28293          	addi	t0,t0,-1
+ 3c0:	fe029ee3          	bne	t0,zero,3bc <add_more_delay>
+ 3c4:	00008067          	jalr	zero,0(ra)
+
+000003c8 <flash_read_word>:
+ 3c8:	ff810113          	addi	sp,sp,-8
+ 3cc:	00112023          	sw	ra,0(sp)
+ 3d0:	00812223          	sw	s0,4(sp)
+ 3d4:	00050413          	addi	s0,a0,0
+ 3d8:	0c8000ef          	jal	ra,4a0 <spiCSDown>
+ 3dc:	00300513          	addi	a0,zero,3
+ 3e0:	0c8000ef          	jal	ra,4a8 <spiSendGetData>
+ 3e4:	054000ef          	jal	ra,438 <flash_send_addr>
+ 3e8:	0c0000ef          	jal	ra,4a8 <spiSendGetData>
+ 3ec:	00050413          	addi	s0,a0,0
+ 3f0:	0b8000ef          	jal	ra,4a8 <spiSendGetData>
+ 3f4:	00851513          	slli	a0,a0,0x8
+ 3f8:	00a46433          	or	s0,s0,a0
+ 3fc:	0ac000ef          	jal	ra,4a8 <spiSendGetData>
+ 400:	01051513          	slli	a0,a0,0x10
+ 404:	00a46433          	or	s0,s0,a0
+ 408:	0a0000ef          	jal	ra,4a8 <spiSendGetData>
+ 40c:	01851513          	slli	a0,a0,0x18
+ 410:	00a46433          	or	s0,s0,a0
+ 414:	084000ef          	jal	ra,498 <spiCSUp>
+ 418:	00040513          	addi	a0,s0,0
+ 41c:	00012083          	lw	ra,0(sp)
+ 420:	00412403          	lw	s0,4(sp)
+ 424:	00810113          	addi	sp,sp,8
+ 428:	00008067          	jalr	zero,0(ra)
+
+0000042c <trap_handler>:
+ 42c:	deadc537          	lui	a0,0xdeadc
+ 430:	eef50513          	addi	a0,a0,-273 # deadbeef <MAGIC_NUM+0x1cebfd2e>
+ 434:	ff9ff06f          	jal	zero,42c <trap_handler>
+
+00000438 <flash_send_addr>:
+ 438:	ffc10113          	addi	sp,sp,-4
+ 43c:	00112023          	sw	ra,0(sp)
+ 440:	01045513          	srli	a0,s0,0x10
+ 444:	064000ef          	jal	ra,4a8 <spiSendGetData>
+ 448:	00845513          	srli	a0,s0,0x8
+ 44c:	05c000ef          	jal	ra,4a8 <spiSendGetData>
+ 450:	00045513          	srli	a0,s0,0x0
+ 454:	054000ef          	jal	ra,4a8 <spiSendGetData>
+ 458:	00012083          	lw	ra,0(sp)
+ 45c:	00410113          	addi	sp,sp,4
+ 460:	00008067          	jalr	zero,0(ra)
+
+00000464 <spiInit>:
+ 464:	20000337          	lui	t1,0x20000
+ 468:	20030313          	addi	t1,t1,512 # 20000200 <SPCR>
+ 46c:	05300293          	addi	t0,zero,83
+ 470:	00530023          	sb	t0,0(t1)
+ 474:	20000337          	lui	t1,0x20000
+ 478:	20c30313          	addi	t1,t1,524 # 2000020c <SPER>
+ 47c:	00000293          	addi	t0,zero,0
+ 480:	00530023          	sb	t0,0(t1)
+ 484:	00008067          	jalr	zero,0(ra)
+
+00000488 <spiCS>:
+ 488:	200002b7          	lui	t0,0x20000
+ 48c:	21028293          	addi	t0,t0,528 # 20000210 <SPCS>
+ 490:	00a28023          	sb	a0,0(t0)
+ 494:	00008067          	jalr	zero,0(ra)
+
+00000498 <spiCSUp>:
+ 498:	00000513          	addi	a0,zero,0
+ 49c:	fedff06f          	jal	zero,488 <spiCS>
+
+000004a0 <spiCSDown>:
+ 4a0:	0ff00513          	addi	a0,zero,255
+ 4a4:	fe5ff06f          	jal	zero,488 <spiCS>
+
+000004a8 <spiSendGetData>:
+ 4a8:	20000337          	lui	t1,0x20000
+ 4ac:	20430313          	addi	t1,t1,516 # 20000204 <SPSR>
+ 4b0:	00030283          	lb	t0,0(t1)
+ 4b4:	0802e293          	ori	t0,t0,128
+ 4b8:	00530023          	sb	t0,0(t1)
+ 4bc:	200002b7          	lui	t0,0x20000
+ 4c0:	20828293          	addi	t0,t0,520 # 20000208 <SPDR>
+ 4c4:	00a28023          	sb	a0,0(t0)
+
+000004c8 <wait_transfer>:
+ 4c8:	20000337          	lui	t1,0x20000
+ 4cc:	20430313          	addi	t1,t1,516 # 20000204 <SPSR>
+ 4d0:	00030283          	lb	t0,0(t1)
+ 4d4:	0802f293          	andi	t0,t0,128
+ 4d8:	fe0288e3          	beq	t0,zero,4c8 <wait_transfer>
+ 4dc:	200002b7          	lui	t0,0x20000
+ 4e0:	20828293          	addi	t0,t0,520 # 20000208 <SPDR>
+ 4e4:	0002c503          	lbu	a0,0(t0)
+ 4e8:	00008067          	jalr	zero,0(ra)
+
+000004ec <uart_init>:
+ 4ec:	200002b7          	lui	t0,0x20000
+ 4f0:	08000313          	addi	t1,zero,128
+ 4f4:	00628623          	sb	t1,12(t0) # 2000000c <UART_BASE+0xc>
+ 4f8:	01b00313          	addi	t1,zero,27
+ 4fc:	00628023          	sb	t1,0(t0)
+ 500:	00300313          	addi	t1,zero,3
+ 504:	00628623          	sb	t1,12(t0)
+ 508:	08700313          	addi	t1,zero,135
+ 50c:	00628423          	sb	t1,8(t0)
+ 510:	00028223          	sb	zero,4(t0)
+ 514:	00008067          	jalr	zero,0(ra)
+
+00000518 <uart_putc>:
+ 518:	20000337          	lui	t1,0x20000
+
+0000051c <.wait_tx>:
+ 51c:	01434383          	lbu	t2,20(t1) # 20000014 <UART_BASE+0x14>
+ 520:	0203f393          	andi	t2,t2,32
+ 524:	fe038ce3          	beq	t2,zero,51c <.wait_tx>
+ 528:	00a30023          	sb	a0,0(t1)
+ 52c:	00008067          	jalr	zero,0(ra)
+
+00000530 <uart_getc>:
+ 530:	20000337          	lui	t1,0x20000
+
+00000534 <.wait_rx>:
+ 534:	01434383          	lbu	t2,20(t1) # 20000014 <UART_BASE+0x14>
+ 538:	0013f393          	andi	t2,t2,1
+ 53c:	fe038ce3          	beq	t2,zero,534 <.wait_rx>
+ 540:	00034503          	lbu	a0,0(t1)
+ 544:	00008067          	jalr	zero,0(ra)
+
+00000548 <adler32>:
+ 548:	fe810113          	addi	sp,sp,-24
+ 54c:	00112023          	sw	ra,0(sp)
+ 550:	00812223          	sw	s0,4(sp)
+ 554:	00912423          	sw	s1,8(sp)
+ 558:	01212623          	sw	s2,12(sp)
+ 55c:	01312823          	sw	s3,16(sp)
+ 560:	01412a23          	sw	s4,20(sp)
+ 564:	00050413          	addi	s0,a0,0
+ 568:	00058493          	addi	s1,a1,0
+ 56c:	00060a13          	addi	s4,a2,0
+ 570:	00100913          	addi	s2,zero,1
+ 574:	00000993          	addi	s3,zero,0
+ 578:	00010ab7          	lui	s5,0x10
+ 57c:	ff1a8a93          	addi	s5,s5,-15 # fff1 <IMEM_SIZE+0x7ff1>
+ 580:	020a0463          	beq	s4,zero,5a8 <adler32+0x60>
+ 584:	f1dff0ef          	jal	ra,4a0 <spiCSDown>
+ 588:	00300513          	addi	a0,zero,3
+ 58c:	f1dff0ef          	jal	ra,4a8 <spiSendGetData>
+ 590:	01045513          	srli	a0,s0,0x10
+ 594:	f15ff0ef          	jal	ra,4a8 <spiSendGetData>
+ 598:	00845513          	srli	a0,s0,0x8
+ 59c:	f0dff0ef          	jal	ra,4a8 <spiSendGetData>
+ 5a0:	00045513          	srli	a0,s0,0x0
+ 5a4:	f05ff0ef          	jal	ra,4a8 <spiSendGetData>
+ 5a8:	02048e63          	beq	s1,zero,5e4 <adler32+0x9c>
+ 5ac:	000a0863          	beq	s4,zero,5bc <adler32+0x74>
+ 5b0:	ef9ff0ef          	jal	ra,4a8 <spiSendGetData>
+ 5b4:	00050293          	addi	t0,a0,0
+ 5b8:	00c0006f          	jal	zero,5c4 <adler32+0x7c>
+ 5bc:	00044283          	lbu	t0,0(s0)
+ 5c0:	00140413          	addi	s0,s0,1
+ 5c4:	00590933          	add	s2,s2,t0
+ 5c8:	01594463          	blt	s2,s5,5d0 <adler32+0x88>
+ 5cc:	41590933          	sub	s2,s2,s5
+ 5d0:	012989b3          	add	s3,s3,s2
+ 5d4:	0159c463          	blt	s3,s5,5dc <adler32+0x94>
+ 5d8:	415989b3          	sub	s3,s3,s5
+ 5dc:	fff48493          	addi	s1,s1,-1
+ 5e0:	fc9ff06f          	jal	zero,5a8 <adler32+0x60>
+ 5e4:	000a0463          	beq	s4,zero,5ec <adler32+0xa4>
+ 5e8:	eb1ff0ef          	jal	ra,498 <spiCSUp>
+ 5ec:	01099293          	slli	t0,s3,0x10
+ 5f0:	0122e533          	or	a0,t0,s2
+ 5f4:	00012083          	lw	ra,0(sp)
+ 5f8:	00412403          	lw	s0,4(sp)
+ 5fc:	00812483          	lw	s1,8(sp)
+ 600:	00c12903          	lw	s2,12(sp)
+ 604:	01012983          	lw	s3,16(sp)
+ 608:	01412a03          	lw	s4,20(sp)
+ 60c:	01810113          	addi	sp,sp,24
+ 610:	00008067          	jalr	zero,0(ra)

@@ -1,0 +1,17 @@
+
+firmware.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+10000000 <_start>:
+10000000:	ce2e6337          	lui	t1,0xce2e6
+10000004:	bcd30313          	addi	t1,t1,-1075 # ce2e5bcd <_start+0xbe2e5bcd>
+10000008:	f0030053          	fmv.w.x	ft0,t1
+1000000c:	f0030153          	fmv.w.x	ft2,t1
+10000010:	3f800337          	lui	t1,0x3f800
+10000014:	f00300d3          	fmv.w.x	ft1,t1
+10000018:	10100647          	fmsub.s	fa2,ft0,ft1,ft2,rne
+1000001c:	00000013          	nop
+10000020:	00000013          	nop
+10000024:	00000013          	nop

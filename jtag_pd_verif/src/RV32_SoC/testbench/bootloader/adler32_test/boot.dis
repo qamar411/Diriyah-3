@@ -1,0 +1,147 @@
+
+boot.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+fffff000 <main>:
+fffff000:	80043117          	auipc	sp,0x80043
+fffff004:	00010113          	addi	sp,sp,0 # 80042000 <_stack_top>
+fffff008:	80000537          	lui	a0,0x80000
+fffff00c:	65a1                	c.lui	a1,0x8
+fffff00e:	4601                	c.li	a2,0
+fffff010:	28c9                	c.jal	fffff0e2 <adler32>
+fffff012:	85aa                	c.mv	a1,a0
+fffff014:	a001                	c.j	fffff014 <main+0x14>
+
+fffff016 <spiInit>:
+fffff016:	20000337          	lui	t1,0x20000
+fffff01a:	20030313          	addi	t1,t1,512 # 20000200 <SPCR>
+fffff01e:	05300293          	addi	t0,zero,83
+fffff022:	00530023          	sb	t0,0(t1)
+fffff026:	20000337          	lui	t1,0x20000
+fffff02a:	20c30313          	addi	t1,t1,524 # 2000020c <SPER>
+fffff02e:	4281                	c.li	t0,0
+fffff030:	00530023          	sb	t0,0(t1)
+fffff034:	8082                	c.jr	ra
+
+fffff036 <spiCS>:
+fffff036:	200002b7          	lui	t0,0x20000
+fffff03a:	21028293          	addi	t0,t0,528 # 20000210 <SPCS>
+fffff03e:	00a28023          	sb	a0,0(t0)
+fffff042:	8082                	c.jr	ra
+
+fffff044 <spiCSUp>:
+fffff044:	4501                	c.li	a0,0
+fffff046:	bfc5                	c.j	fffff036 <spiCS>
+
+fffff048 <spiCSDown>:
+fffff048:	0ff00513          	addi	a0,zero,255
+fffff04c:	b7ed                	c.j	fffff036 <spiCS>
+
+fffff04e <spiSendGetData>:
+fffff04e:	20000337          	lui	t1,0x20000
+fffff052:	20430313          	addi	t1,t1,516 # 20000204 <SPSR>
+fffff056:	00030283          	lb	t0,0(t1)
+fffff05a:	0802e293          	ori	t0,t0,128
+fffff05e:	00530023          	sb	t0,0(t1)
+fffff062:	200002b7          	lui	t0,0x20000
+fffff066:	20828293          	addi	t0,t0,520 # 20000208 <SPDR>
+fffff06a:	00a28023          	sb	a0,0(t0)
+
+fffff06e <wait_transfer>:
+fffff06e:	20000337          	lui	t1,0x20000
+fffff072:	20430313          	addi	t1,t1,516 # 20000204 <SPSR>
+fffff076:	00030283          	lb	t0,0(t1)
+fffff07a:	0802f293          	andi	t0,t0,128
+fffff07e:	fe0288e3          	beq	t0,zero,fffff06e <wait_transfer>
+fffff082:	200002b7          	lui	t0,0x20000
+fffff086:	20828293          	addi	t0,t0,520 # 20000208 <SPDR>
+fffff08a:	0002c503          	lbu	a0,0(t0)
+fffff08e:	8082                	c.jr	ra
+
+fffff090 <uart_init>:
+fffff090:	200002b7          	lui	t0,0x20000
+fffff094:	08000313          	addi	t1,zero,128
+fffff098:	00628623          	sb	t1,12(t0) # 2000000c <UART_BASE+0xc>
+fffff09c:	436d                	c.li	t1,27
+fffff09e:	00628023          	sb	t1,0(t0)
+fffff0a2:	430d                	c.li	t1,3
+fffff0a4:	00628623          	sb	t1,12(t0)
+fffff0a8:	08700313          	addi	t1,zero,135
+fffff0ac:	00628423          	sb	t1,8(t0)
+fffff0b0:	00028223          	sb	zero,4(t0)
+fffff0b4:	8082                	c.jr	ra
+
+fffff0b6 <uart_putc>:
+fffff0b6:	20000337          	lui	t1,0x20000
+
+fffff0ba <.wait_tx>:
+fffff0ba:	01434383          	lbu	t2,20(t1) # 20000014 <UART_BASE+0x14>
+fffff0be:	0203f393          	andi	t2,t2,32
+fffff0c2:	fe038ce3          	beq	t2,zero,fffff0ba <.wait_tx>
+fffff0c6:	00a30023          	sb	a0,0(t1)
+fffff0ca:	8082                	c.jr	ra
+
+fffff0cc <uart_getc>:
+fffff0cc:	20000337          	lui	t1,0x20000
+
+fffff0d0 <.wait_rx>:
+fffff0d0:	01434383          	lbu	t2,20(t1) # 20000014 <UART_BASE+0x14>
+fffff0d4:	0013f393          	andi	t2,t2,1
+fffff0d8:	fe038ce3          	beq	t2,zero,fffff0d0 <.wait_rx>
+fffff0dc:	00034503          	lbu	a0,0(t1)
+fffff0e0:	8082                	c.jr	ra
+
+fffff0e2 <adler32>:
+fffff0e2:	1121                	c.addi	sp,-24
+fffff0e4:	c006                	c.swsp	ra,0(sp)
+fffff0e6:	c222                	c.swsp	s0,4(sp)
+fffff0e8:	c426                	c.swsp	s1,8(sp)
+fffff0ea:	c64a                	c.swsp	s2,12(sp)
+fffff0ec:	c84e                	c.swsp	s3,16(sp)
+fffff0ee:	ca52                	c.swsp	s4,20(sp)
+fffff0f0:	842a                	c.mv	s0,a0
+fffff0f2:	84ae                	c.mv	s1,a1
+fffff0f4:	8a32                	c.mv	s4,a2
+fffff0f6:	4905                	c.li	s2,1
+fffff0f8:	4981                	c.li	s3,0
+fffff0fa:	6ac1                	c.lui	s5,0x10
+fffff0fc:	1ac5                	c.addi	s5,-15 # fff1 <IMEM_SIZE+0x7ff1>
+fffff0fe:	000a0e63          	beq	s4,zero,fffff11a <adler32+0x38>
+fffff102:	3799                	c.jal	fffff048 <spiCSDown>
+fffff104:	450d                	c.li	a0,3
+fffff106:	37a1                	c.jal	fffff04e <spiSendGetData>
+fffff108:	01045513          	srli	a0,s0,0x10
+fffff10c:	3789                	c.jal	fffff04e <spiSendGetData>
+fffff10e:	00845513          	srli	a0,s0,0x8
+fffff112:	3f35                	c.jal	fffff04e <spiSendGetData>
+fffff114:	00045513          	srli	a0,s0,0x0
+fffff118:	3f1d                	c.jal	fffff04e <spiSendGetData>
+fffff11a:	c48d                	c.beqz	s1,fffff144 <adler32+0x62>
+fffff11c:	000a0563          	beq	s4,zero,fffff126 <adler32+0x44>
+fffff120:	373d                	c.jal	fffff04e <spiSendGetData>
+fffff122:	82aa                	c.mv	t0,a0
+fffff124:	a021                	c.j	fffff12c <adler32+0x4a>
+fffff126:	00044283          	lbu	t0,0(s0)
+fffff12a:	0405                	c.addi	s0,1
+fffff12c:	9916                	c.add	s2,t0
+fffff12e:	01594463          	blt	s2,s5,fffff136 <adler32+0x54>
+fffff132:	41590933          	sub	s2,s2,s5
+fffff136:	99ca                	c.add	s3,s2
+fffff138:	0159c463          	blt	s3,s5,fffff140 <adler32+0x5e>
+fffff13c:	415989b3          	sub	s3,s3,s5
+fffff140:	14fd                	c.addi	s1,-1
+fffff142:	bfe1                	c.j	fffff11a <adler32+0x38>
+fffff144:	000a0363          	beq	s4,zero,fffff14a <adler32+0x68>
+fffff148:	3df5                	c.jal	fffff044 <spiCSUp>
+fffff14a:	01099293          	slli	t0,s3,0x10
+fffff14e:	0122e533          	or	a0,t0,s2
+fffff152:	4082                	c.lwsp	ra,0(sp)
+fffff154:	4412                	c.lwsp	s0,4(sp)
+fffff156:	44a2                	c.lwsp	s1,8(sp)
+fffff158:	4932                	c.lwsp	s2,12(sp)
+fffff15a:	49c2                	c.lwsp	s3,16(sp)
+fffff15c:	4a52                	c.lwsp	s4,20(sp)
+fffff15e:	0161                	c.addi	sp,24
+fffff160:	8082                	c.jr	ra
