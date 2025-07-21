@@ -49,9 +49,10 @@ module wb_mux
     parameter [num_slaves*aw-1:0] MATCH_ADDR = 0,
     parameter [num_slaves*aw-1:0] MATCH_MASK = 0)
 
-   (input                      wb_clk_i,
-    input 		       wb_rst_i,
-
+   (
+   
+   input                      wb_clk_i,
+   input                      wb_rst_i,
     // Master Interface
     input [aw-1:0] 	       wbm_adr_i,
     input [dw-1:0] 	       wbm_dat_i,
@@ -59,8 +60,6 @@ module wb_mux
     input 		       wbm_we_i,
     input 		       wbm_cyc_i,
     input 		       wbm_stb_i,
-   //  input [2:0] 	       wbm_cti_i, // Qamar delete it
-   //  input [1:0] 	       wbm_bte_i, // Qamar delete it
     output [dw-1:0] 	       wbm_dat_o,
     output 		       wbm_ack_o,
     output 		       wbm_err_o,
@@ -72,8 +71,6 @@ module wb_mux
     output [num_slaves-1:0]    wbs_we_o,
     output [num_slaves-1:0]    wbs_cyc_o,
     output [num_slaves-1:0]    wbs_stb_o,
-   //  output [num_slaves*3-1:0]  wbs_cti_o, // Qamar delete it
-   //  output [num_slaves*2-1:0]  wbs_bte_o, // Qamar delete it
     input [num_slaves*dw-1:0]  wbs_dat_i,
     input [num_slaves-1:0]     wbs_ack_i,
     input [num_slaves-1:0]     wbs_err_i,
@@ -88,7 +85,6 @@ module wb_mux
 
    reg  			 wbm_err;
    wire [slave_sel_bits-1:0] 	 slave_sel;
-   reg  [slave_sel_bits-1:0] 	 slave_sel_ff;
    wire [num_slaves-1:0] 	 match;
 
    genvar 			 idx;
@@ -101,14 +97,14 @@ module wb_mux
 //
 // Find First 1 - Start from MSB and count downwards, returns 0 when no bit set
 //
-   function [slave_sel_bits-1:0] ff1;
-      input [num_slaves-1:0] in;
+   function automatic [slave_sel_bits-1:0] ff1;
+      input [num_slaves-1:0] in_;
       integer 		     i;
 
       begin
 	 ff1 = 0;
 	 for (i = num_slaves-1; i >= 0; i=i-1) begin
-	    if (in[i])
+	    if (in_[i])
 /* verilator lint_off WIDTH */
 	      ff1 = i;
 /* verilator lint_on WIDTH */
@@ -119,8 +115,9 @@ module wb_mux
    assign slave_sel = ff1(match);
 
 
-   always @(posedge wb_clk_i)
-     wbm_err <= wbm_cyc_i & !(|match);
+   always @(posedge wb_clk_i, posedge wb_rst_i)
+      if(wb_rst_i) wbm_err <= 'b0;
+      else wbm_err <= wbm_cyc_i & !(|match);
 
    assign wbs_adr_o = {num_slaves{wbm_adr_i}};
    assign wbs_dat_o = {num_slaves{wbm_dat_i}};
@@ -128,26 +125,20 @@ module wb_mux
    assign wbs_we_o  = {num_slaves{wbm_we_i}};
 /* verilator lint_off WIDTH */
 
-   assign wbs_cyc_o = match & (wbm_cyc_i << slave_sel);
+   assign wbs_cyc_o = {num_slaves{wbm_cyc_i}};
 /* verilator lint_on WIDTH */
-   assign wbs_stb_o = {num_slaves{wbm_stb_i}};
+   assign wbs_stb_o = match & {num_slaves{wbm_stb_i}};
 
-   // assign wbs_cti_o = {num_slaves{wbm_cti_i}}; // Qamar delete it
-   // assign wbs_bte_o = {num_slaves{wbm_bte_i}}; // Qamar delete it
-
-
+      
    // assign wbm_dat_o = wbs_dat_i[slave_sel*dw+:dw];
    // assign wbm_ack_o = wbs_ack_i[slave_sel];
    // assign wbm_err_o = wbs_err_i[slave_sel] | wbm_err;
    // assign wbm_rty_o = wbs_rty_i[slave_sel];
 
-   always @(posedge wb_clk_i) slave_sel_ff <= slave_sel;
-   // always @(posedge wb_clk_i) wbs_dat_i_ff <= wbs_dat_i; // and others it won't change anthing i think
+   assign wbm_dat_o = wbs_dat_i[slave_sel*dw+:dw];
 
 
-   assign wbm_dat_o = wbs_dat_i[slave_sel_ff*dw+:dw];
-   assign wbm_ack_o = wbs_ack_i[slave_sel_ff];
-   assign wbm_err_o = wbs_err_i[slave_sel_ff] | wbm_err;
-   assign wbm_rty_o = wbs_rty_i[slave_sel_ff];
-
+   assign wbm_ack_o = |(wbs_ack_i & match);
+   assign wbm_err_o = |(wbs_err_i & match) | wbm_err;
+   assign wbm_rty_o = |(wbs_rty_i & match);
 endmodule

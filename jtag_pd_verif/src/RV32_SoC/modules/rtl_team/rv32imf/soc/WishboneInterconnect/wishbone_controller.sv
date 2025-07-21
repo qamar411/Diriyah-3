@@ -1,7 +1,5 @@
 import riscv_types::*;
-module wishbone_controller (
-    input  wire        clk,           // Clock signal
-    input  wire        rst,           // Reset signal
+module wishbone_controller (  // combinational controller, not state based
 
     // Processor interface signals
     input  wire [31:0] proc_addr,     // Processor address
@@ -9,15 +7,16 @@ module wishbone_controller (
     input  wire        proc_write,    // Processor write enable
     input  wire        proc_read,    // Processor write enable
     input  wire [2:0]  proc_op,       // Processor operation
-    output reg  [31:0] proc_rdata,    // Processor read data
+    output wire  [31:0] proc_rdata,    // Processor read data
     output logic       proc_ack,
+    output logic       proc_err,
     output logic       proc_stall_pipl,
 
     // Debug interface signals
     input logic   core_halted,
     input logic   dbg_am_en_i,
     input logic   dbg_am_wr_i,
-    input [3:0]   dbg_am_st_i,
+    input [2:0]   dbg_am_st_i,
     input [31:0]  dbg_am_ad_i,
     output [31:0] dbg_am_di_o,
     input [31:0]  dbg_am_do_i,
@@ -25,15 +24,15 @@ module wishbone_controller (
 
 
     // Wishbone bus signals
-    output reg  [31:0] wb_adr_o,      // Wishbone address output
-    output reg  [31:0] wb_dat_o,      // Wishbone data output
-    output reg  [3:0]  wb_sel_o,      // Wishbone byte enable
-    output reg         wb_we_o,       // Wishbone write enable
-    output reg         wb_cyc_o,      // Wishbone cycle valid
-    output reg         wb_stb_o,      // Wishbone strobe
-    input  wire [31:0] wb_dat_i,      // Wishbone data input
-    input  wire        wb_ack_i,      // Wishbone acknowledge
-    input  wire        wb_err_i
+    output wire  [31:0] wb_adr_o,      // Wishbone address output
+    output wire  [31:0] wb_dat_o,      // Wishbone data output
+    output wire  [3:0]  wb_sel_o,      // Wishbone byte enable
+    output reg          wb_we_o,       // Wishbone write enable
+    output reg          wb_cyc_o,      // Wishbone cycle valid
+    output reg          wb_stb_o,      // Wishbone strobe
+    input  wire  [31:0] wb_dat_i,      // Wishbone data input
+    input  wire         wb_ack_i,      // Wishbone acknowledge
+    input  wire         wb_err_i
 );
 
     // ============================================
@@ -41,8 +40,6 @@ module wishbone_controller (
     // ============================================
 
     reg  [31:0] core_wb_adr_o;  
-    reg  [31:0] core_wb_dat_o;  
-    reg  [3:0]  core_wb_sel_o;   
     reg         core_wb_we_o;    
     reg         core_wb_cyc_o;   
     reg         core_wb_stb_o;  
@@ -54,84 +51,52 @@ module wishbone_controller (
         core_wb_cyc_o = proc_write | proc_read;
         core_wb_stb_o = proc_write | proc_read;
         core_wb_we_o = proc_write;
-        if((proc_write | proc_read) & ((~core_wb_ack_i) & ~wb_err_i)) begin 
-            proc_stall_pipl = 1'b1;
+        if(proc_write | proc_read) begin 
+            proc_stall_pipl = (~core_wb_ack_i) & ~wb_err_i;
         end else proc_stall_pipl = 0;
         proc_ack = core_wb_ack_i | wb_err_i; 
     end
 
 
-    // assign core_wb_sel_o = 4'b0001;
     // assign core_wb_dat_o = proc_wdata;
     store_aligner store_alignment_unit(
-        .wdata(proc_wdata),
-        .store_type(store_t'(proc_op)),
-        .addr(proc_addr[1:0]),
-        .mem_write(proc_write),
-        .wsel(core_wb_sel_o),
-        .aligned_data(core_wb_dat_o)
+        .wdata(core_halted ? dbg_am_do_i : proc_wdata),
+        .store_type(store_t'(core_halted ? dbg_am_st_i[1:0] : proc_op)),
+        .addr(wb_adr_o[1:0]),
+        .mem_write(proc_write | dbg_am_wr_i),
+        .wsel(wb_sel_o),
+        .aligned_data(wb_dat_o)
     );
 
-    // ============= prepheral to core ===========
-    // logic [31:0] proc_addr_ff;
-    // logic [2:0]  proc_op_ff;
-    // logic [31:0] core_wb_dat_i_ff;
 
-    // always @(posedge clk) begin
-    //     proc_addr_ff <= proc_addr;
-    //     proc_op_ff <= proc_op;
-    //     core_wb_dat_i_ff <= core_wb_dat_i;
-    // end
-
-    // registers in the wishbone controller as mem read is moved to write back stage
-    logic [1:0] proc_addr_ff;
-    logic [2:0] proc_op_ff;
-    n_bit_reg #(
-        .n(5)
-    ) wishbone_cont_reg (
-        .clk(clk),
-        .reset_n(~rst),
-        .data_i({proc_addr[1:0], proc_op}),
-        .data_o({proc_addr_ff[1:0], proc_op_ff}),
-        .wen(1'b1)
-    );
-
-    // delayed version
+    // assign proc_rdata = core_wb_dat_i;
     load_aligner load_alignment_unit (
-        .addr(proc_addr_ff[1:0]),
-        .fun3(proc_op_ff),
-        // .rdata(core_wb_dat_i_ff),
-        .rdata(core_wb_dat_i),
+        .addr(wb_adr_o[1:0]),
+        .fun3(core_halted? dbg_am_st_i[2:0] : proc_op),
+        .rdata(wb_dat_i),
         .aligned_data(proc_rdata)
     );
-
-    // load_aligner load_alignment_unit (
-    //     .addr(proc_addr[1:0]),
-    //     .fun3(proc_op),
-    //     .rdata(core_wb_dat_i),
-    //     .aligned_data(proc_rdata)
-    // );
 
     // ============================================
     //            Debug Unit Wishbone Access
     // ============================================
 
-    reg  [31:0] dbg_wb_adr_o;  
-    reg  [31:0] dbg_wb_dat_o;  
-    reg  [3:0]  dbg_wb_sel_o;   
+    reg  [31:0] dbg_wb_adr_o;    
     reg         dbg_wb_we_o;    
     reg         dbg_wb_cyc_o;   
     reg         dbg_wb_stb_o;  
 
     // to the interconnect
     assign dbg_wb_adr_o = dbg_am_ad_i;
-    assign dbg_wb_dat_o = dbg_am_do_i;
-    assign dbg_wb_sel_o = 4'b1111; // FIXME (is st_i same as sel, if not fixit?)
+
+
+
+
     assign dbg_wb_we_o  = dbg_am_wr_i;
     assign dbg_wb_cyc_o = dbg_am_en_i;
     assign dbg_wb_stb_o = dbg_am_en_i;
     // from the interconnect
-    assign dbg_am_di_o  = wb_dat_i;     // FIXME (do we need any kind of alignment in case of dbg access?)
+    assign dbg_am_di_o  = proc_rdata;  
     assign dbg_am_done_o = core_halted ?  (wb_ack_i |  wb_err_i) : 1'b0;
 
     // ============================================
@@ -139,13 +104,12 @@ module wishbone_controller (
     // ============================================
 
     assign wb_adr_o = core_halted ? dbg_wb_adr_o : core_wb_adr_o; 
-    assign wb_dat_o = core_halted ? dbg_wb_dat_o : core_wb_dat_o; 
-    assign wb_sel_o = core_halted ? dbg_wb_sel_o : core_wb_sel_o; 
     assign wb_we_o  = core_halted ? dbg_wb_we_o  : core_wb_we_o ; 
     assign wb_cyc_o = core_halted ? dbg_wb_cyc_o : core_wb_cyc_o; 
     assign wb_stb_o = core_halted ? dbg_wb_stb_o : core_wb_stb_o; 
 
     assign core_wb_ack_i = core_halted ? 1'b0 : wb_ack_i;
-    assign core_wb_dat_i = wb_dat_i;
+
+    assign proc_err = wb_err_i;
 
 endmodule

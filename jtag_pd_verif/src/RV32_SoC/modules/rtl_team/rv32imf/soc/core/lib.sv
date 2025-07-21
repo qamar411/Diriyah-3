@@ -339,6 +339,7 @@ package riscv_types;
         // Data signals 
         logic [4:0]  rd; 
         logic [31:0] result;
+        logic [31:0] mem_rdata; 
         // Control signals
         logic        reg_write;
         logic        mem_to_reg;

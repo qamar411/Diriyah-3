@@ -341,8 +341,6 @@ module rv32i_soc #(
 
 
     wishbone_controller wishbone_master (
-        .clk        (clk),
-        .rst        (~reset_n),
 
         .proc_addr  (mem_addr_mem),
         .proc_wdata (mem_wdata_mem),
@@ -351,6 +349,7 @@ module rv32i_soc #(
         .proc_op    (mem_op_mem),
         .proc_rdata (mem_rdata_mem),
         .proc_ack   (mem_ack_mem),
+        .proc_err   (mem_err_mem),
         .proc_stall_pipl(stall_pipl), // Stall pipeline if needed
 
         // memory access from the debug unit

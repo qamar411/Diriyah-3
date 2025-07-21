@@ -1379,6 +1379,7 @@ module data_path #(
     // data signals 
     rd_mem, 
     result_mem,
+    mem_rdata_mem,
     // control signals
     reg_write_mem,
     mem_to_reg_mem,
@@ -1424,7 +1425,7 @@ module data_path #(
     // ============================================
 
     logic [31:0] mem_rdata_wb;          // DMEM output data but in write-back stage
-    assign mem_rdata_wb = mem_rdata_mem;
+    assign mem_rdata_wb = mem_wb_bus_o.mem_rdata;
 
     mux2x1 #(
         .n(32)
