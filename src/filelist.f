@@ -1,5 +1,5 @@
 // ============== Physical's Macros ==============
-//+define+PD_BUILD
++define+PD_BUILD
 //+define+USE_SRAM
 // - ./pads.sv
 
