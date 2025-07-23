@@ -114,7 +114,7 @@ logic a_is_apox_zero;
         .sign1(sign1)                            ,
         .sign2(sign2)                            ,
         .zero(zero)                           ,
-        .exp_res(exp_res)                      ,
+        .exp_res(exp_res[7:0])                      ,
         .mantissa1_aligned(mantissa1_aligned)  ,
         .mantissa2_aligned(mantissa2_aligned)  ,
         .res_zero(res_is_zero),
@@ -312,7 +312,7 @@ normalize_fp_r4 normalize_stage(
         .sticky_bit          (sticky_bit_AS),
         .grs(grs_AS),
         //output
-        .mantissa_norm       (mantissa_norm),
+        .mantissa_norm       (mantissa_norm[22:0]),
         .exp_norm            (exp_norm),
         .underflow(underflow)
         

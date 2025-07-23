@@ -162,76 +162,76 @@ module top_rv32i_soc #(
 `ifdef PD_BUILD
 
     PVDD1DGZ vdd_left_1 (
-        .VDD(VDD_LEFT_1)
+        .VDD()
     );
     PVDD1DGZ vdd_right_1 (
-        .VDD(VDD_RIGHT_1)
+        .VDD()
     );
     PVDD1DGZ vdd_top_1 (
-        .VDD(VDD_TOP_1)
+        .VDD()
     );
     PVDD1DGZ vdd_bottom_1 (
-        .VDD(VDD_BOTTOM_1)
+        .VDD()
     );
     PVDD1DGZ vdd_left_2 (
-        .VDD(VDD_LEFT2)
+        .VDD()
     );
     PVDD1DGZ vdd_right_2 (
-        .VDD(VDD_RIGHT_2)
+        .VDD()
     );
     PVDD1DGZ vdd_top_2 (
-        .VDD(VDD_TOP_2)
+        .VDD()
     );
     PVDD1DGZ vdd_bottom_2 (
-        .VDD(VDD_BOTTOM_2)
+        .VDD()
     );
     PVSS1DGZ vss_left_1 (
-        .VSS(VSS_LEFT_1)
+        .VSS()
     );
     PVSS1DGZ vss_right_1 (
-        .VSS(VSS_RIGHT_1)
+        .VSS()
     );
     PVSS1DGZ vss_top_1 (
-        .VSS(VSS_TOP_1)
+        .VSS()
     );
     PVSS1DGZ vss_bottom_1 (
-        .VSS(VSS_BOTTOM_1)
+        .VSS()
     );
     PVSS1DGZ vss_left_2 (
-        .VSS(VSS_LEFT_2)
+        .VSS()
     );
     PVSS1DGZ vss_right_2 (
-        .VSS(VSS_RIGHT_2)
+        .VSS()
     );
     PVSS1DGZ vss_top_2 (
-        .VSS(VSS_TOP_2)
+        .VSS()
     );
     PVSS1DGZ vss_bottom_2 (
-        .VSS(VSS_BOTTOM_2)
+        .VSS()
     );
     PVDD2DGZ iovdd_left (
-        .VDDPST(VDDPST_LEFT)
+        .VDDPST()
     );
     PVDD2DGZ iovdd_right (
-        .VDDPST(VDDPST_RIGHT)
+        .VDDPST()
     );
     PVDD2DGZ iovdd_top (
-        .VDDPST(VDDPST_TOP)
+        .VDDPST()
     );
     PVDD2DGZ iovdd_bottom (
-        .VDDPST(VDDPST_BOTTOM)
+        .VDDPST()
     );
     PVSS2DGZ iovss_left (
-        .VSSPST(VSSPST_LEFT)
+        .VSSPST()
     );
     PVSS2DGZ iovss_right (
-        .VSSPST(VSSPST_RIGHT)
+        .VSSPST()
     );
     PVSS2DGZ iovss_top (
-        .VSSPST(VSSPST_TOP)
+        .VSSPST()
     );
     PVSS2DGZ iovss_bottom (
-        .VSSPST(VSSPST_BOTTOM)
+        .VSSPST()
     );
 
 `endif

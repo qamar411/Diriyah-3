@@ -291,7 +291,7 @@ normalize_FP normalize_stage(
         .sticky_bit          (sticky_bit_AS),
         .grs(grs_AS),
         //output
-        .mantissa_norm       (mantissa_norm),
+        .mantissa_norm       (mantissa_norm[22:0]),
         .exp_norm            (exp_norm),
         .underflow(underflow)
         
